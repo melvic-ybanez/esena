@@ -1,6 +1,18 @@
 package com.melvic.esena
 
-case class ETuple(x: Double, y: Double, z: Double, w: Double)
+final case class ETuple(x: Double, y: Double, z: Double, w: Double) {
+  override def equals(that: Any) = that match {
+    case ETuple(x, y, z, w) =>
+      Utils.compareDoubles(this.x, x) &&
+        Utils.compareDoubles(this.y, y) &&
+        Utils.compareDoubles(this.z, z) &&
+        Utils.compareDoubles(this.w, w)
+    case _ => false
+  }
+
+  def +(that: ETuple): ETuple =
+    ETuple(x + that.x, y + that.y, z + that.z, w + that.w)
+}
 
 object ETuple {
   def isPoint(tuple: ETuple): Boolean = tuple.w == 1

@@ -33,4 +33,10 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
     val v = ETuple.vector(4, -4, 3)
     v should be (ETuple(4, -4, 3, 0))
   }
+
+  "Adding two tuples" should "add all their components" in {
+    val a1 = ETuple(3, -2, 5, 1)
+    val a2 = ETuple(-2, 3, 1, 0)
+    (a1 + a2) should be (ETuple(1, 1, 6, 1))
+  }
 }
