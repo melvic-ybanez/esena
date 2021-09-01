@@ -12,6 +12,9 @@ final case class ETuple(x: Double, y: Double, z: Double, w: Double) {
 
   def +(that: ETuple): ETuple =
     ETuple(x + that.x, y + that.y, z + that.z, w + that.w)
+
+  def -(that: ETuple): ETuple =
+    ETuple(x - that.x, y - that.y, z - that.z, w - that.w)
 }
 
 object ETuple {
