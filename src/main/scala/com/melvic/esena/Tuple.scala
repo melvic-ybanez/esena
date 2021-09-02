@@ -15,6 +15,9 @@ trait Tuple {
     case _ => false
   }
 
+  def map(f: Double => Double): Tuple =
+    Tuple(f(x), f(y), f(z), f(w))
+
   def +(that: Tuple): Tuple =
     Tuple(x + that.x, y + that.y, z + that.z, w + that.w)
 
@@ -23,6 +26,8 @@ trait Tuple {
 
   def unary_- : Tuple =
     Vec.zero - this
+
+  def *(scalar: Double): Tuple = map(_ * scalar)
 
   override def toString = s"($x, $y, $z, $w)"
 }
