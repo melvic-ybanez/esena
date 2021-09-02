@@ -29,6 +29,8 @@ trait Tuple {
 
   def *(scalar: Double): Tuple = map(_ * scalar)
 
+  def /(scalar: Double): Tuple = this * (1 / scalar)
+
   override def toString = s"($x, $y, $z, $w)"
 }
 

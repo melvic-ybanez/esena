@@ -71,9 +71,11 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
   "Multiplying a tuple by a scalar" should "multiply each component by the scalar" in {
     val a = Tuple(1, -2, 3, -4)
     (a * 3.5) should be (Tuple(3.5, -7, 10.5, -14))
+  }
 
-    // Multiply by a fraction
-    val b = Tuple(1, -2, 3, -4)
-    (b * 0.5) should be (Tuple(0.5, -1, 1.5, -2))
+  "Multiplying a tuple by a fraction" should "result to division" in {
+    val a = Tuple(1, -2, 3, -4)
+    (a * 0.5) should be (Tuple(0.5, -1, 1.5, -2))
+    (a * 0.5) should be (a / 2)
   }
 }
