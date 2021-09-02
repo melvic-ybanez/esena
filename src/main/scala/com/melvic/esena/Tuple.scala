@@ -20,6 +20,11 @@ trait Tuple {
 
   def -(that: Tuple): Tuple =
     Tuple(x - that.x, y - that.y, z - that.z, w - that.w)
+
+  def unary_- : Tuple =
+    Vec.zero - this
+
+  override def toString = s"($x, $y, $z, $w)"
 }
 
 object Tuple {

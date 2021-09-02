@@ -62,4 +62,9 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
     val v = Vec(1, -2, 3)
     (Vec.zero - v) should be (Vec(-1, 2, -3))
   }
+
+  "Negating a tuple" should "subtract it from the zero vector" in {
+    val a = Tuple(1, -2, 3, -4)
+    -a should be (Tuple(-1, 2, -3, 4))
+  }
 }
