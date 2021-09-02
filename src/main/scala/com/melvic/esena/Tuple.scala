@@ -27,12 +27,18 @@ trait Tuple {
   def unary_- : Tuple =
     Vec.zero - this
 
-  def *(scalar: Double): Tuple = map(_ * scalar)
+  def *(scalar: Scalar): Tuple = map(_ * scalar)
 
-  def /(scalar: Double): Tuple = this * (1 / scalar)
+  def /(scalar: Scalar): Tuple = this * (1 / scalar)
 
   lazy val magnitude: Double =
     math.sqrt(x * x + y * y + z * z + w * w)
+
+  /**
+    * Computes for the vector dot-product
+    */
+  def dot(that: Tuple): Scalar =
+    x * that.x + y * that.y + z * that.z + w * that.w
 
   override def toString = s"($x, $y, $z, $w)"
 }

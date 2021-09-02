@@ -69,7 +69,7 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
   "Multiplying a tuple by a fraction" should "result to division" in {
     val a = Tuple(1, -2, 3, -4)
     (a * 0.5) should be (Tuple(0.5, -1, 1.5, -2))
-    (a * 0.5) should be (a / 2)
+    (a * 0.5) should be (a / 2.0)
   }
 
   "Vector magnitude" should "yield the square root of the sum of the component's squares" in {
@@ -84,5 +84,11 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
     Vec(4, 0, 0).normalize should be (Vec(1, 0, 0))
     Vec(1, 2, 3).normalize should be (Vec(0.2672612419124244, 0.5345224838248488, 0.8017837257372732))
     Vec(1, 2, 3).normalize.magnitude should be (1)
+  }
+
+  "The dot product of 2 tuples" should "yield the sum of the products of their corresponding components" in {
+    val a = Vec(1, 2, 3)
+    val b = Vec(2, 3, 4)
+    a.dot(b) should be (20)
   }
 }
