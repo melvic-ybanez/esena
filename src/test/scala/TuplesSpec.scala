@@ -78,4 +78,12 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
     (a * 0.5) should be (Tuple(0.5, -1, 1.5, -2))
     (a * 0.5) should be (a / 2)
   }
+
+  "Vector magnitude" should "yield the square root of the sum of the component's squares" in {
+    Vec(1, 0, 0).magnitude should be (1)
+    Vec(0, 1, 0).magnitude should be (1)
+    Vec(0, 0, 1).magnitude should be (1)
+    Vec(1, 2, 3).magnitude should be (math.sqrt(14))
+    Vec(-1, -2, -3).magnitude should be (math.sqrt(14))
+  }
 }
