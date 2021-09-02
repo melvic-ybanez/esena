@@ -45,4 +45,22 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
     val p2 = ETuple.point(5, 6, 7)
     (p1 - p2) should be (ETuple.vector(-2, -4, -6))
   }
+
+  "Subtracting a vector from a point" should "yield another point" in {
+    val p = ETuple.point(3, 2, 1)
+    val v = ETuple.vector(5, 6, 7)
+    (p - v) should be (ETuple.point(-2, -4, -6))
+  }
+
+  "Subtracting two vectors" should "yield another vector" in {
+    val v1 = ETuple.vector(3, 2, 1)
+    val v2 = ETuple.vector(5, 6, 7)
+    (v1 - v2) should be (ETuple.vector(-2, -4, -6))
+  }
+
+  "Subtracting a vector from the zero vector" should "yield the opposite vector" in {
+    val zero = ETuple.zeroVector
+    val v = ETuple.vector(1, -2, 3)
+    (zero - v) should be (ETuple.vector(-1, 2, -3))
+  }
 }

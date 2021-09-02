@@ -27,4 +27,6 @@ object ETuple {
 
   def vector(x: Double, y: Double, z: Double): ETuple =
     ETuple(x, y, z, 0)
+
+  def zeroVector: ETuple = vector(0, 0, 0)
 }
