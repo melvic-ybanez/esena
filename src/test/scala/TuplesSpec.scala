@@ -25,13 +25,11 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "point()" should "create tuple with w=1.0" in {
-    val p = Point(4, -4, 3)
-    p should be (Tuple(4, -4, 3, 1))
+    Point(4, -4, 3) should be (Tuple(4, -4, 3, 1))
   }
 
   "vector()" should "create tuple with w=0.0"  in {
-    val v = Vec(4, -4, 3)
-    v should be (Tuple(4, -4, 3, 0))
+    Vec(4, -4, 3) should be (Tuple(4, -4, 3, 0))
   }
 
   "Adding two tuples" should "add all their components" in {
@@ -41,15 +39,11 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "Subtracting two points" should "subtract all their components" in {
-    val p1 = Point(3, 2, 1)
-    val p2 = Point(5, 6, 7)
-    (p1 - p2) should be (Vec(-2, -4, -6))
+    (Point(3, 2, 1) - Point(5, 6, 7)) should be (Vec(-2, -4, -6))
   }
 
   "Subtracting a vector from a point" should "yield another point" in {
-    val p = Point(3, 2, 1)
-    val v = Vec(5, 6, 7)
-    (p - v) should be (Point(-2, -4, -6))
+    (Point(3, 2, 1) - Vec(5, 6, 7)) should be (Point(-2, -4, -6))
   }
 
   "Subtracting two vectors" should "yield another vector" in {
@@ -59,8 +53,7 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "Subtracting a vector from the zero vector" should "yield the opposite vector" in {
-    val v = Vec(1, -2, 3)
-    (Vec.zero - v) should be (Vec(-1, 2, -3))
+    (Vec.zero - Vec(1, -2, 3)) should be (Vec(-1, 2, -3))
   }
 
   "Negating a tuple" should "subtract it from the zero vector" in {
@@ -85,5 +78,11 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
     Vec(0, 0, 1).magnitude should be (1)
     Vec(1, 2, 3).magnitude should be (math.sqrt(14))
     Vec(-1, -2, -3).magnitude should be (math.sqrt(14))
+  }
+
+  "Normalizing a vector" should "yield a unit vector" in {
+    Vec(4, 0, 0).normalize should be (Vec(1, 0, 0))
+    Vec(1, 2, 3).normalize should be (Vec(0.2672612419124244, 0.5345224838248488, 0.8017837257372732))
+    Vec(1, 2, 3).normalize.magnitude should be (1)
   }
 }

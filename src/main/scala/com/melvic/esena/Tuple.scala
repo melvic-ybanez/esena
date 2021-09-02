@@ -31,6 +31,9 @@ trait Tuple {
 
   def /(scalar: Double): Tuple = this * (1 / scalar)
 
+  lazy val magnitude: Double =
+    math.sqrt(x * x + y * y + z * z + w * w)
+
   override def toString = s"($x, $y, $z, $w)"
 }
 
