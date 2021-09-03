@@ -18,3 +18,10 @@ final case class Color(red: Double, green: Double, blue: Double) extends Tuple {
    */
   def *(that: Color): Color = hadamardProduct(that)
 }
+
+object Color {
+  val Red = Color(1, 0, 0)
+  val Green = Color(0, 1, 0)
+  val Blue = Color(0, 0, 1)
+  val Black = Color(0, 0, 0)
+}
