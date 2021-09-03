@@ -11,6 +11,13 @@ final case class Vec(x: Double, y: Double, z: Double) extends Tuple  {
    */
   def normalize: Tuple =
     Tuple(x / magnitude, y / magnitude, z / magnitude, w / magnitude)
+
+  def cross(that: Vec): Vec =
+    Vec(
+      y * that.z - z * that.y,
+      z * that.x - x * that.z,
+      x * that.y - y * that.x
+    )
 }
 
 object Vec {

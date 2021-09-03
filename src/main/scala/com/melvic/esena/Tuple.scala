@@ -6,15 +6,6 @@ trait Tuple {
   val z: Double
   val w: Double
 
-  override def equals(that: Any) = that match {
-    case Tuple(x, y, z, w) =>
-      Utils.compareDoubles(this.x, x) &&
-        Utils.compareDoubles(this.y, y) &&
-        Utils.compareDoubles(this.z, z) &&
-        Utils.compareDoubles(this.w, w)
-    case _ => false
-  }
-
   def map(f: Double => Double): Tuple =
     Tuple(f(x), f(y), f(z), f(w))
 
@@ -39,6 +30,15 @@ trait Tuple {
     */
   def dot(that: Tuple): Scalar =
     x * that.x + y * that.y + z * that.z + w * that.w
+
+  override def equals(that: Any) = that match {
+    case Tuple(x, y, z, w) =>
+      Utils.compareDoubles(this.x, x) &&
+        Utils.compareDoubles(this.y, y) &&
+        Utils.compareDoubles(this.z, z) &&
+        Utils.compareDoubles(this.w, w)
+    case _ => false
+  }
 
   override def toString = s"($x, $y, $z, $w)"
 }

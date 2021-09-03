@@ -91,4 +91,11 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
     val b = Vec(2, 3, 4)
     a.dot(b) should be (20)
   }
+
+  "Cross product of 2 vectors" should "yield another vector" in {
+    val a = Vec(1, 2, 3)
+    val b = Vec(2, 3, 4)
+    a.cross(b) should be (Vec(-1, 2, -1))
+    b.cross(a) should be (Vec(1, -2, 1))
+  }
 }
