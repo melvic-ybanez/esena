@@ -47,4 +47,8 @@ class CanvasSpec extends AnyFlatSpec with should.Matchers {
       "153 255 204 153 255 204 153 255 204 153 255 204 153"
     ))
   }
+
+  "PPM lines" should "end with a newline character" in {
+    Canvas(5, 3).ppm.toString.last should be ('\n')
+  }
 }

@@ -16,19 +16,22 @@ final case class Canvas(width: Int, height: Int, pixels: PixelSet, ppmId: String
 
   final case class Ppm(header: Vector[String], pixelData: Vector[String]) {
     override def toString =
-      (header ++ pixelData).mkString("\n")
+      // the extra newline is required by other image programs
+      (header ++ pixelData).mkString("\n") + "\n"
   }
 
   def ppm: Ppm = {
     def wrap(line: String): Vector[String] = {
       @tailrec
-      def recurse(acc: Vector[String], xs: Vector[String]): Vector[String] = (acc, xs) match {
-        case (_, IndexedSeq()) => acc
-        case (IndexedSeq(), next +: nextRest) => recurse(Vector(next), nextRest)
-        case (prev +: prevRest, next +: nextRest) =>
-          if (prev.length + next.length > 69) recurse(next +: acc, nextRest)
-          else recurse((prev + " " + next) +: prevRest, nextRest)
-      }
+      def recurse(acc: Vector[String], xs: Vector[String]): Vector[String] =
+        (acc, xs) match {
+          case (_, IndexedSeq()) => acc
+          case (IndexedSeq(), next +: nextRest) =>
+            recurse(Vector(next), nextRest)
+          case (prev +: prevRest, next +: nextRest) =>
+            if (prev.length + next.length > 69) recurse(next +: acc, nextRest)
+            else recurse((prev + " " + next) +: prevRest, nextRest)
+        }
       recurse(Vector.empty, line.split(" ").toVector).reverse
     }
 
@@ -49,7 +52,7 @@ final case class Canvas(width: Int, height: Int, pixels: PixelSet, ppmId: String
 object Canvas {
   type PixelSet = Vector[Color]
 
-  val DefaultPpmId = "P3"
+  val DefaultPpmId         = "P3"
   val DefaultMaxColorValue = 255
 
   def apply(width: Int, height: Int): Canvas =
