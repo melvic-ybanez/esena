@@ -15,4 +15,13 @@ class CanvasSpec extends AnyFlatSpec with should.Matchers {
     val c1 = c.writePixel(2, 3, Color.Red)
     c1.pixelAt(2, 3) should be (Color.Red)
   }
+
+  it should "be convertible to PPM" in {
+    val c = Canvas(5, 3)
+    c.ppm should be (
+      """P3
+        |5 3
+        |255""".stripMargin
+    )
+  }
 }

@@ -7,6 +7,9 @@ final case class Canvas(width: Int, height: Int, pixels: Vector[Color]) {
   def pixelAt(x: Int, y: Int): Color =
     pixels(index(x, y))
 
+  val ppm: String =
+    s"P3\n$width $height\n255"
+
   private def index(x: Int, y: Int): Int =
     x * width + y
 }
