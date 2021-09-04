@@ -15,7 +15,9 @@ trait Matrix {
     elements(Math.indexOf(row, col, width))
 
   override def equals(o: Any) = o match {
-    case MatrixImpl(_, _, elements) => this.elements == elements
+    case MatrixImpl(_, _, elements) =>
+      elements.zip(this.elements).forall { case (a, b) => Math.compareDoubles(a, b) }
+    case _ => false
   }
 }
 

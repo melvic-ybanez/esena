@@ -18,4 +18,36 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
     m(3, 0) should be (13.5)
     m(3, 2) should be (15.5)
   }
+
+  it should "be equal to a matrix with similar elements" in {
+    val a = Matrix.fromRows(
+      Vector(1, 2, 3, 4),
+      Vector(5, 6, 7, 8),
+      Vector(9, 8, 7, 6),
+      Vector(5, 4, 3, 2)
+    )
+    val b = Matrix.fromRows(
+      Vector(1, 2, 3, 4),
+      Vector(5, 6, 7, 8),
+      Vector(9, 8, 7, 6),
+      Vector(5, 4, 3, 2)
+    )
+    a should be (b)
+  }
+
+  it should "not be equal to a matrix with different elements" in {
+    val a = Matrix.fromRows(
+      Vector(1, 2, 3, 4),
+      Vector(5, 6, 7, 8),
+      Vector(9, 8, 7, 6),
+      Vector(5, 4, 3, 2)
+    )
+    val b = Matrix.fromRows(
+      Vector(2, 3, 4, 5),
+      Vector(6, 7, 8, 9),
+      Vector(8, 7, 6, 5),
+      Vector(4, 3, 2, 1)
+    )
+    a should not be b
+  }
 }
