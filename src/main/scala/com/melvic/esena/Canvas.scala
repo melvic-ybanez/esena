@@ -1,15 +1,21 @@
 package com.melvic.esena
 
-import com.melvic.esena.Canvas.PixelSet
+import com.melvic.esena.Canvas.{CanvasImpl, PixelSet}
 
 import scala.annotation.tailrec
 
-final case class Canvas(width: Int, height: Int, pixels: PixelSet, ppmId: String, maxColorValue: Int) {
+trait Canvas {
+  def width: Int
+  def height: Int
+  def pixels: PixelSet
+  def ppmId: String
+  def maxColorValue: Int
+
   def writePixel(x: Int, y: Int, color: Color): Canvas =
     writePixelAtIndex(index(x, y), color)
 
   def writePixelAtIndex(pos: Int, color: Color): Canvas =
-    Canvas(width, height, pixels.updated(pos, color), ppmId, maxColorValue)
+    CanvasImpl(width, height, pixels.updated(pos, color), ppmId, maxColorValue)
 
   def pixelAt(x: Int, y: Int): Color =
     pixels(index(x, y))
@@ -55,8 +61,16 @@ object Canvas {
   val DefaultPpmId         = "P3"
   val DefaultMaxColorValue = 255
 
+  private case class CanvasImpl(
+      width: Int,
+      height: Int,
+      pixels: PixelSet,
+      ppmId: String,
+      maxColorValue: Int
+  ) extends Canvas
+
   def apply(width: Int, height: Int): Canvas =
-    Canvas(
+    CanvasImpl(
       width,
       height,
       Vector.fill(width * height)(Color(0, 0, 0)),

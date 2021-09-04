@@ -1,24 +1,34 @@
 package com.melvic.esena.matrix
 
 import com.melvic.esena.Math
-import com.melvic.esena.matrix.Matrix.Elements
+import com.melvic.esena.matrix.Matrix.{Elements, MatrixImpl}
 
-final case class Matrix(width: Int, height: Int, elements: Elements) {
+trait Matrix {
+  def width: Int
+  def height: Int
+  def elements: Elements
+
   def apply(row: Int, col: Int, element: Double): Matrix =
-    Matrix(width, height, elements.updated(Math.indexOf(row, col, width), element))
+    MatrixImpl(width, height, elements.updated(Math.indexOf(row, col, width), element))
 
   def apply(row: Int, col: Int): Double =
     elements(Math.indexOf(row, col, width))
+
+  override def equals(o: Any) = o match {
+    case MatrixImpl(_, _, elements) => this.elements == elements
+  }
 }
 
 object Matrix {
   type Elements = Vector[Double]
 
+  private case class MatrixImpl(width: Int, height: Int, elements: Elements) extends Matrix
+
   def ofSize(width: Int, height: Int): Matrix =
-    Matrix(width, height, Vector.fill(width * height)(0))
+    MatrixImpl(width, height, Vector.fill(width * height)(0))
 
   def fromTable(elements: Vector[Elements]): Matrix =
-    apply(elements.size, elements.head.size, elements.flatten)
+    MatrixImpl(elements.size, elements.head.size, elements.flatten)
 
   def fromRows(row: Elements*): Matrix =
     fromTable(row.toVector)
