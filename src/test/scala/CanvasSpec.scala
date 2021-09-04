@@ -36,4 +36,15 @@ class CanvasSpec extends AnyFlatSpec with should.Matchers {
       "0 0 0 0 0 0 0 0 0 0 0 0 0 0 255",
     ))
   }
+
+  "PPM lines" should "not exceed 70 characters each" in {
+    val c = Canvas(10, 2)
+    val c1 = (0 until (10 * 2)).foldLeft(c) { (c, i) => c.writePixelAtIndex(i, Color(1, 0.8, 0.6)) }
+    c1.ppm.pixelData should be (Vector(
+      "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204",
+      "153 255 204 153 255 204 153 255 204 153 255 204 153",
+      "255 204 153 255 204 153 255 204 153 255 204 153 255 204 153 255 204",
+      "153 255 204 153 255 204 153 255 204 153 255 204 153"
+    ))
+  }
 }
