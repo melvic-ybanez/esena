@@ -1,5 +1,7 @@
 package com.melvic.esena
 
+import com.melvic.esena
+
 trait Tuple {
   val x: Double
   val y: Double
@@ -34,9 +36,9 @@ trait Tuple {
   override def equals(that: Any) = that match {
     case Tuple(x, y, z, w) =>
       Math.compareDoubles(this.x, x) &&
-        Math.compareDoubles(this.y, y) &&
-        Math.compareDoubles(this.z, z) &&
-        Math.compareDoubles(this.w, w)
+        esena.Math.compareDoubles(this.y, y) &&
+        esena.Math.compareDoubles(this.z, z) &&
+        esena.Math.compareDoubles(this.w, w)
     case _ => false
   }
 

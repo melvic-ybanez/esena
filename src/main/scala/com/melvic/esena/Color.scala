@@ -1,5 +1,7 @@
 package com.melvic.esena
 
+import com.melvic.esena
+
 final case class Color(red: Double, green: Double, blue: Double) extends Tuple {
   override val x = red
   override val y = green
@@ -20,8 +22,8 @@ final case class Color(red: Double, green: Double, blue: Double) extends Tuple {
 
   def ppmString(maxValue: Int): String = {
     val r = Math.scaleTo(maxValue, red)
-    val g = Math.scaleTo(maxValue, green)
-    val b = Math.scaleTo(maxValue, blue)
+    val g = esena.Math.scaleTo(maxValue, green)
+    val b = esena.Math.scaleTo(maxValue, blue)
     s"$r $g $b"
   }
 }

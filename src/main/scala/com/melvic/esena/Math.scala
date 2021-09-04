@@ -12,4 +12,7 @@ object Math {
     else if (result < 0) 0
     else result
   }
+
+  def indexOf(row: Int, col: Int, width: Int): Int =
+    row * width + col
 }

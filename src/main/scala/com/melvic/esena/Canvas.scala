@@ -46,7 +46,7 @@ final case class Canvas(width: Int, height: Int, pixels: PixelSet, ppmId: String
   }
 
   private def index(x: Int, y: Int): Int =
-    y * width + x
+    Math.indexOf(y, x, width)
 }
 
 object Canvas {
@@ -59,7 +59,7 @@ object Canvas {
     Canvas(
       width,
       height,
-      (0 until (width * height)).map(_ => Color(0, 0, 0)).toVector,
+      Vector.fill(width * height)(Color(0, 0, 0)),
       DefaultPpmId,
       DefaultMaxColorValue
     )
