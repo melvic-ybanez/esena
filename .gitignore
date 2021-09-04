@@ -26,3 +26,5 @@ org.scala-ide.sdt.update-site/site.xml
 
 # Mac OS
 .DS_Store
+
+*.sc

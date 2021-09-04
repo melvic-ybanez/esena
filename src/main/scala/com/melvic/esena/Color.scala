@@ -17,6 +17,13 @@ final case class Color(red: Double, green: Double, blue: Double) extends Tuple {
    * An alias for the [[hadamardProduct]]
    */
   def *(that: Color): Color = hadamardProduct(that)
+
+  def ppmString(maxValue: Int): String = {
+    val r = Math.scaleTo(maxValue, red)
+    val g = Math.scaleTo(maxValue, green)
+    val b = Math.scaleTo(maxValue, blue)
+    s"$r $g $b"
+  }
 }
 
 object Color {

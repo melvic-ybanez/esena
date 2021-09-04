@@ -53,7 +53,7 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "Subtracting a vector from the zero vector" should "yield the opposite vector" in {
-    (Vec.zero - Vec(1, -2, 3)) should be (Vec(-1, 2, -3))
+    (Vec.Zero - Vec(1, -2, 3)) should be (Vec(-1, 2, -3))
   }
 
   "Negating a tuple" should "subtract it from the zero vector" in {

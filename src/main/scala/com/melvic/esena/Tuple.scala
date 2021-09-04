@@ -16,7 +16,7 @@ trait Tuple {
     Tuple(x - that.x, y - that.y, z - that.z, w - that.w)
 
   def unary_- : Tuple =
-    Vec.zero - this
+    Vec.Zero - this
 
   def *(scalar: Scalar): Tuple = map(_ * scalar)
 
@@ -33,10 +33,10 @@ trait Tuple {
 
   override def equals(that: Any) = that match {
     case Tuple(x, y, z, w) =>
-      Utils.compareDoubles(this.x, x) &&
-        Utils.compareDoubles(this.y, y) &&
-        Utils.compareDoubles(this.z, z) &&
-        Utils.compareDoubles(this.w, w)
+      Math.compareDoubles(this.x, x) &&
+        Math.compareDoubles(this.y, y) &&
+        Math.compareDoubles(this.z, z) &&
+        Math.compareDoubles(this.w, w)
     case _ => false
   }
 

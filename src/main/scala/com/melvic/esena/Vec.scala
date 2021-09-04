@@ -21,5 +21,5 @@ final case class Vec(x: Double, y: Double, z: Double) extends Tuple  {
 }
 
 object Vec {
-  val zero: Vec = Vec(0, 0, 0)
+  val Zero: Vec = Vec(0, 0, 0)
 }
