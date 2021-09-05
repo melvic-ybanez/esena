@@ -31,8 +31,8 @@ trait Matrix {
 
   lazy val transpose: Matrix =
     (0 until height).foldLeft(this)((m, i) =>
-      (0 until width).foldLeft(m)((m1, j) =>
-        m1(j, i, at(i, j))))
+      (0 until width).foldLeft(m)((m, j) =>
+        m(j, i, at(i, j))))
 
   override def equals(o: Any) = o match {
     case MatrixImpl(_, _, elements) =>
