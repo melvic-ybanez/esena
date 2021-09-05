@@ -52,4 +52,9 @@ object Matrix {
 
   def fromTuple(tuple: Tuple): Matrix =
     fromRows(Vector(tuple.x), Vector(tuple.y), Vector(tuple.z), Vector(tuple.w))
+
+  def identity(width: Int, height: Int): Matrix = {
+    val m = ofSize(width, height)
+    (0 until width).foldLeft(m)((m, i) => m(i, i, 1))
+  }
 }

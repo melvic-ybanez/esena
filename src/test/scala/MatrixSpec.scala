@@ -89,4 +89,14 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
     val b = Tuple(1, 2, 3, 1)
     (a * b) should be (Tuple(18, 24, 33, 1))
   }
+
+  "The identity matrix multiplied by any other matrix m" should "yield m" in {
+    val a = Matrix.fromRows(
+      Vector(0, 1, 2, 4),
+      Vector(1, 2, 4, 8),
+      Vector(2, 4, 8, 6),
+      Vector(4, 8, 16, 32)
+    )
+    (a * Matrix.identity(4, 4)) should be (a)
+  }
 }
