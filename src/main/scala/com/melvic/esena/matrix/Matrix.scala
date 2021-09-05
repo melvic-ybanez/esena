@@ -14,6 +14,19 @@ trait Matrix {
   def apply(row: Int, col: Int): Double =
     elements(Math.indexOf(row, col, width))
 
+  def at(row: Int, col: Int): Double = this(row, col)
+
+  def *(that: Matrix): Matrix = {
+    val rows = for {
+      row <- 0 until height
+      col <- 0 until width
+    } yield
+      at(row, 0) * that(0, col) + at(row, 1) * that(1, col) +
+        at(row, 2) * that(2, col) + at(row, 3) * that(3, col)
+
+    MatrixImpl(width, height, rows.toVector)
+  }
+
   override def equals(o: Any) = o match {
     case MatrixImpl(_, _, elements) =>
       elements.zip(this.elements).forall { case (a, b) => Math.compareDoubles(a, b) }

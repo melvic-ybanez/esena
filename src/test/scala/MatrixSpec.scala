@@ -50,4 +50,25 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
     )
     a should not be b
   }
+
+  it should "support matrix multiplication" in {
+    val a = Matrix.fromRows(
+      Vector(1, 2, 3, 4),
+      Vector(5, 6, 7, 8),
+      Vector(9, 8, 7, 6),
+      Vector(5, 4, 3, 2)
+    )
+    val b = Matrix.fromRows(
+      Vector(-2, 1, 2, 3),
+      Vector(3, 2, 1, -1),
+      Vector(4, 3, 6, 5),
+      Vector(1, 2, 7, 8)
+    )
+    (a * b) should be (Matrix.fromRows(
+      Vector(20, 22, 50, 48),
+      Vector(44, 54, 114, 108),
+      Vector(40, 58, 110, 102),
+      Vector(16, 26, 46, 42)
+    ))
+  }
 }
