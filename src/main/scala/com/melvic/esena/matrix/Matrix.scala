@@ -29,6 +29,11 @@ trait Matrix {
 
   def *(tuple: Tuple): Tuple = Tuple.fromMatrix(this * Matrix.fromTuple(tuple))
 
+  lazy val transpose: Matrix =
+    (0 until height).foldLeft(this)((m, i) =>
+      (0 until width).foldLeft(m)((m1, j) =>
+        m1(j, i, at(i, j))))
+
   override def equals(o: Any) = o match {
     case MatrixImpl(_, _, elements) =>
       elements.zip(this.elements).forall { case (a, b) => Math.compareDoubles(a, b) }
@@ -57,4 +62,6 @@ object Matrix {
     val m = ofSize(width, height)
     (0 until width).foldLeft(m)((m, i) => m(i, i, 1))
   }
+
+  def identity4By4: Matrix = identity(4, 4)
 }

@@ -99,4 +99,19 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
     )
     (a * Matrix.identity(4, 4)) should be (a)
   }
+
+  "Transposing a matrix" should "switch the rows and columns" in {
+    val a = Matrix.fromRows(
+      Vector(0, 9, 3, 0),
+      Vector(9, 8, 0, 8),
+      Vector(1, 8, 5, 3),
+      Vector(0, 0, 5, 8)
+    )
+    a.transpose should be (Matrix.fromRows(
+      Vector(0, 9, 1, 0),
+      Vector(9, 8, 8, 0),
+      Vector(3, 0, 5, 5),
+      Vector(0, 8, 3, 8)
+    ))
+  }
 }
