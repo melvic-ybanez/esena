@@ -116,6 +116,6 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "Transposing the identity matrix" should "yield the identity matrix" in {
-    Matrix.identity4By4 should be (Matrix.identity4By4)
+    Matrix.identity4By4.transpose should be (Matrix.identity4By4)
   }
 }
