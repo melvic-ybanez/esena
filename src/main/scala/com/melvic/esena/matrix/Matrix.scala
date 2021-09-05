@@ -1,6 +1,6 @@
 package com.melvic.esena.matrix
 
-import com.melvic.esena.Math
+import com.melvic.esena.{Math, Tuple}
 import com.melvic.esena.matrix.Matrix.{Elements, MatrixImpl}
 
 trait Matrix {
@@ -19,13 +19,15 @@ trait Matrix {
   def *(that: Matrix): Matrix = {
     val rows = for {
       row <- 0 until height
-      col <- 0 until width
+      col <- 0 until that.width
     } yield
       at(row, 0) * that(0, col) + at(row, 1) * that(1, col) +
         at(row, 2) * that(2, col) + at(row, 3) * that(3, col)
 
-    MatrixImpl(width, height, rows.toVector)
+    MatrixImpl(that.width, height, rows.toVector)
   }
+
+  def *(tuple: Tuple): Tuple = Tuple.fromMatrix(this * Matrix.fromTuple(tuple))
 
   override def equals(o: Any) = o match {
     case MatrixImpl(_, _, elements) =>
@@ -43,8 +45,11 @@ object Matrix {
     MatrixImpl(width, height, Vector.fill(width * height)(0))
 
   def fromTable(elements: Vector[Elements]): Matrix =
-    MatrixImpl(elements.size, elements.head.size, elements.flatten)
+    MatrixImpl(elements.head.size, elements.size, elements.flatten)
 
   def fromRows(row: Elements*): Matrix =
     fromTable(row.toVector)
+
+  def fromTuple(tuple: Tuple): Matrix =
+    fromRows(Vector(tuple.x), Vector(tuple.y), Vector(tuple.z), Vector(tuple.w))
 }

@@ -1,3 +1,4 @@
+import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.{Point, Tuple, Vec}
 import org.scalatest._
 import flatspec._
@@ -97,5 +98,10 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
     val b = Vec(2, 3, 4)
     a.cross(b) should be (Vec(-1, 2, -1))
     b.cross(a) should be (Vec(1, -2, 1))
+  }
+
+  "Tuples" should "be constructable from a matrix" in {
+    val t = Tuple.fromMatrix(Matrix.fromRows(Vector(1), Vector(2), Vector(3), Vector(4)))
+    t should be (Tuple(1, 2, 3, 4))
   }
 }

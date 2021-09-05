@@ -1,3 +1,4 @@
+import com.melvic.esena.Tuple
 import com.melvic.esena.matrix.Matrix
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
@@ -70,5 +71,22 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
       Vector(40, 58, 110, 102),
       Vector(16, 26, 46, 42)
     ))
+  }
+
+  it should "be constructable from a tuple" in {
+    Matrix.fromTuple(Tuple(1, 2, 3, 1)) should be (Matrix.fromRows(
+      Vector(1), Vector(2), Vector(3), Vector(1)
+    ))
+  }
+
+  it should "support matrix-tuple multiplication" in {
+    val a = Matrix.fromRows(
+      Vector(1, 2, 3, 4),
+      Vector(2, 4, 4, 2),
+      Vector(8, 6, 4, 1),
+      Vector(0, 0, 0, 1)
+    )
+    val b = Tuple(1, 2, 3, 1)
+    (a * b) should be (Tuple(18, 24, 33, 1))
   }
 }

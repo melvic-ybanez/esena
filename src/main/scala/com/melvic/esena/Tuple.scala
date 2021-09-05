@@ -1,6 +1,8 @@
 package com.melvic.esena
 
 import com.melvic.esena
+import com.melvic.esena.Tuple.TupleImpl
+import com.melvic.esena.matrix.Matrix
 
 trait Tuple {
   val x: Double
@@ -34,11 +36,11 @@ trait Tuple {
     x * that.x + y * that.y + z * that.z + w * that.w
 
   override def equals(that: Any) = that match {
-    case Tuple(x, y, z, w) =>
-      Math.compareDoubles(this.x, x) &&
-        esena.Math.compareDoubles(this.y, y) &&
-        esena.Math.compareDoubles(this.z, z) &&
-        esena.Math.compareDoubles(this.w, w)
+    case tuple: Tuple =>
+      Math.compareDoubles(this.x, tuple.x) &&
+        esena.Math.compareDoubles(this.y, tuple.y) &&
+        esena.Math.compareDoubles(this.z, tuple.z) &&
+        esena.Math.compareDoubles(this.w, tuple.w)
     case _ => false
   }
 
@@ -46,18 +48,15 @@ trait Tuple {
 }
 
 object Tuple {
-  def apply(_x: Double, _y: Double, _z: Double, _w: Double): Tuple =
-    new Tuple {
-      override val x = _x
-      override val y = _y
-      override val z = _z
-      override val w = _w
-    }
+  private case class TupleImpl(x: Double, y: Double, z: Double, w: Double) extends Tuple
 
-  def unapply(tuple: Tuple): Option[(Double, Double, Double, Double)] =
-    Some(tuple.x, tuple.y, tuple.z, tuple.w)
+  def apply(x: Double, y: Double, z: Double, w: Double): Tuple =
+    TupleImpl(x, y, z, w)
 
   def isPoint(tuple: Tuple): Boolean = tuple.w == 1
 
   def isVector(tuple: Tuple): Boolean = tuple.w == 0
+
+  def fromMatrix(matrix: Matrix): Tuple =
+    Tuple(matrix(0, 0), matrix(1, 0), matrix(2, 0), matrix(3, 0))
 }
