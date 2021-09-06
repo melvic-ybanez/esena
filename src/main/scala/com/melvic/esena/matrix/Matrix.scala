@@ -49,12 +49,19 @@ trait Matrix {
       }
     }
 
-    Matrix.fromRows(data)
+    MatrixImpl(width - 1, height - 1, data)
   }
 
+  def minor(row: Int, col: Int): Double =
+    subMatrix(row, col).determinant
+
   override def equals(o: Any) = o match {
-    case MatrixImpl(_, _, elements) =>
-      elements.zip(this.elements).forall { case (a, b) => Math.compareDoubles(a, b) }
+    case MatrixImpl(w, h, elements) =>
+      val elementsEqual = elements
+        .zip(this.elements)
+        .forall { case (a, b) => Math.compareDoubles(a, b) }
+      val sizeEqual = w == width && h == height
+      elementsEqual && sizeEqual
     case _ => false
   }
 }

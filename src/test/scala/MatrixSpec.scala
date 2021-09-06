@@ -149,4 +149,15 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
       Vector(-7, -1, 1)
     ))
   }
+
+  "A minor" should "be the determinant of the submatrix(i, j) for some i and j" in {
+    val m = Matrix.fromRows(
+      Vector(3, 5, 0),
+      Vector(2, -1, -7),
+      Vector(6, -1, 5)
+    )
+    val b = m.subMatrix(1, 0)
+    b.determinant should be (25)
+    m.minor(1, 0) should be (25)
+  }
 }
