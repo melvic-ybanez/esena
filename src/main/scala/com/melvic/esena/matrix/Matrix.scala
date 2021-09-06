@@ -20,9 +20,9 @@ trait Matrix {
     val rows = for {
       row <- 0 until height
       col <- 0 until that.width
-    } yield
-      at(row, 0) * that(0, col) + at(row, 1) * that(1, col) +
-        at(row, 2) * that(2, col) + at(row, 3) * that(3, col)
+    } yield (0 until width).foldLeft(0.0) { (v, j) =>
+      v + at(row, j) * that(j, col)
+    }
 
     MatrixImpl(that.width, height, rows.toVector)
   }
