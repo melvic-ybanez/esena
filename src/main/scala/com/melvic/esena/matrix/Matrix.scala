@@ -38,22 +38,32 @@ trait Matrix {
 
   lazy val determinant: Double =
     if (width == 2 && height == 2) at(0, 0) * at(1, 1) - at(0, 1) * at(1, 0)
-    else 0
+    else 0    // TODO: compute determinant for matrices beyond 2x2
 
-  def subMatrix(row: Int, col: Int): Matrix = {
+  def subMatrixWith(row: Int, col: Int)(f: (Double, Int, Int) => Double): Matrix = {
     val data = (0 until height).foldLeft(Vector.empty[Double]) { (es, i) =>
       if (i >= row && i < row + 1) es
       else (0 until width).foldLeft(es) { (es, j) =>
         if (j == col) es
-        else es :+ at(i, j)
+        else es :+ f(at(i, j), i, j)
       }
     }
 
     MatrixImpl(width - 1, height - 1, data)
   }
 
+  def subMatrix(row: Int, col: Int): Matrix =
+    subMatrixWith(row, col)((elem, _, _) => elem)
+
   def minor(row: Int, col: Int): Double =
     subMatrix(row, col).determinant
+
+  def cofactor(row: Int, col: Int): Double = {
+    val minorWithAlteredSigns = subMatrixWith(row, col) { (elem, i, j) =>
+      if (Math.indexOf(i, j, width) % 2 == 0) elem else -elem
+    }
+    minorWithAlteredSigns.determinant
+  }
 
   override def equals(o: Any) = o match {
     case MatrixImpl(w, h, elements) =>

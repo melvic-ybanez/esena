@@ -160,4 +160,16 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
     b.determinant should be (25)
     m.minor(1, 0) should be (25)
   }
+
+  "A cofactor" should "return the minor with the signs possibly reversed" in {
+    val a = Matrix.fromRows(
+      Vector(3, 5, 0),
+      Vector(2, -1, -7),
+      Vector(6, -1, 5)
+    )
+    a.minor(0, 0) should be (-12)
+    a.cofactor(0, 0) should be (-12)
+    a.minor(1, 0) should be (25)
+    a.cofactor(1, 0) should be (-25)
+  }
 }
