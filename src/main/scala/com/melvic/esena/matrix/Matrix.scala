@@ -8,27 +8,40 @@ trait Matrix {
   def height: Int
   def elements: Elements
 
+  /**
+    * Updates the element at the specified position
+    */
   def apply(row: Int, col: Int, element: Double): Matrix =
     MatrixImpl(width, height, elements.updated(Math.indexOf(row, col, width), element))
 
+  /**
+    * Gets the element at the specified position
+    */
   def apply(row: Int, col: Int): Double =
     elements(Math.indexOf(row, col, width))
 
   def at(row: Int, col: Int): Double = this(row, col)
 
+  /**
+    * Matrix multiplication
+    */
   def *(that: Matrix): Matrix = {
     val rows = for {
       row <- 0 until height
       col <- 0 until that.width
-    } yield (0 until width).foldLeft(0.0) { (v, j) =>
-      v + at(row, j) * that(j, col)
-    }
+    } yield
+      (0 until width).foldLeft(0.0) { (v, j) =>
+        v + at(row, j) * that(j, col)
+      }
 
     MatrixImpl(that.width, height, rows.toVector)
   }
 
   def *(tuple: Tuple): Tuple = Tuple.fromMatrix(this * Matrix.fromTuple(tuple))
 
+  /**
+    * Converts rows into columns and columns into rows.
+    */
   lazy val transpose: Matrix =
     (0 until height).foldLeft(this) { (m, i) =>
       (0 until width).foldLeft(m) { (m, j) =>
@@ -36,30 +49,51 @@ trait Matrix {
       }
     }
 
+  /**
+    * Computes the determinant of the matrix. For 2x2, we use the
+    * ac - bd formula. For dimensions above that, we use the more generic
+    * formula A(0, 1) * cofactor(0, 1) + ... A(0, n -1) * cofactor(0, n - 1), for
+    * any matrix A of width n. See [[cofactor]].
+    */
   lazy val determinant: Double =
     if (width == 2 && height == 2) at(0, 0) * at(1, 1) - at(0, 1) * at(1, 0)
-    else (0 until width).foldLeft(0.0) { (det, col) =>
-      det + at(0, col) * cofactor(0, col)
-    }
+    else
+      (0 until width).foldLeft(0.0) { (det, col) =>
+        det + at(0, col) * cofactor(0, col)
+      }
 
+  /**
+    * More general form of [[subMatrix]].
+    */
   def subMatrixWith(row: Int, col: Int)(f: (Double, Int, Int) => Double): Matrix = {
     val data = (0 until height).foldLeft(Vector.empty[Double]) { (es, i) =>
       if (i >= row && i < row + 1) es
-      else (0 until width).foldLeft(es) { (es, j) =>
-        if (j == col) es
-        else es :+ f(at(i, j), i, j)
-      }
+      else
+        (0 until width).foldLeft(es) { (es, j) =>
+          if (j == col) es
+          else es :+ f(at(i, j), i, j)
+        }
     }
 
     MatrixImpl(width - 1, height - 1, data)
   }
 
+  /**
+    * Removes the specified row and column of the matrix
+    */
   def subMatrix(row: Int, col: Int): Matrix =
     subMatrixWith(row, col)((elem, _, _) => elem)
 
+  /**
+    * Computes the determinant of the sub-matrix
+    */
   def minor(row: Int, col: Int): Double =
     subMatrix(row, col).determinant
 
+  /**
+    * Computes the determinant of the sub-matrix,
+    * where every element might have its sign reversed.
+    */
   def cofactor(row: Int, col: Int): Double = {
     val minorWithAlteredSigns = subMatrixWith(row, col) { (elem, i, j) =>
       if (Math.indexOf(i, j, width) % 2 == 0) elem else -elem
@@ -80,8 +114,8 @@ trait Matrix {
 
 object Matrix {
   type Elements = Vector[Double]
-  type Vec4 = (Double, Double, Double, Double)
-  type Vec3 = (Double, Double, Double)
+  type Vec4     = (Double, Double, Double, Double)
+  type Vec3     = (Double, Double, Double)
 
   private case class MatrixImpl(width: Int, height: Int, elements: Elements) extends Matrix
 

@@ -27,6 +27,11 @@ trait Canvas {
   }
 
   def ppm: Ppm = {
+
+    /**
+      * Checks if the number of characters in a line do not exceed 70.
+      * If it does, move the excess to the next line.
+      */
     def wrap(line: String): Vector[String] = {
       @tailrec
       def recurse(acc: Vector[String], xs: Vector[String]): Vector[String] =
