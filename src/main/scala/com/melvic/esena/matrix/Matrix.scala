@@ -34,6 +34,10 @@ trait Matrix {
       (0 until width).foldLeft(m)((m, j) =>
         m(j, i, at(i, j))))
 
+  lazy val determinant: Double =
+    if (width == 2 && height == 2) at(0, 0) * at(1, 1) - at(0, 1) * at(1, 0)
+    else 0
+
   override def equals(o: Any) = o match {
     case MatrixImpl(_, _, elements) =>
       elements.zip(this.elements).forall { case (a, b) => Math.compareDoubles(a, b) }

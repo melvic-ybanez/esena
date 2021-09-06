@@ -118,4 +118,12 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   "Transposing the identity matrix" should "yield the identity matrix" in {
     Matrix.identity4By4.transpose should be (Matrix.identity4By4)
   }
+
+  "The determinant of 2x2 matrix" should "be ad - bc where a, b, c, and d the elements" in {
+    val m = Matrix.fromRows(
+      Vector(1, 5),
+      Vector(-3, 2)
+    )
+    m.determinant should be (17)
+  }
 }
