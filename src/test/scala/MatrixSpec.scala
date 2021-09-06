@@ -126,4 +126,27 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
     )
     m.determinant should be (17)
   }
+
+  "A Matrix" should "provide submatrices based on the given row and column" in {
+    val _3by3 = Matrix.fromRows(
+      Vector(1, 5, 0),
+      Vector(-3, 2, 7),
+      Vector(0, 6, -3),
+    )
+    _3by3.subMatrix(0, 2) should be (Matrix.fromRows(
+      Vector(-3, 2), Vector(0, 6)
+    ))
+
+    val _4by4 = Matrix.fromRows(
+      Vector(-6, 1, 1, 6),
+      Vector(-8, 5, 8, 6),
+      Vector(-1, 0, 8, 2),
+      Vector(-7, 1, -1, 1)
+    )
+    _4by4.subMatrix(2, 1) should be (Matrix.fromRows(
+      Vector(-6, 1, 6),
+      Vector(-8, 8, 6),
+      Vector(-7, -1, 1)
+    ))
+  }
 }

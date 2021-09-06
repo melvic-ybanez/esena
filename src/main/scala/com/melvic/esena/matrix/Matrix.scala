@@ -30,13 +30,27 @@ trait Matrix {
   def *(tuple: Tuple): Tuple = Tuple.fromMatrix(this * Matrix.fromTuple(tuple))
 
   lazy val transpose: Matrix =
-    (0 until height).foldLeft(this)((m, i) =>
-      (0 until width).foldLeft(m)((m, j) =>
-        m(j, i, at(i, j))))
+    (0 until height).foldLeft(this) { (m, i) =>
+      (0 until width).foldLeft(m) { (m, j) =>
+        m(j, i, at(i, j))
+      }
+    }
 
   lazy val determinant: Double =
     if (width == 2 && height == 2) at(0, 0) * at(1, 1) - at(0, 1) * at(1, 0)
     else 0
+
+  def subMatrix(row: Int, col: Int): Matrix = {
+    val data = (0 until height).foldLeft(Vector.empty[Double]) { (es, i) =>
+      if (i >= row && i < row + 1) es
+      else (0 until width).foldLeft(es) { (es, j) =>
+        if (j == col) es
+        else es :+ at(i, j)
+      }
+    }
+
+    Matrix.fromRows(data)
+  }
 
   override def equals(o: Any) = o match {
     case MatrixImpl(_, _, elements) =>
