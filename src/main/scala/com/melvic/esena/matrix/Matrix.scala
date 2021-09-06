@@ -78,6 +78,8 @@ trait Matrix {
 
 object Matrix {
   type Elements = Vector[Double]
+  type Vec4 = (Double, Double, Double, Double)
+  type Vec3 = (Double, Double, Double)
 
   private case class MatrixImpl(width: Int, height: Int, elements: Elements) extends Matrix
 
@@ -92,6 +94,20 @@ object Matrix {
 
   def fromTuple(tuple: Tuple): Matrix =
     fromRows(Vector(tuple.x), Vector(tuple.y), Vector(tuple.z), Vector(tuple.w))
+
+  def of4By4(r1: Vec4, r2: Vec4, r3: Vec4, r4: Vec4): Matrix = {
+    def toElems(tuple: Vec4): Elements = tuple match {
+      case (x, y, z, w) => Vector(x, y, z, w)
+    }
+    fromRows(toElems(r1), toElems(r2), toElems(r3), toElems(r4))
+  }
+
+  def of3By3(r1: Vec3, r2: Vec3, r3: Vec3): Matrix = {
+    def toElems(tuple: Vec3): Elements = tuple match {
+      case (x, y, z) => Vector(x, y, z)
+    }
+    fromRows(toElems(r1), toElems(r2), toElems(r3))
+  }
 
   def identity(width: Int, height: Int): Matrix = {
     val m = ofSize(width, height)
