@@ -38,7 +38,9 @@ trait Matrix {
 
   lazy val determinant: Double =
     if (width == 2 && height == 2) at(0, 0) * at(1, 1) - at(0, 1) * at(1, 0)
-    else 0    // TODO: compute determinant for matrices beyond 2x2
+    else (0 until width).foldLeft(0.0) { (det, col) =>
+      det + at(0, col) * cofactor(0, col)
+    }
 
   def subMatrixWith(row: Int, col: Int)(f: (Double, Int, Int) => Double): Matrix = {
     val data = (0 until height).foldLeft(Vector.empty[Double]) { (es, i) =>

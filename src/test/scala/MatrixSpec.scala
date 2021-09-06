@@ -172,4 +172,30 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
     a.minor(1, 0) should be (25)
     a.cofactor(1, 0) should be (-25)
   }
+
+  "Computing the determinant" should "use the generic formula for 3x3 matrix" in {
+    val m = Matrix.of3By3(
+      (1, 2, 6),
+      (-5, 8, -4),
+      (2, 6, 4),
+    )
+    m.cofactor(0, 0) should be (56)
+    m.cofactor(0, 1) should be (12)
+    m.cofactor(0, 2) should be (-46)
+    m.determinant should be (-196)
+  }
+
+  it should "also be possible for 4x4 matrix" in {
+    val m = Matrix.of4By4(
+      (-2, -8, 3, 5),
+      (-3, 1, 7, 3),
+      (1, 2, -9, 6),
+      (-6, 7, 7, -9)
+    )
+    m.cofactor(0, 0) should be (690)
+    m.cofactor(0, 1) should be (447)
+    m.cofactor(0, 2) should be (210)
+    m.cofactor(0, 3) should be (51)
+    m.determinant should be (-4071)
+  }
 }
