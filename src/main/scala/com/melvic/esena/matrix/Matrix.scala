@@ -63,26 +63,20 @@ trait Matrix {
       }
 
   /**
-    * More general form of [[subMatrix]].
+    * Removes the specified row and column of the matrix
     */
-  def subMatrixWith(row: Int, col: Int)(f: (Double, Int, Int) => Double): Matrix = {
+  def subMatrix(row: Int, col: Int): Matrix = {
     val data = (0 until height).foldLeft(Vector.empty[Double]) { (es, i) =>
       if (i >= row && i < row + 1) es
       else
         (0 until width).foldLeft(es) { (es, j) =>
           if (j == col) es
-          else es :+ f(at(i, j), i, j)
+          else es :+ at(i, j)
         }
     }
 
     MatrixImpl(width - 1, height - 1, data)
   }
-
-  /**
-    * Removes the specified row and column of the matrix
-    */
-  def subMatrix(row: Int, col: Int): Matrix =
-    subMatrixWith(row, col)((elem, _, _) => elem)
 
   /**
     * Computes the determinant of the sub-matrix
@@ -94,12 +88,8 @@ trait Matrix {
     * Computes the determinant of the sub-matrix,
     * where every element might have its sign reversed.
     */
-  def cofactor(row: Int, col: Int): Double = {
-    val minorWithAlteredSigns = subMatrixWith(row, col) { (elem, i, j) =>
-      if (Math.indexOf(i, j, width) % 2 == 0) elem else -elem
-    }
-    minorWithAlteredSigns.determinant
-  }
+  def cofactor(row: Int, col: Int): Double =
+    math.pow(-1, row + col) * subMatrix(row, col).determinant
 
   lazy val isInvertible: Boolean =
     determinant != 0
