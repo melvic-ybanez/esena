@@ -94,6 +94,17 @@ trait Matrix {
   lazy val isInvertible: Boolean =
     determinant != 0
 
+  lazy val inverse: Option[Matrix] =
+    if (!isInvertible) None
+    else Some {
+      val data = for {
+        row <- 0 until height
+        col <- 0 until width
+      } yield cofactor(row, col) / determinant
+
+      MatrixImpl(width, height, data.toVector).transpose
+    }
+
   override def equals(o: Any) = o match {
     case MatrixImpl(w, h, elements) =>
       val elementsEqual = elements
@@ -102,6 +113,15 @@ trait Matrix {
       val sizeEqual = w == width && h == height
       elementsEqual && sizeEqual
     case _ => false
+  }
+
+  def map(f: Double => Double): Matrix =
+    MatrixImpl(width, height, elements.map(f))
+
+  override def toString: String = {
+    def rowToString(elements: Elements): String =
+      s"[${elements.mkString(",")}]"
+    elements.grouped(width).map(rowToString).mkString("\n")
   }
 }
 

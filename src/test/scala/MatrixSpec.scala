@@ -220,4 +220,28 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
     a.determinant should be (0)
     assert(!a.isInvertible)
   }
+
+  "An invertible matrix" should "calculate the correct inverse" in {
+    val a = Matrix.of4By4(
+      (-5, 2, 6, -8),
+      (1, -5, 1, 8),
+      (7, 7, -6, -7),
+      (1, -3, 7, 4)
+    )
+
+    def round(d: Double): Double = math.round(d * 1e5) / 1e5
+
+    val ai = a.inverse.get
+    a.determinant should be (532)
+    a.cofactor(2, 3) should be (-160)
+    ai(3, 2) should be (-160.0 / 532)
+    a.cofactor(3, 2) should be (105)
+    ai(2, 3) should be (105.0 / 532)
+    ai.map(round) should be (Matrix.of4By4(
+      (0.21805, 0.45113, 0.24060, -0.04511),
+      (-0.80827, -1.45677, -0.44361, 0.52068),
+      (-0.07895, -0.22368, -0.05263, 0.19737),
+      (-0.52256, -0.81391, -0.30075, 0.30639)
+    ))
+  }
 }
