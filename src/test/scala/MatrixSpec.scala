@@ -198,4 +198,26 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
     m.cofactor(0, 3) should be (51)
     m.determinant should be (-4071)
   }
+
+  "A matrix with zero determinant" should "be invertible" in {
+    val a = Matrix.of4By4(
+      (6, 4, 4, 4),
+      (5, 5, 7, 6),
+      (4, -9, 3, -7),
+      (9, 1, 7, -6)
+    )
+    a.determinant should be (-2120)
+    assert(a.isInvertible)
+  }
+
+  "A matrix with non-zero determinant" should "not be invertible" in {
+    val a = Matrix.of4By4(
+      (-4, 2, -2, 3),
+      (9, 6, 2, 6),
+      (0, -5, 1, -5),
+      (0, 0, 0, 0)
+    )
+    a.determinant should be (0)
+    assert(!a.isInvertible)
+  }
 }

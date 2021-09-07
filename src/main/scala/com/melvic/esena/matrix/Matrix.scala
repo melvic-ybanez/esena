@@ -101,6 +101,9 @@ trait Matrix {
     minorWithAlteredSigns.determinant
   }
 
+  lazy val isInvertible: Boolean =
+    determinant != 0
+
   override def equals(o: Any) = o match {
     case MatrixImpl(w, h, elements) =>
       val elementsEqual = elements
