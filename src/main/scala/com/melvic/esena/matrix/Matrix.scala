@@ -95,16 +95,27 @@ trait Matrix {
   lazy val isInvertible: Boolean =
     determinant != 0
 
-  lazy val inverse: Option[Matrix] =
+  /**
+    * Inverses the matrix, returning None if the matrix
+    * is not invertible
+    */
+  lazy val inverseOpt: Option[Matrix] =
     if (!isInvertible) None
-    else Some {
-      val data = for {
-        row <- 0 until height
-        col <- 0 until width
-      } yield cofactor(row, col) / determinant
+    else
+      Some {
+        val data = for {
+          row <- 0 until height
+          col <- 0 until width
+        } yield cofactor(row, col) / determinant
 
-      MatrixImpl(width, height, data.toVector).transpose
-    }
+        MatrixImpl(width, height, data.toVector).transpose
+      }
+
+  /**
+    * Unsafe form of [[inverseOpt]]. It assumes that the
+    * matrix is invertible
+    */
+  lazy val inverse: Matrix = inverseOpt.get
 
   override def equals(o: Any) = o match {
     case MatrixImpl(w, h, elements) =>

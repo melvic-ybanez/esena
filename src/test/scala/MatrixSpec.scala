@@ -231,7 +231,7 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
 
     def round(d: Double): Double = math.round(d * 1e5) / 1e5
 
-    val ai = a.inverse.get
+    val ai = a.inverse
     a.determinant should be (532)
     a.cofactor(2, 3) should be (-160)
     ai(3, 2) should be (-160.0 / 532)
@@ -250,7 +250,7 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
       (-6, 0, 9, 6),
       (-3, 0, -9, -4)
     )
-    b.inverse.get.map(round) should be (Matrix.of4By4(
+    b.inverse.map(round) should be (Matrix.of4By4(
       (-0.15385, -0.15385, -0.28205, -0.53846),
       (-0.07692, 0.12308, 0.02564, 0.03077),
       (0.35897, 0.35897, 0.43590, 0.92308),
@@ -263,7 +263,7 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
       (-4, 9, 6, 4),
       (-7, 6, 6, 2)
     )
-    c.inverse.get.map(round) should be (Matrix.of4By4(
+    c.inverse.map(round) should be (Matrix.of4By4(
       (-0.04074, -0.07778, 0.14444, -0.22222),
       (-0.07778, 0.03333, 0.36667, -0.33333),
       (-0.02901, -0.14630, -0.10926, 0.12963),
@@ -285,6 +285,6 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
       (6, -2, 0, 5)
     )
     val c = a * b
-    (c * b.inverse.get) should be (a)
+    (c * b.inverse) should be (a)
   }
 }
