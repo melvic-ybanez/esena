@@ -39,4 +39,10 @@ class TransformationsSpec extends AnyFlatSpec with should.Matchers {
     val v = Vec(-4, 6, 8)
     (transform.inverse * v) should be (Vec(-2, 2, 2))
   }
+
+  "Reflection" should "be the same as scaling by a negative value" in {
+    val transform = Matrix3D.scaling(-1, 1, 1)
+    val p = Point(2, 3, 4)
+    (transform * p) should be (Point(-2, 3, 4))
+  }
 }
