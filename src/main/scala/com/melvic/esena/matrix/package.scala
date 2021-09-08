@@ -1,5 +1,5 @@
 package com.melvic.esena
 
 package object matrix {
-  val Matrix3D: Transformations3D = new Transformations3D {}
+  val Matrix4D: Transformations4D = new Transformations4D {}
 }
