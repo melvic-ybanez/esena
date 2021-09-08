@@ -22,4 +22,16 @@ trait Transformations4D {
       (0, 0, 0, 1)
     )
   }
+
+  def rotationY(radian: Double): Matrix = {
+    val cos = math.cos(radian)
+    val sin = math.sin(radian)
+
+    Matrix.of4By4(
+      (cos, 0, sin, 0),
+      (0, 1, 0, 0),
+      (-sin, 0, cos, 0),
+      (0, 0, 0, 1)
+    )
+  }
 }
