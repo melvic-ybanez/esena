@@ -270,4 +270,21 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
       (0.17778, 0.06667, -0.26667, 0.33333)
     ))
   }
+
+  "Multiplying a A * B by the inverse of A" should "return B" in {
+    val a = Matrix.of4By4(
+      (3, -9, 7, 3),
+      (3, -8, 2, -9),
+      (-4, 4, 4, 1),
+      (-6, 5, -1, 1)
+    )
+    val b = Matrix.of4By4(
+      (8, 2, 2, 2),
+      (3, -1, 7, 0),
+      (7, 0, 5, 4),
+      (6, -2, 0, 5)
+    )
+    val c = a * b
+    (c * b.inverse.get) should be (a)
+  }
 }
