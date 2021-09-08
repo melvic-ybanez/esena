@@ -54,4 +54,12 @@ trait Transformations4D {
       (0, 0, 0, 1)
     )
   }
+
+  def shearing(xy: Double, xz: Double, yx: Double, yz: Double, zx: Double, zy: Double): Matrix =
+    Matrix.of4By4(
+      (1, xy, xz, 0),
+      (yx, 1, yz, 0),
+      (zx, zy, 1, 0),
+      (0, 0, 0, 1)
+    )
 }

@@ -75,4 +75,34 @@ class TransformationsSpec extends AnyFlatSpec with should.Matchers {
     (halfQuarter * p) should be (Point(-math.sqrt(2) / 2, math.sqrt(2) / 2, 0))
     (fullQuarter * p) should be (Point(-1, 0, 0))
   }
+
+  "A shearing transformation" should "move x in proportion to y" in {
+    val transform = Matrix4D.shearing(1, 0, 0, 0, 0, 0)
+    (transform * Point(2, 3, 4)) should be (Point(5, 3, 4))
+  }
+
+  "A shearing transformation" should "move x in proportion to z" in {
+    val transform = Matrix4D.shearing(0, 1, 0, 0, 0, 0)
+    (transform * Point(2, 3, 4)) should be (Point(6, 3, 4))
+  }
+
+  "A shearing transformation" should "move y in proportion to x" in {
+    val transform = Matrix4D.shearing(0, 0, 1, 0, 0, 0)
+    (transform * Point(2, 3, 4)) should be (Point(2, 5, 4))
+  }
+
+  "A shearing transformation" should "move y in proportion to z" in {
+    val transform = Matrix4D.shearing(0, 0, 0, 1, 0, 0)
+    (transform * Point(2, 3, 4)) should be (Point(2, 7, 4))
+  }
+
+  "A shearing transformation" should "move z in proportion to x" in {
+    val transform = Matrix4D.shearing(0, 0, 0, 0, 1, 0)
+    (transform * Point(2, 3, 4)) should be (Point(2, 3, 6))
+  }
+
+  "A shearing transformation" should "move z in proportion to y" in {
+    val transform = Matrix4D.shearing(0, 0, 0, 0, 0, 1)
+    (transform * Point(2, 3, 4)) should be (Point(2, 3, 7))
+  }
 }
