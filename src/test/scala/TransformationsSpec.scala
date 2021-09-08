@@ -105,4 +105,29 @@ class TransformationsSpec extends AnyFlatSpec with should.Matchers {
     val transform = Matrix4D.shearing(0, 0, 0, 0, 0, 1)
     (transform * Point(2, 3, 4)) should be (Point(2, 3, 7))
   }
+
+  "Individual transformations" should "be applied in sequence" in {
+    val p = Point(1, 0, 1)
+    val a = Matrix4D.rotationX(math.Pi / 2)
+    val b = Matrix4D.scaling(5, 5, 5)
+    val c = Matrix4D.translation(10, 5, 7)
+
+    val p2 = a * p
+    p2 should be (Point(1, -1, 0))
+
+    val p3 = b * p2
+    p3 should be (Point(5, -5, 0))
+
+    val p4 = c * p3
+    p4 should be (Point(15, 0, 7))
+  }
+
+  "Chained transformations" should "be applied in reverse order" in {
+    val p = Point(1, 0, 1)
+    val a = Matrix4D.rotationX(math.Pi / 2)
+    val b = Matrix4D.scaling(5, 5, 5)
+    val c = Matrix4D.translation(10, 5, 7)
+    val t = c * b * a
+    (t * p) should be (Point(15, 0, 7))
+  }
 }
