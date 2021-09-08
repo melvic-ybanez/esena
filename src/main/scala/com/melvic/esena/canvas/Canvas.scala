@@ -1,6 +1,7 @@
-package com.melvic.esena
+package com.melvic.esena.canvas
 
-import com.melvic.esena.Canvas.{CanvasImpl, PixelSet}
+import com.melvic.esena.Math
+import com.melvic.esena.canvas.Canvas.{CanvasImpl, PixelSet}
 
 import scala.annotation.tailrec
 

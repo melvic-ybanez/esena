@@ -1,7 +1,8 @@
 package com.melvic.esena.matrix
 
-import com.melvic.esena.{Math, Tuple}
+import com.melvic.esena.Math
 import com.melvic.esena.matrix.Matrix.{Elements, MatrixImpl}
+import com.melvic.esena.tuples.Tuple
 
 trait Matrix {
   def width: Int
@@ -164,6 +165,4 @@ object Matrix {
   }
 
   def identity4By4: Matrix = identity(4, 4)
-
-  def for3D: Transformations3D = new Transformations3D {}
 }

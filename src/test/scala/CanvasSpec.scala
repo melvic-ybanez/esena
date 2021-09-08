@@ -1,4 +1,4 @@
-import com.melvic.esena.{Canvas, Color}
+import com.melvic.esena.canvas.{Canvas, Color}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 

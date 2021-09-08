@@ -1,5 +1,5 @@
-import com.melvic.esena.Tuple
 import com.melvic.esena.matrix.Matrix
+import com.melvic.esena.tuples.Tuple
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 

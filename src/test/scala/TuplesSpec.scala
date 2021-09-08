@@ -1,5 +1,5 @@
 import com.melvic.esena.matrix.Matrix
-import com.melvic.esena.{Point, Tuple, Vec}
+import com.melvic.esena.tuples._
 import org.scalatest._
 import flatspec._
 import matchers._

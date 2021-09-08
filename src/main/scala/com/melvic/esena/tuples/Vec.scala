@@ -1,4 +1,4 @@
-package com.melvic.esena
+package com.melvic.esena.tuples
 
 final case class Vec(x: Double, y: Double, z: Double) extends Tuple  {
   val w: Double = 0

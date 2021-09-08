@@ -1,8 +1,8 @@
-package com.melvic.esena
+package com.melvic.esena.tuples
 
 import com.melvic.esena
-import com.melvic.esena.Tuple.TupleImpl
 import com.melvic.esena.matrix.Matrix
+import com.melvic.esena.{Math, Scalar}
 
 trait Tuple {
   val x: Double
