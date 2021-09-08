@@ -164,4 +164,6 @@ object Matrix {
   }
 
   def identity4By4: Matrix = identity(4, 4)
+
+  def for3D: Transformations3D = new Transformations3D {}
 }
