@@ -23,6 +23,10 @@ trait Transformations4D {
     )
   }
 
+  /**
+   * Clockwise rotations along the y-axis.
+   * Note: This rotation is based on the left-hand rule.
+   */
   def rotationY(radian: Double): Matrix = {
     val cos = math.cos(radian)
     val sin = math.sin(radian)
@@ -31,6 +35,22 @@ trait Transformations4D {
       (cos, 0, sin, 0),
       (0, 1, 0, 0),
       (-sin, 0, cos, 0),
+      (0, 0, 0, 1)
+    )
+  }
+
+  /**
+   * Clockwise rotations along the z-axis.
+   * Note: This rotation is based on the left-hand rule.
+   */
+  def rotationZ(radian: Double): Matrix = {
+    val cos = math.cos(radian)
+    val sin = math.sin(radian)
+
+    Matrix.of4By4(
+      (cos, -sin, 0, 0),
+      (sin, cos, 0, 0),
+      (0, 0, 1, 0),
       (0, 0, 0, 1)
     )
   }

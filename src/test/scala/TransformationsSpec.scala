@@ -67,4 +67,12 @@ class TransformationsSpec extends AnyFlatSpec with should.Matchers {
     (halfQuarter * p) should be (Point(math.sqrt(2) / 2, 0, math.sqrt(2) / 2))
     (fullQuarter * p) should be (Point(1, 0, 0))
   }
+
+  "Rotating the point along the z axis" should "update the x and y axes accordingly" in {
+    val p = Point(0, 1, 0)
+    val halfQuarter = Matrix4D.rotationZ(math.Pi / 4)
+    val fullQuarter = Matrix4D.rotationZ(math.Pi / 2)
+    (halfQuarter * p) should be (Point(-math.sqrt(2) / 2, math.sqrt(2) / 2, 0))
+    (fullQuarter * p) should be (Point(-1, 0, 0))
+  }
 }
