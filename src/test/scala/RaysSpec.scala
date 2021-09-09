@@ -1,5 +1,4 @@
-import com.melvic.esena.matrix.Matrix4D
-import com.melvic.esena.matrix.Matrix4D.{scaling, translation}
+import com.melvic.esena.matrix._
 import com.melvic.esena.rays.Ray
 import com.melvic.esena.tuples.{Point, Vec}
 import org.scalatest.flatspec.AnyFlatSpec

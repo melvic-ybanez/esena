@@ -84,3 +84,5 @@ trait Transformations4D {
       (0, 0, 0, 1)
     )
 }
+
+object Transformations4D extends Transformations4D

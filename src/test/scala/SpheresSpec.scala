@@ -1,6 +1,6 @@
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.matrix.Matrix.Identity4x4
-import com.melvic.esena.matrix.Matrix4D.translation
+import com.melvic.esena.matrix._
 import com.melvic.esena.rays.Ray
 import com.melvic.esena.shapes.Sphere
 import com.melvic.esena.tuples.{Point, Vec}
