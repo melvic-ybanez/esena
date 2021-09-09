@@ -35,6 +35,10 @@ trait Tuple {
   def dot(that: Tuple): Scalar =
     x * that.x + y * that.y + z * that.z + w * that.w
 
+  def  toPoint: Point = Point(x, y, z)
+
+  def toVec: Vec = Vec(x, y, z)
+
   override def equals(that: Any) = that match {
     case tuple: Tuple =>
       Math.compareDoubles(this.x, tuple.x) &&
