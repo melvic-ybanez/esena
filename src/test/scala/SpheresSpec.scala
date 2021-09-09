@@ -7,7 +7,7 @@ import org.scalatest.matchers.should
 class SpheresSpec extends AnyFlatSpec with should.Matchers {
   "A ray that intersects a sphere at two points" should "yield 2 different values" in {
     val r = Ray(Point(0, 0, -5), Vec(0, 0, 1))
-    val s = new Sphere()
+    val s = Sphere()
     val xs = s.intersect(r)
     xs(0).t should be (4.0)
     xs(1).t should be (6.0)
@@ -15,7 +15,7 @@ class SpheresSpec extends AnyFlatSpec with should.Matchers {
 
   "A ray that intersects a sphere at a tangent" should "yield 2 same values" in {
     val r = Ray(Point(0, 1, -5), Vec(0, 0, 1))
-    val s = new Sphere
+    val s = Sphere()
     val xs = s.intersect(r)
     xs(0).t should be (5.0)
     xs(1).t should be (5.0)
@@ -23,14 +23,14 @@ class SpheresSpec extends AnyFlatSpec with should.Matchers {
 
   "A ray that misses the sphere" should "not yield any values" in {
     val r = Ray(Point(0, 2, -5), Vec(0, 0, 1))
-    val s = new Sphere
+    val s = Sphere()
     val xs = s.intersect(r)
     assert(xs.isEmpty)
   }
 
   "A ray originating inside a sphere" should "have one of the intersections behind its origin" in {
     val r = Ray(Point(0, 0, 0), Vec(0, 0, 1))
-    val s = new Sphere
+    val s = Sphere()
     val xs = s.intersect(r)
     xs.size should be (2)
     xs(0).t should be (-1.0)
@@ -39,10 +39,19 @@ class SpheresSpec extends AnyFlatSpec with should.Matchers {
 
   "A sphere behind a ray" should "intersect the ray, resulting to negative t values" in {
     val r = Ray(Point(0, 0, 5), Vec(0, 0, 1))
-    val s = new Sphere
+    val s = Sphere()
     val xs = s.intersect(r)
     xs.size should be (2)
     xs(0).t should be (-6.0)
     xs(1).t should be (-4.0)
+  }
+
+  "Intersection with sphere" should "set the sphere as the object of intersection" in {
+    val r = Ray(Point(0, 0, -5), Vec(0, 0, 1))
+    val s = Sphere()
+    val xs = s.intersect(r)
+    xs.size should be (2)
+    xs(0).obj should be (s)
+    xs(1).obj should be (s)
   }
 }

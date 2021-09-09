@@ -1,8 +1,9 @@
 package com.melvic.esena.shapes
+import com.melvic.esena.rays.Intersection.Intersections
 import com.melvic.esena.rays.{Intersection, Ray}
 import com.melvic.esena.tuples.Point
 
-class Sphere {
+class Sphere extends Shape {
 
   /**
     * The ray-sphere intersection is based on the
@@ -11,7 +12,7 @@ class Sphere {
     * intersection. Otherwise, the ray touches the
     * sphere in either one or two places.
     */
-  def intersect(ray: Ray): Vector[Intersection[Sphere]] = {
+  override def intersect(ray: Ray): Intersections = {
     // sphere is centered at the world origin
     val sphereToRay = ray.origin - Point(0, 0, 0)
 
@@ -27,4 +28,8 @@ class Sphere {
         Intersection((-b + math.sqrt(discriminant)) / (2 * a), this)
       )
   }
+}
+
+object Sphere {
+  def apply(): Sphere = new Sphere
 }
