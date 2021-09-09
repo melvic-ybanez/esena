@@ -14,11 +14,16 @@ final case class Sphere(transformation: Matrix) extends Shape {
     * sphere in either one or two places.
     */
   override def intersect(ray: Ray): Intersections = {
-    // sphere is centered at the world origin
-    val sphereToRay = ray.origin - Point(0, 0, 0)
+    // To maintain the sphere's center at the origin and its radius
+    // to 1, we transform the ray by the inverse of the sphere's
+    // transformation instead.
+    val transformedRay = ray.transform(transformation.inverse)
 
-    val a = ray.direction.dot(ray.direction)
-    val b = 2 * ray.direction.dot(sphereToRay)
+    // sphere is centered at the world origin
+    val sphereToRay = transformedRay.origin - Point(0, 0, 0)
+
+    val a = transformedRay.direction.dot(transformedRay.direction)
+    val b = 2 * transformedRay.direction.dot(sphereToRay)
     val c = sphereToRay.dot(sphereToRay) - 1
 
     val discriminant = math.pow(b, 2) - 4 * a * c

@@ -1,4 +1,3 @@
-import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.matrix.Matrix.Identity4x4
 import com.melvic.esena.matrix._
 import com.melvic.esena.rays.Ray
@@ -67,5 +66,21 @@ class SpheresSpec extends AnyFlatSpec with should.Matchers {
     val s = Sphere()
     val t = translation(2, 3, 4)
     s.transform(t).transformation should be (t)
+  }
+
+  "Intersecting a scaled sphere with a ray" should "work by scaling the ray inversely" in {
+    val r = Ray(Point(0, 0, -5), Vec(0, 0, 1))
+    val s = Sphere(scaling(2, 2, 2))
+    val xs = s.intersect(r)
+    xs.size should be (2)
+    xs(0).t should be (3)
+    xs(1).t should be (7)
+  }
+
+  "Intersecting a translated sphere with a ray" should "work by translating the ray inversely" in {
+    val r = Ray(Point(0, 0, -5), Vec(0, 0, 1))
+    val s = Sphere(translation(5, 0, 0))
+    val xs = s.intersect(r)
+    xs.size should be (0)
   }
 }
