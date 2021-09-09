@@ -156,14 +156,14 @@ object Matrix {
   def fromTuple(tuple: Tuple): Matrix =
     fromRows(Vector(tuple.x), Vector(tuple.y), Vector(tuple.z), Vector(tuple.w))
 
-  def of4By4(r1: Vec4, r2: Vec4, r3: Vec4, r4: Vec4): Matrix = {
+  def of4x4(r1: Vec4, r2: Vec4, r3: Vec4, r4: Vec4): Matrix = {
     def toElems(tuple: Vec4): Elements = tuple match {
       case (x, y, z, w) => Vector(x, y, z, w)
     }
     fromRows(toElems(r1), toElems(r2), toElems(r3), toElems(r4))
   }
 
-  def of3By3(r1: Vec3, r2: Vec3, r3: Vec3): Matrix = {
+  def of3x3(r1: Vec3, r2: Vec3, r3: Vec3): Matrix = {
     def toElems(tuple: Vec3): Elements = tuple match {
       case (x, y, z) => Vector(x, y, z)
     }
@@ -175,5 +175,5 @@ object Matrix {
     (0 until width).foldLeft(m)((m, i) => m(i, i, 1))
   }
 
-  def identity4By4: Matrix = identity(4, 4)
+  lazy val Identity4x4: Matrix = identity(4, 4)
 }

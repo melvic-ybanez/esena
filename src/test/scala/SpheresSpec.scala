@@ -1,3 +1,6 @@
+import com.melvic.esena.matrix.Matrix
+import com.melvic.esena.matrix.Matrix.Identity4x4
+import com.melvic.esena.matrix.Matrix4D.translation
 import com.melvic.esena.rays.Ray
 import com.melvic.esena.shapes.Sphere
 import com.melvic.esena.tuples.{Point, Vec}
@@ -53,5 +56,16 @@ class SpheresSpec extends AnyFlatSpec with should.Matchers {
     xs.size should be (2)
     xs(0).obj should be (s)
     xs(1).obj should be (s)
+  }
+
+  "A sphere" should "have a default transformation of the identity matrix" in  {
+    val s = Sphere()
+    s.transformation should be (Identity4x4)
+  }
+
+  "A sphere" should "be able to update transformation" in {
+    val s = Sphere()
+    val t = translation(2, 3, 4)
+    s.transform(t).transformation should be (t)
   }
 }

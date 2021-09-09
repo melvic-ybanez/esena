@@ -1,9 +1,10 @@
 package com.melvic.esena.shapes
+import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersection.Intersections
 import com.melvic.esena.rays.{Intersection, Ray}
 import com.melvic.esena.tuples.Point
 
-class Sphere extends Shape {
+final case class Sphere(transformation: Matrix) extends Shape {
 
   /**
     * The ray-sphere intersection is based on the
@@ -28,8 +29,11 @@ class Sphere extends Shape {
         Intersection((-b + math.sqrt(discriminant)) / (2 * a), this)
       )
   }
+
+  def transform(transformation: Matrix): Sphere =
+    copy(transformation = transformation)
 }
 
 object Sphere {
-  def apply(): Sphere = new Sphere
+  def apply(): Sphere = new Sphere(Matrix.Identity4x4)
 }

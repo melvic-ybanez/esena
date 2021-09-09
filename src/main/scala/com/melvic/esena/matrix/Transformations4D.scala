@@ -14,7 +14,7 @@ trait Transformations4D {
     * column)
     */
   def translation(x: Double, y: Double, z: Double): Matrix =
-    Matrix.identity4By4(0, 3, x)(1, 3, y)(2, 3, z)
+    Matrix.Identity4x4(0, 3, x)(1, 3, y)(2, 3, z)
 
   /**
     * Multiplies each component of a tuple by its corresponding scalar.
@@ -26,7 +26,7 @@ trait Transformations4D {
     * This works for both point and vector.
     */
   def scaling(x: Double, y: Double, z: Double): Matrix =
-    Matrix.identity4By4(0, 0, x)(1, 1, y)(2, 2, z)
+    Matrix.Identity4x4(0, 0, x)(1, 1, y)(2, 2, z)
 
   /**
     * Clockwise rotations along the x-axis.
@@ -36,7 +36,7 @@ trait Transformations4D {
     val cos = math.cos(radian)
     val sin = math.sin(radian)
 
-    Matrix.of4By4(
+    Matrix.of4x4(
       (1, 0, 0, 0),
       (0, cos, -sin, 0),
       (0, sin, cos, 0),
@@ -52,7 +52,7 @@ trait Transformations4D {
     val cos = math.cos(radian)
     val sin = math.sin(radian)
 
-    Matrix.of4By4(
+    Matrix.of4x4(
       (cos, 0, sin, 0),
       (0, 1, 0, 0),
       (-sin, 0, cos, 0),
@@ -68,7 +68,7 @@ trait Transformations4D {
     val cos = math.cos(radian)
     val sin = math.sin(radian)
 
-    Matrix.of4By4(
+    Matrix.of4x4(
       (cos, -sin, 0, 0),
       (sin, cos, 0, 0),
       (0, 0, 1, 0),
@@ -77,7 +77,7 @@ trait Transformations4D {
   }
 
   def shearing(xy: Double, xz: Double, yx: Double, yz: Double, zx: Double, zy: Double): Matrix =
-    Matrix.of4By4(
+    Matrix.of4x4(
       (1, xy, xz, 0),
       (yx, 1, yz, 0),
       (zx, zy, 1, 0),

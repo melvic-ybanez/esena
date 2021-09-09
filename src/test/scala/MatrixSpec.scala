@@ -5,7 +5,7 @@ import org.scalatest.matchers.should
 
 class MatrixSpec extends AnyFlatSpec with should.Matchers {
   "A matrix" should "be provide access to an element by position" in {
-    val m = Matrix.of4By4(
+    val m = Matrix.of4x4(
       (1, 2, 3, 4),
       (5.5, 6.5, 7.5, 8.5),
       (9, 10, 11, 12),
@@ -21,13 +21,13 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   it should "be equal to a matrix with similar elements" in {
-    val a = Matrix.of4By4(
+    val a = Matrix.of4x4(
       (1, 2, 3, 4),
       (5, 6, 7, 8),
       (9, 8, 7, 6),
       (5, 4, 3, 2)
     )
-    val b = Matrix.of4By4(
+    val b = Matrix.of4x4(
       (1, 2, 3, 4),
       (5, 6, 7, 8),
       (9, 8, 7, 6),
@@ -37,13 +37,13 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   it should "not be equal to a matrix with different elements" in {
-    val a = Matrix.of4By4(
+    val a = Matrix.of4x4(
       (1, 2, 3, 4),
       (5, 6, 7, 8),
       (9, 8, 7, 6),
       (5, 4, 3, 2)
     )
-    val b = Matrix.of4By4(
+    val b = Matrix.of4x4(
       (2, 3, 4, 5),
       (6, 7, 8, 9),
       (8, 7, 6, 5),
@@ -53,19 +53,19 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   it should "support matrix multiplication" in {
-    val a = Matrix.of4By4(
+    val a = Matrix.of4x4(
       (1, 2, 3, 4),
       (5, 6, 7, 8),
       (9, 8, 7, 6),
       (5, 4, 3, 2)
     )
-    val b = Matrix.of4By4(
+    val b = Matrix.of4x4(
       (-2, 1, 2, 3),
       (3, 2, 1, -1),
       (4, 3, 6, 5),
       (1, 2, 7, 8)
     )
-    (a * b) should be (Matrix.of4By4(
+    (a * b) should be (Matrix.of4x4(
       (20, 22, 50, 48),
       (44, 54, 114, 108),
       (40, 58, 110, 102),
@@ -80,7 +80,7 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   it should "support matrix-tuple multiplication" in {
-    val a = Matrix.of4By4(
+    val a = Matrix.of4x4(
       (1, 2, 3, 4),
       (2, 4, 4, 2),
       (8, 6, 4, 1),
@@ -91,7 +91,7 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "The identity matrix multiplied by any other matrix m" should "yield m" in {
-    val a = Matrix.of4By4(
+    val a = Matrix.of4x4(
       (0, 1, 2, 4),
       (1, 2, 4, 8),
       (2, 4, 8, 6),
@@ -101,13 +101,13 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "Transposing a matrix" should "switch the rows and columns" in {
-    val a = Matrix.of4By4(
+    val a = Matrix.of4x4(
       (0, 9, 3, 0),
       (9, 8, 0, 8),
       (1, 8, 5, 3),
       (0, 0, 5, 8)
     )
-    a.transpose should be (Matrix.of4By4(
+    a.transpose should be (Matrix.of4x4(
       (0, 9, 1, 0),
       (9, 8, 8, 0),
       (3, 0, 5, 5),
@@ -116,7 +116,7 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "Transposing the identity matrix" should "yield the identity matrix" in {
-    Matrix.identity4By4.transpose should be (Matrix.identity4By4)
+    Matrix.Identity4x4.transpose should be (Matrix.Identity4x4)
   }
 
   "The determinant of 2x2 matrix" should "be ad - bc where a, b, c, and d the elements" in {
@@ -128,7 +128,7 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "A Matrix" should "provide submatrices based on the given row and column" in {
-    val _3by3 = Matrix.of3By3(
+    val _3by3 = Matrix.of3x3(
       (1, 5, 0),
       (-3, 2, 7),
       (0, 6, -3),
@@ -137,13 +137,13 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
       Vector(-3, 2), Vector(0, 6)
     ))
 
-    val _4by4 = Matrix.of4By4(
+    val _4by4 = Matrix.of4x4(
       (-6, 1, 1, 6),
       (-8, 5, 8, 6),
       (-1, 0, 8, 2),
       (-7, 1, -1, 1)
     )
-    _4by4.subMatrix(2, 1) should be (Matrix.of3By3(
+    _4by4.subMatrix(2, 1) should be (Matrix.of3x3(
       (-6, 1, 6),
       (-8, 8, 6),
       (-7, -1, 1)
@@ -151,7 +151,7 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "A minor" should "be the determinant of the submatrix(i, j) for some i and j" in {
-    val m = Matrix.of3By3(
+    val m = Matrix.of3x3(
       (3, 5, 0),
       (2, -1, -7),
       (6, -1, 5)
@@ -162,7 +162,7 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "A cofactor" should "return the minor with the signs possibly reversed" in {
-    val a = Matrix.of3By3(
+    val a = Matrix.of3x3(
       (3, 5, 0),
       (2, -1, -7),
       (6, -1, 5)
@@ -174,7 +174,7 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "Computing the determinant" should "use the generic formula for 3x3 matrix" in {
-    val m = Matrix.of3By3(
+    val m = Matrix.of3x3(
       (1, 2, 6),
       (-5, 8, -4),
       (2, 6, 4),
@@ -186,7 +186,7 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   it should "also be possible for 4x4 matrix" in {
-    val m = Matrix.of4By4(
+    val m = Matrix.of4x4(
       (-2, -8, 3, 5),
       (-3, 1, 7, 3),
       (1, 2, -9, 6),
@@ -200,7 +200,7 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "A matrix with zero determinant" should "be invertible" in {
-    val a = Matrix.of4By4(
+    val a = Matrix.of4x4(
       (6, 4, 4, 4),
       (5, 5, 7, 6),
       (4, -9, 3, -7),
@@ -211,7 +211,7 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "A matrix with non-zero determinant" should "not be invertible" in {
-    val a = Matrix.of4By4(
+    val a = Matrix.of4x4(
       (-4, 2, -2, 3),
       (9, 6, 2, 6),
       (0, -5, 1, -5),
@@ -222,7 +222,7 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "An invertible matrix" should "calculate the correct inverse" in {
-    val a = Matrix.of4By4(
+    val a = Matrix.of4x4(
       (-5, 2, 6, -8),
       (1, -5, 1, 8),
       (7, 7, -6, -7),
@@ -237,33 +237,33 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
     ai(3, 2) should be (-160.0 / 532)
     a.cofactor(3, 2) should be (105)
     ai(2, 3) should be (105.0 / 532)
-    ai.map(round) should be (Matrix.of4By4(
+    ai.map(round) should be (Matrix.of4x4(
       (0.21805, 0.45113, 0.24060, -0.04511),
       (-0.80827, -1.45677, -0.44361, 0.52068),
       (-0.07895, -0.22368, -0.05263, 0.19737),
       (-0.52256, -0.81391, -0.30075, 0.30639)
     ))
 
-    val b = Matrix.of4By4(
+    val b = Matrix.of4x4(
       (8, -5, 9, 2),
       (7, 5, 6, 1),
       (-6, 0, 9, 6),
       (-3, 0, -9, -4)
     )
-    b.inverse.map(round) should be (Matrix.of4By4(
+    b.inverse.map(round) should be (Matrix.of4x4(
       (-0.15385, -0.15385, -0.28205, -0.53846),
       (-0.07692, 0.12308, 0.02564, 0.03077),
       (0.35897, 0.35897, 0.43590, 0.92308),
       (-0.69231, -0.69231, -0.76923, -1.92308)
     ))
 
-    val c = Matrix.of4By4(
+    val c = Matrix.of4x4(
       (9, 3, 0, 9),
       (-5, -2, -6, -3),
       (-4, 9, 6, 4),
       (-7, 6, 6, 2)
     )
-    c.inverse.map(round) should be (Matrix.of4By4(
+    c.inverse.map(round) should be (Matrix.of4x4(
       (-0.04074, -0.07778, 0.14444, -0.22222),
       (-0.07778, 0.03333, 0.36667, -0.33333),
       (-0.02901, -0.14630, -0.10926, 0.12963),
@@ -272,13 +272,13 @@ class MatrixSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "Multiplying a A * B by the inverse of A" should "return B" in {
-    val a = Matrix.of4By4(
+    val a = Matrix.of4x4(
       (3, -9, 7, 3),
       (3, -8, 2, -9),
       (-4, 4, 4, 1),
       (-6, 5, -1, 1)
     )
-    val b = Matrix.of4By4(
+    val b = Matrix.of4x4(
       (8, 2, 2, 2),
       (3, -1, 7, 0),
       (7, 0, 5, 4),
