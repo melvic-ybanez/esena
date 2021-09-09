@@ -20,9 +20,11 @@ class Sphere extends Shape {
     val c = sphereToRay.dot(sphereToRay) - 1
 
     val discriminant = math.pow(b, 2) - 4 * a * c
-    Vector(
-      (-b - math.sqrt(discriminant)) / (2 * a),
-      (-b + math.sqrt(discriminant)) / (2 * a)
-    )
+    if (discriminant < 0) Vector()
+    else
+      Vector(
+        (-b - math.sqrt(discriminant)) / (2 * a),
+        (-b + math.sqrt(discriminant)) / (2 * a)
+      )
   }
 }
