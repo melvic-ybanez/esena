@@ -104,4 +104,16 @@ class TuplesSpec extends AnyFlatSpec with should.Matchers {
     val t = Tuple.fromMatrix(Matrix.fromRows(Vector(1), Vector(2), Vector(3), Vector(4)))
     t should be (Tuple(1, 2, 3, 4))
   }
+
+  "Reflecting a vector approaching at 45%" should "reverse the y component" in {
+    val v = Vec(1, -1, 0)
+    val n = Vec(0, 1, 0)
+    v.reflect(n) should be (Vec(1, 1, 0))
+  }
+
+  "Vector reflection" should "work off a slanted surface" in {
+    val v = Vec(0, -1, 0)
+    val n = Vec(math.sqrt(2) / 2, math.sqrt(2) / 2, 0)
+    v.reflect(n) should be (Vec(1, 0, 0))
+  }
 }

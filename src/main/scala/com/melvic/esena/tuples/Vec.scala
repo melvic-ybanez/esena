@@ -18,6 +18,9 @@ final case class Vec(x: Double, y: Double, z: Double) extends Tuple  {
       z * that.x - x * that.z,
       x * that.y - y * that.x
     )
+
+  def reflect(normal: Vec): Vec =
+    (this - normal * this.dot(normal) * 2.0).toVec
 }
 
 object Vec {
