@@ -15,13 +15,12 @@ object Main {
     val rayOrigin = Point(0, 0, -5)
     val wallZ = 10
     val wallSize = 7.0
-    val canvasPixels = 200
+    val canvasPixels = 500
     val pixelSize = wallSize / canvasPixels
     val half = wallSize / 2
 
     // sample canvas
     val canvas = Canvas(canvasPixels, canvasPixels)
-    val color = Color(1, 0, 0)
     val shape = Sphere().withMaterial(Material.colored(Color(1, 0.2, 1)))
 
     val light = PointLight(Point(-10, 10, -10), Color.White)
