@@ -34,4 +34,5 @@ object Color {
   val Green = Color(0, 1, 0)
   val Blue = Color(0, 0, 1)
   val Black = Color(0, 0, 0)
+  val White = Color(1, 1, 1)
 }
