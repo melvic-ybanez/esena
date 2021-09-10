@@ -13,4 +13,7 @@ final case class Material(
 object Material {
   def apply(): Material =
     Material(Color.White, 0.1, 0.9, 0.9, 200.0)
+
+  def colored(color: Color): Material =
+    Material().copy(color = color)
 }
