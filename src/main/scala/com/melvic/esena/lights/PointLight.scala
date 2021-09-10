@@ -1,4 +1,4 @@
-package com.melvic.esena.light
+package com.melvic.esena.lights
 
 import com.melvic.esena.canvas.Color
 import com.melvic.esena.tuples.Point

@@ -1,5 +1,5 @@
 package com.melvic.esena.shapes
-import com.melvic.esena.light.Material
+import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersection.Intersections
 import com.melvic.esena.rays.{Intersection, Ray}

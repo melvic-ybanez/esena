@@ -1,5 +1,5 @@
 import com.melvic.esena.canvas.Color
-import com.melvic.esena.light.PointLight
+import com.melvic.esena.lights.PointLight
 import com.melvic.esena.tuples.Point
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should

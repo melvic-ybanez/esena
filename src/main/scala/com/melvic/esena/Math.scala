@@ -19,6 +19,10 @@ object Math {
   /**
    * This is useful when testing with rounded values
    */
-  def roundTo5(value: Double): Double =
-    math.round(value * 1e5) / 1e5
+  def roundTo(exp: Int)(value: Double): Double = {
+    val e = math.pow(10, exp)
+    math.round(value * e) / e
+  }
+
+  def roundTo5: Double => Double = roundTo(5)
 }

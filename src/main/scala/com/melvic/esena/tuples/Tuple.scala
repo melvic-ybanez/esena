@@ -1,6 +1,7 @@
 package com.melvic.esena.tuples
 
 import com.melvic.esena
+import com.melvic.esena.canvas.Color
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.{Math, Scalar}
 
@@ -38,6 +39,8 @@ trait Tuple {
   def  toPoint: Point = Point(x, y, z)
 
   def toVec: Vec = Vec(x, y, z)
+
+  def toColor: Color = Color(x, y, z)
 
   override def equals(that: Any) = that match {
     case tuple: Tuple =>
