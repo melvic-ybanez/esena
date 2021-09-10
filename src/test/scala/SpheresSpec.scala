@@ -1,4 +1,5 @@
 import com.melvic.esena.Math.roundTo5
+import com.melvic.esena.light.Material
 import com.melvic.esena.matrix.Matrix.Identity4x4
 import com.melvic.esena.matrix._
 import com.melvic.esena.rays.Ray
@@ -116,5 +117,14 @@ class SpheresSpec extends AnyFlatSpec with should.Matchers {
     val s = Sphere(scaling(1, 0.5, 1) * rotationZ(math.Pi / 5))
     val n = s.normalAt(Point(0, math.sqrt(2) / 2, -math.sqrt(2) / 2))
     n.map(roundTo5) should be (Vec(0, 0.97014, -0.24254))
+  }
+
+  "A sphere" should "have the default material by default" in {
+    s.material should be (Material())
+  }
+
+  "A sphere" should "support updating of material" in {
+    val newMat = Material().copy(ambient = 1)
+    s.withMaterial(newMat).material should be (newMat)
   }
 }

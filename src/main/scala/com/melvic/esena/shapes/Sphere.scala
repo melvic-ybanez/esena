@@ -1,10 +1,11 @@
 package com.melvic.esena.shapes
+import com.melvic.esena.light.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersection.Intersections
 import com.melvic.esena.rays.{Intersection, Ray}
 import com.melvic.esena.tuples.{Point, Vec}
 
-final case class Sphere(transformation: Matrix) extends Shape {
+final case class Sphere(transformation: Matrix, material: Material) extends Shape {
 
   /**
     * The ray-sphere intersection is based on the
@@ -45,8 +46,14 @@ final case class Sphere(transformation: Matrix) extends Shape {
     val worldNormalVec = worldNormal.toVec   // sets the w to 0
     worldNormalVec.normalize
   }
+
+  def withMaterial(material: Material): Sphere =
+    copy(material = material)
 }
 
 object Sphere {
-  def apply(): Sphere = new Sphere(Matrix.Identity4x4)
+  def apply(): Sphere = new Sphere(Matrix.Identity4x4, Material())
+
+  def apply(transformation: Matrix): Sphere =
+    Sphere().transform(transformation)
 }
