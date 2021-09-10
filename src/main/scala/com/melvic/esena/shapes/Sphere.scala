@@ -38,8 +38,13 @@ final case class Sphere(transformation: Matrix) extends Shape {
   def transform(transformation: Matrix): Sphere =
     copy(transformation = transformation)
 
-  def normalAt(point: Point): Vec =
-    (point - Point.Origin).toVec.normalize
+  def normalAt(worldPoint: Point): Vec = {
+    val objectPoint = transformation.inverse * worldPoint
+    val objectNormal = objectPoint - Point.Origin
+    val worldNormal = transformation.inverse.transpose * objectNormal
+    val worldNormalVec = worldNormal.toVec   // sets the w to 0
+    worldNormalVec.normalize
+  }
 }
 
 object Sphere {

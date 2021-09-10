@@ -15,4 +15,10 @@ object Math {
 
   def indexOf(row: Int, col: Int, width: Int): Int =
     row * width + col
+
+  /**
+   * This is useful when testing with rounded values
+   */
+  def roundTo5(value: Double): Double =
+    math.round(value * 1e5) / 1e5
 }

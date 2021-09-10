@@ -1,3 +1,4 @@
+import com.melvic.esena.Math.roundTo5
 import com.melvic.esena.matrix.Matrix.Identity4x4
 import com.melvic.esena.matrix._
 import com.melvic.esena.rays.Ray
@@ -103,5 +104,17 @@ class SpheresSpec extends AnyFlatSpec with should.Matchers {
     val sqrtOf3Over3 = math.sqrt(3) / 3
     val n = s.normalAt(Point(sqrtOf3Over3, sqrtOf3Over3, sqrtOf3Over3))
     n should be (n.normalize)
+  }
+
+  "The normal of a translated sphere" should "be translated in the world space" in {
+    val s = Sphere(translation(0, 1, 0))
+    val n = s.normalAt(Point(0, 1.70711, -0.70711))
+    n.map(roundTo5) should be (Vec(0, 0.70711, -0.70711))
+  }
+
+  "The normal on a transformed sphere" should "be transformed accordingly in the world space" in {
+    val s = Sphere(scaling(1, 0.5, 1) * rotationZ(math.Pi / 5))
+    val n = s.normalAt(Point(0, math.sqrt(2) / 2, -math.sqrt(2) / 2))
+    n.map(roundTo5) should be (Vec(0, 0.97014, -0.24254))
   }
 }
