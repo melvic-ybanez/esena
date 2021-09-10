@@ -2,7 +2,7 @@ package com.melvic.esena.shapes
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersection.Intersections
 import com.melvic.esena.rays.{Intersection, Ray}
-import com.melvic.esena.tuples.Point
+import com.melvic.esena.tuples.{Point, Vec}
 
 final case class Sphere(transformation: Matrix) extends Shape {
 
@@ -37,6 +37,9 @@ final case class Sphere(transformation: Matrix) extends Shape {
 
   def transform(transformation: Matrix): Sphere =
     copy(transformation = transformation)
+
+  def normalAt(point: Point): Vec =
+    (point - Point.Origin).toVec.normalize
 }
 
 object Sphere {
