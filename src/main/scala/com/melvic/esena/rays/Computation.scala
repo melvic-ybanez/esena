@@ -18,7 +18,7 @@ object Computation {
       t = intersection.t,
       obj = intersection.obj,
       point = point,
-      eyeVec = (-ray.direction).toVec,
+      eyeVec = -ray.direction,
       normalVec = intersection.obj.normalAt(point)
     )
   }

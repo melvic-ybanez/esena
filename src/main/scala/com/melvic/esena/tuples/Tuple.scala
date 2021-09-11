@@ -5,6 +5,8 @@ import com.melvic.esena.canvas.Color
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.{Math, Scalar}
 
+import scala.language.implicitConversions
+
 trait Tuple {
   val x: Double
   val y: Double
@@ -66,4 +68,7 @@ object Tuple {
 
   def fromMatrix(matrix: Matrix): Tuple =
     Tuple(matrix(0, 0), matrix(1, 0), matrix(2, 0), matrix(3, 0))
+
+  implicit def tupleToVec(tuple: Tuple): Vec =
+    tuple.toVec
 }

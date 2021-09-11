@@ -12,7 +12,7 @@ trait Lighting {
       normalVec: Vec
   ): Color = {
     val effectiveColor = material.color * light.intensity
-    val lightVec = (light.position - point).toVec.normalize
+    val lightVec = (light.position - point).normalize
     val ambient = effectiveColor * material.ambient
 
     // cosine of the angle between the light and the normal vectors

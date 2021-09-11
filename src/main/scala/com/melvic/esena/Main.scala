@@ -32,7 +32,7 @@ object Main {
         val worldX = -half + pixelSize * x
         val position = Point(worldX, worldY, wallZ)
 
-        val ray = Ray(rayOrigin, (position - rayOrigin).toVec.normalize)
+        val ray = Ray(rayOrigin, (position - rayOrigin).normalize)
         val xs = shape.intersect(ray)
         val hits = Intersection.hit(xs)
 
@@ -40,7 +40,7 @@ object Main {
           val hit = hits.head
           val point = ray.position(hit.t)
           val normal = hit.obj.normalAt(point)
-          val eye = (-ray.direction).toVec
+          val eye = -ray.direction
 
           val color = lighting(hit.obj.material, light, point, eye, normal)
 

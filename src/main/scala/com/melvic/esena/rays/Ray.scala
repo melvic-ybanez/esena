@@ -10,5 +10,5 @@ final case class Ray(origin: Point, direction: Vec) {
   def apply(t: Double): Tuple = position(t)
 
   def transform(transformation: Matrix): Ray =
-    Ray((transformation * origin).toPoint, (transformation * direction).toVec)
+    Ray((transformation * origin).toPoint, transformation * direction)
 }
