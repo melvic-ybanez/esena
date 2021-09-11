@@ -1,5 +1,6 @@
-import com.melvic.esena.rays.{Intersection, Intersections}
+import com.melvic.esena.rays.{Computation, Intersection, Intersections, Ray}
 import com.melvic.esena.shapes.Sphere
+import com.melvic.esena.tuples.{Point, Vec}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
@@ -53,5 +54,17 @@ class IntersectionsSpec extends AnyFlatSpec with should.Matchers {
     val i4 = Intersection(2, s)
     val xs = Intersections(i1, i2, i3, i4)
     Intersection.getHit(xs) should be (i4)
+  }
+
+  "Preparing the state of an intersection" should "return the precomputed information" in {
+    val r = Ray(Point(0, 0, -5), Vec(0, 0, 1))
+    val s = Sphere()
+    val i = Intersection(4, s)
+    val comp = Computation.prepare(i, r)
+    comp.t should be (i.t)
+    comp.obj should be (i.obj)
+    comp.point should be (Point(0, 0, -1))
+    comp.eyeVec should be (Vec(0, 0, -1))
+    comp.normalVec should be (Vec(0, 0, -1))
   }
 }
