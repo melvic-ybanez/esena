@@ -4,16 +4,24 @@ import com.melvic.esena.canvas.Color
 import com.melvic.esena.lights.Material.{DefaultAmbient, DefaultShininess}
 import com.melvic.esena.lights.{Material, PointLight}
 import com.melvic.esena.matrix.scaling
+import com.melvic.esena.rays.{CanIntersect, Intersection, Ray}
 import com.melvic.esena.shapes.{Shape, Sphere}
 import com.melvic.esena.tuples.Point
 
-trait World {
+trait World extends CanIntersect {
   def light: Option[PointLight]
 
   def objects: Vector[Shape]
 
   def contains(shape: Shape): Boolean =
     objects.contains(shape)
+
+  override def intersect(ray: Ray) = {
+    val intersections = objects.foldLeft(Vector.empty[Intersection]) { (acc, obj) =>
+      acc ++ obj.intersect(ray)
+    }
+    intersections.sortBy(_.t)
+  }
 }
 
 object World {
