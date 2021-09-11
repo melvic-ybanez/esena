@@ -21,7 +21,7 @@ object Main {
 
     // sample canvas
     val canvas = Canvas(canvasPixels, canvasPixels)
-    val shape = Sphere().withMaterial(Material.colored(Color(1, 0.2, 1)))
+    val shape = Sphere().withMaterial(Material(color = Color(1, 0.2, 1)))
 
     val light = PointLight(Point(-10, 10, -10), Color.White)
 
