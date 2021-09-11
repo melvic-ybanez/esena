@@ -1,4 +1,4 @@
-import com.melvic.esena.rays.{Computation, Intersection, Intersections, Ray}
+import com.melvic.esena.rays.{Computations, Intersection, Intersections, Ray}
 import com.melvic.esena.shapes.Sphere
 import com.melvic.esena.tuples.{Point, Vec}
 import org.scalatest.flatspec.AnyFlatSpec
@@ -60,11 +60,29 @@ class IntersectionsSpec extends AnyFlatSpec with should.Matchers {
     val r = Ray(Point(0, 0, -5), Vec(0, 0, 1))
     val s = Sphere()
     val i = Intersection(4, s)
-    val comp = Computation.prepare(i, r)
+    val comp = Computations.prepare(i, r)
     comp.t should be (i.t)
     comp.obj should be (i.obj)
     comp.point should be (Point(0, 0, -1))
     comp.eyeVec should be (Vec(0, 0, -1))
     comp.normalVec should be (Vec(0, 0, -1))
+  }
+
+  "The hit, when an intersection occurs on the outside" should "set the computations inside to false" in {
+    val r = Ray(Point(0, 0, -5), Vec(0, 0, 1))
+    val shape = Sphere()
+    val i = Intersection(4, shape)
+    assert(!Computations.prepare(i, r).inside)
+  }
+
+  "The hit, when an intersection occurs on the outside" should "invert the normal vector" in {
+    val r = Ray(Point.Origin, Vec(0, 0, 1))
+    val shape = Sphere()
+    val i = Intersection(1, shape)
+    val comps = Computations.prepare(i, r)
+    comps.point should be (Point(0, 0, 1))
+    comps.eyeVec should be (Vec(0, 0, -1))
+    assert(comps.inside)
+    comps.normalVec should be (Vec(0, 0, -1))
   }
 }

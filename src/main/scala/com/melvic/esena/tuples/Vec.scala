@@ -10,7 +10,8 @@ final case class Vec(x: Double, y: Double, z: Double) extends Tuple  {
    * Transforms the vector into a unit vector
    */
   def normalize: Vec =
-    Vec(x / magnitude, y / magnitude, z / magnitude)
+    if (magnitude == 0) this
+    else Vec(x / magnitude, y / magnitude, z / magnitude)
 
   def cross(that: Vec): Vec =
     Vec(
