@@ -10,6 +10,9 @@ object Intersection {
   def aggregate(intersection: Intersection*): Intersections =
     intersection.toVector
 
+  /**
+    * Fetches the intersection with the smallest non-negative t
+    */
   def hit(intersections: Intersections): Option[Intersection] = {
     val xs = intersections.filter(_.t > 0)
     if (xs.isEmpty) None
@@ -17,8 +20,8 @@ object Intersection {
   }
 
   /**
-   * Unsafe form of [[hit]] which assumes that a hit does exist.
-   */
+    * Unsafe form of [[hit]] which assumes that a hit does exist.
+    */
   def getHit(intersections: Intersections): Intersection =
     hit(intersections).get
 }

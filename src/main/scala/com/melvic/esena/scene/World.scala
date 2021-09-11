@@ -1,9 +1,10 @@
 package com.melvic.esena.scene
 
 import com.melvic.esena.canvas.Color
+import com.melvic.esena.lights
 import com.melvic.esena.lights.{Material, PointLight}
 import com.melvic.esena.matrix.scaling
-import com.melvic.esena.rays.{CanIntersect, Intersection, Ray}
+import com.melvic.esena.rays.{CanIntersect, Computations, Intersection, Ray}
 import com.melvic.esena.shapes.{Shape, Sphere}
 import com.melvic.esena.tuples.Point
 
@@ -23,6 +24,12 @@ final case class World(
     }
     intersections.sortBy(_.t)
   }
+
+  def colorAt(ray: Ray): Color = {
+    val hit = Intersection.hit(intersect(ray))
+    hit.fold(Color.Black)(h => lights.shadeHit(this, Computations.prepare(h, ray)))
+  }
+
 }
 
 object World {
