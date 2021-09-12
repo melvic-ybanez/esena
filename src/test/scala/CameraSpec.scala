@@ -1,7 +1,8 @@
 import com.melvic.esena.Math.{roundTo, roundTo5}
+import com.melvic.esena.canvas.Color
 import com.melvic.esena.matrix.Matrix.Identity4x4
-import com.melvic.esena.matrix.{rotationY, translation}
-import com.melvic.esena.scene.Camera
+import com.melvic.esena.matrix.{rotationY, translation, view}
+import com.melvic.esena.scene.{Camera, World}
 import com.melvic.esena.tuples.{Point, Vec}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
@@ -41,9 +42,20 @@ class CameraSpec extends AnyFlatSpec with should.Matchers {
 
   "A ray when the camera is transformed" should "provide the correct origin and direction" in {
     val cam = Camera(201, 101, math.Pi / 2)
-      .copy(transformation = rotationY(math.Pi / 4) * translation(0, -2, 5))
+      .transform(rotationY(math.Pi / 4) * translation(0, -2, 5))
     val ray = cam.rayForPixel(100, 50)
     ray.origin should be (Point(0, 2, -5))    // inverse of the camera translation
     ray.direction should be (Vec(math.sqrt(2) / 2, 0, -math.sqrt(2) / 2))
+  }
+
+  "Rendering a world with a camera" should "return the expected pixel color in the middle" in {
+    val world = World.default
+    val from = Point(0, 0, -5)
+    val to = Point.Origin
+    val up = Vec(0, 1, 0)
+    val cam = Camera(11, 11, math.Pi / 2)
+      .transform(view(from, to, up))
+    val image = cam.render(world)
+    image.pixelAt(5, 5).map(roundTo5) should be (Color(0.38066, 0.47583, 0.28550))
   }
 }

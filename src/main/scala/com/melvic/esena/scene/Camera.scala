@@ -1,5 +1,6 @@
 package com.melvic.esena.scene
 
+import com.melvic.esena.canvas.Canvas
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.matrix.Matrix.Identity4x4
 import com.melvic.esena.rays.Ray
@@ -34,6 +35,12 @@ final case class Camera(
   def pixelSize: Double =
     halfWidth * 2 / hSize
 
+  /**
+    * Computes a ray that starts from the camera and passes
+    * through the pixel on the canvas.
+    * @param x the x coordinate of the pixel
+    * @param y the y coordinate of the pixel
+    */
   def rayForPixel(x: Double, y: Double): Ray = {
     // offset from the edge of the canvas to the pixel's center
     val xOffset = (x + 0.5) * pixelSize
@@ -47,9 +54,27 @@ final case class Camera(
     val pixel = transformation.inverse * Point(worldX, worldY, -1)
     // transform the origin
     val origin = transformation.inverse * Point.Origin
-
+    // compute the direction vector of the ray
     val direction = (pixel - origin).normalize
 
     Ray(origin.toPoint, direction)
+  }
+
+  def transform(transformation: Matrix): Camera =
+    copy(transformation = transformation)
+
+  /**
+    * Render an image of the given world using this camera
+    */
+  def render(world: World): Canvas = {
+    val canvas = Canvas(hSize.toInt, vSize.toInt)
+
+    (0 until canvas.height).foldLeft(canvas) { (canvas, y) =>
+      (0 until canvas.width).foldLeft(canvas) { (canvas, x) =>
+        val ray   = rayForPixel(x, y)
+        val color = world.colorAt(ray)
+        canvas.writePixel(x, y, color)
+      }
+    }
   }
 }
