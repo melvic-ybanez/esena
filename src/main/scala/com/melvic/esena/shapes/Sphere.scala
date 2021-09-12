@@ -42,6 +42,9 @@ final case class Sphere(
   def transform(transformation: Matrix): Sphere =
     copy(transformation = transformation)
 
+  def addTransformation(transformation: Matrix): Sphere =
+    transform(transformation = transformation * this.transformation)
+
   def normalAt(worldPoint: Point): Vec = {
     val objectPoint = transformation.inverse * worldPoint
     val objectNormal = objectPoint - Point.Origin
