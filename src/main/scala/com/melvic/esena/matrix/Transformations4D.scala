@@ -1,5 +1,7 @@
 package com.melvic.esena.matrix
 
+import com.melvic.esena.tuples.{Point, Vec}
+
 trait Transformations4D {
 
   /**
@@ -83,6 +85,30 @@ trait Transformations4D {
       (zx, zy, 1, 0),
       (0, 0, 0, 1)
     )
+
+  /**
+    * Orients the world relative to the eye
+    * @param from point of the eye in the scene
+    * @param to point you want to look at
+    * @param up indicates which direction is up
+    */
+  def view(from: Point, to: Point, up: Vec): Matrix = {
+    val forward = (to - from).normalize
+    val left = forward.cross(up.normalize)
+    val trueUp = left.cross(forward)
+
+    val orientation = Matrix.of4x4(
+      (left.x, left.y, left.z, 0),
+      (trueUp.x, trueUp.y, trueUp.z, 0),
+      (-forward.x, -forward.y, -forward.z, 0),
+      (0, 0, 0, 1)
+    )
+
+    // move the scene into place
+    val trans = translation(-from.x, -from.y, -from.z)
+
+    orientation * trans
+  }
 }
 
 object Transformations4D extends Transformations4D
