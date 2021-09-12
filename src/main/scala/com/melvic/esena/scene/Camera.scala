@@ -61,7 +61,7 @@ final case class Camera(
   }
 
   def transform(transformation: Matrix): Camera =
-    copy(transformation = transformation)
+    copy(transformation = transformation * this.transformation)
 
   /**
     * Render an image of the given world using this camera

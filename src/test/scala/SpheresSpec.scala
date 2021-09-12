@@ -61,7 +61,7 @@ class SpheresSpec extends AnyFlatSpec with should.Matchers {
 
   "A sphere" should "be able to update transformation" in {
     val t = translation(2, 3, 4)
-    s.transform(t).transformation should be (t)
+    s.withTransformation(t).transformation should be (t)
   }
 
   "Intersecting a scaled sphere with a ray" should "work by scaling the ray inversely" in {

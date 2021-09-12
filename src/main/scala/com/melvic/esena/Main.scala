@@ -15,31 +15,31 @@ object Main {
   def main(args: Array[String]): Unit = {
     // This is just a sample rendered world for now
     val floor = Sphere()
-      .transform(scaling(10, 0.01, 10))
+      .withTransformation(scaling(10, 0.01, 10))
       .withMaterial(Material(color = Color(1, 0.9, 0.9), specular = 0))
     val leftWall = Sphere()
-      .transform(translation(0, 0, 5) * rotationY(-math.Pi / 4) * rotationX(math.Pi / 2) * scaling(10, 0.01, 10))
+      .withTransformation(translation(0, 0, 5) * rotationY(-math.Pi / 4) * rotationX(math.Pi / 2) * scaling(10, 0.01, 10))
       .withMaterial(floor.material)
     val rightWall = Sphere()
-      .transform(translation(0, 0, 5) * rotationY(math.Pi / 4) * rotationX(math.Pi / 2) * scaling(10, 0.01, 10))
+      .withTransformation(translation(0, 0, 5) * rotationY(math.Pi / 4) * rotationX(math.Pi / 2) * scaling(10, 0.01, 10))
       .withMaterial(floor.material)
     val middleSphere = Sphere()
-      .transform(translation(-0.5, 1, 0.5))
+      .withTransformation(translation(-0.5, 1, 0.5))
       .withMaterial(Material(color = Color(0.1, 1, 0.5), diffuse = 0.7, specular = 0.3))
     val leftSphere = Sphere()
-      .transform(translation(-1.5, 0.33, -0.75) * scaling(0.33, 0.33, 0.33))
+      .withTransformation(translation(-1.5, 0.33, -0.75) * scaling(0.33, 0.33, 0.33))
       .withMaterial(Material(color = Color(1, 0.8, 0.1), diffuse = 0.7, specular = 0.3))
 
     val moreSmallSpheres = (0 until 5).map { i =>
       val scale = 1 - (i / 10.0)
-      leftSphere.addTransformation(translation(i, 0, 0) * scaling(scale, scale, scale))
+      leftSphere.transform(translation(i, 0, 0) * scaling(scale, scale, scale))
     }
 
     // white light source, from above and to the left
     val world = World.default.withLight(PointLight(Point(-10, 10, -10), Color.White))
       .copy(objects = Vector(floor, leftWall, rightWall, middleSphere, leftSphere) ++ moreSmallSpheres)
 
-    val cam = Camera(800, 400, math.Pi / 3).transform(view(Point(0, 1.5, -5), Point(0, 1, 0), Vec(0, 1, 0)))
+    val cam = Camera(1000, 600, math.Pi / 3).transform(view(Point(0, 1.5, -5), Point(0, 1, 0), Vec(0, 1, 0)))
     val canvas = cam.render(world)
 
     // write to file

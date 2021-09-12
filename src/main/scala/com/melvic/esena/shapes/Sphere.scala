@@ -39,25 +39,28 @@ final case class Sphere(
       )
   }
 
+  /**
+    * Adds a transformation on top of the already existing one
+    */
   def transform(transformation: Matrix): Sphere =
-    copy(transformation = transformation)
-
-  def addTransformation(transformation: Matrix): Sphere =
-    transform(transformation = transformation * this.transformation)
+    withTransformation(transformation = transformation * this.transformation)
 
   def normalAt(worldPoint: Point): Vec = {
-    val objectPoint = transformation.inverse * worldPoint
-    val objectNormal = objectPoint - Point.Origin
-    val worldNormal = transformation.inverse.transpose * objectNormal
-    val worldNormalVec = worldNormal.toVec   // sets the w to 0
+    val objectPoint    = transformation.inverse * worldPoint
+    val objectNormal   = objectPoint - Point.Origin
+    val worldNormal    = transformation.inverse.transpose * objectNormal
+    val worldNormalVec = worldNormal.toVec // sets the w to 0
     worldNormalVec.normalize
   }
 
   def withMaterial(material: Material): Sphere =
     copy(material = material)
+
+  def withTransformation(transformation: Matrix): Sphere =
+    copy(transformation = transformation)
 }
 
 object Sphere {
   def apply(transformation: Matrix): Sphere =
-    Sphere().transform(transformation)
+    Sphere().withTransformation(transformation)
 }
