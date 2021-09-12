@@ -2,6 +2,8 @@ package com.melvic.esena.scene
 
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.matrix.Matrix.Identity4x4
+import com.melvic.esena.rays.Ray
+import com.melvic.esena.tuples.Point
 
 final case class Camera(
     hSize: Double,
@@ -31,4 +33,23 @@ final case class Camera(
     */
   def pixelSize: Double =
     halfWidth * 2 / hSize
+
+  def rayForPixel(x: Double, y: Double): Ray = {
+    // offset from the edge of the canvas to the pixel's center
+    val xOffset = (x + 0.5) * pixelSize
+    val yOffset = (y + 0.5) * pixelSize
+
+    // Note: camera looks toward z (i.e. +x is to the left)
+    val worldX = halfWidth - xOffset
+    val worldY = halfHeight - yOffset
+
+    // transform the canvas point
+    val pixel = transformation.inverse * Point(worldX, worldY, -1)
+    // transform the origin
+    val origin = transformation.inverse * Point.Origin
+
+    val direction = (pixel - origin).normalize
+
+    Ray(origin.toPoint, direction)
+  }
 }
