@@ -83,4 +83,24 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
     val r = Ray(Point(0, 0, 0.75), Vec(0, 0, -1))
     updatedWorld.colorAt(r) should be (inner.material.color)
   }
+
+  "Shadow" should "not be produced when nothing lies between the point and the light source" in {
+    val point = Point(0, 10, 0)
+    assert(!world.isShadowedAt(point))
+  }
+
+  "An object between the point and the light source" should "cause a shadow" in {
+    val point = Point(10, -10, 10)
+    assert(world.isShadowedAt(point))
+  }
+
+  "An object behind the light" should "not cause a shadow" in {
+    val point = Point(-20, 20, -20)
+    assert(!world.isShadowedAt(point))
+  }
+
+  "An object behind the point" should "not cause a shadow" in {
+    val point = Point(-2, 2, -2)
+    assert(!world.isShadowedAt(point))
+  }
 }

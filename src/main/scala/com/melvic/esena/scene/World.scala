@@ -30,6 +30,20 @@ final case class World(
     hit.fold(Color.Black)(h => lights.shadeHit(this, Computations.prepare(h, ray)))
   }
 
+  def isShadowedAt(point: Point): Boolean =
+    light.fold(false) { light =>
+      // vector from point to the light source
+      val pointToLight = light.position - point
+
+      val distance  = pointToLight.magnitude
+      val direction = pointToLight.normalize
+
+      // create a ray from the point to the light source
+      val pointToLightRay = Ray(point, direction)
+
+      val hit = Intersection.hit(intersect(pointToLightRay))
+      hit.exists(_.t < distance)
+    }
 }
 
 object World {
@@ -37,12 +51,7 @@ object World {
     World(
       Some(PointLight(Point(-10, 10, -10), Color.White)),
       Vector(
-        Sphere(
-          material = Material(
-            color = Color(0.8, 1.0, 0.6),
-            diffuse = 0.7,
-            specular = 0.2,
-          )),
+        Sphere(material = Material(color = Color(0.8, 1.0, 0.6), diffuse = 0.7, specular = 0.2)),
         Sphere(transformation = scaling(0.5, 0.5, 0.5))
       )
     )
