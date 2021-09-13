@@ -1,4 +1,4 @@
-import com.melvic.esena.Math.roundTo
+import com.melvic.esena.MathUtils.roundTo
 import com.melvic.esena.canvas.Color
 import com.melvic.esena.lights.{Material, PointLight, lighting}
 import com.melvic.esena.tuples.{Point, Vec}

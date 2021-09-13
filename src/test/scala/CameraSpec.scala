@@ -1,4 +1,4 @@
-import com.melvic.esena.Math.{roundTo, roundTo5}
+import com.melvic.esena.MathUtils.{roundTo, roundTo5}
 import com.melvic.esena.canvas.Color
 import com.melvic.esena.matrix.Matrix.Identity4x4
 import com.melvic.esena.matrix.{rotationY, translation, view}

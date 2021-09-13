@@ -1,8 +1,8 @@
-import com.melvic.esena.Math.roundTo5
+import com.melvic.esena.MathUtils.roundTo5
 import com.melvic.esena.canvas.Color
-import com.melvic.esena.lights
+import com.melvic.esena.{MathUtils, lights}
 import com.melvic.esena.lights.{Material, PointLight}
-import com.melvic.esena.matrix.scaling
+import com.melvic.esena.matrix.{scaling, translation}
 import com.melvic.esena.rays.{Computations, Intersection, Ray}
 import com.melvic.esena.scene.World
 import com.melvic.esena.shapes.Sphere
@@ -58,7 +58,7 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
     val shape = w.objects(1)
     val i = Intersection(0.5, shape)
     val comps = Computations.prepare(i, r)
-    lights.shadeHit(w, comps).map(roundTo5) should be (Color(0.90498, 0.90498, 0.90498))
+    lights.shadeHit(w, comps) should be (Color(0.1, 0.1, 0.1))
   }
 
   "The color when a ray misses" should "be black" in {
@@ -102,5 +102,19 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
   "An object behind the point" should "not cause a shadow" in {
     val point = Point(-2, 2, -2)
     assert(!world.isShadowedAt(point))
+  }
+
+  "If an intersection is in shadow, the object" should "only have ambient color" in {
+    val s1 = Sphere()
+    val s2 = Sphere().transform(translation(0, 0, 10))
+    val world = World
+      .default
+      .withLight(PointLight(Point(0, 0, -10), Color.White))
+      .addObjects(s1, s2)
+    val ray = Ray(Point(0, 0, 5), Vec(0, 0, 1))
+    val intersection = Intersection(4, s2)
+    val comps = Computations.prepare(intersection, ray)
+    val color = lights.shadeHit(world, comps)
+    color should be (Color(0.1, 0.1, 0.1))
   }
 }

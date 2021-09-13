@@ -1,6 +1,6 @@
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.tuples.Tuple
-import com.melvic.esena.Math._
+import com.melvic.esena.MathUtils._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 

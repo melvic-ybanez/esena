@@ -1,6 +1,6 @@
 package com.melvic.esena.canvas
 
-import com.melvic.esena.Math
+import com.melvic.esena.MathUtils
 import com.melvic.esena.canvas.Canvas.{CanvasImpl, PixelSet}
 
 import scala.annotation.tailrec
@@ -58,7 +58,7 @@ trait Canvas {
   }
 
   private def index(x: Int, y: Int): Int =
-    Math.indexOf(y, x, width)
+    MathUtils.indexOf(y, x, width)
 }
 
 object Canvas {

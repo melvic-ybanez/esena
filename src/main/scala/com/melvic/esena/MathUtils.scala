@@ -1,10 +1,10 @@
 package com.melvic.esena
 
-object Math {
-  def compareDoubles(a: Double, b: Double): Boolean = {
-    val epsilon = 0.000001
-    math.abs(a - b) < epsilon
-  }
+object MathUtils {
+  val Epsilon = 0.000001
+
+  def compareDoubles(a: Double, b: Double): Boolean =
+    math.abs(a - b) < Epsilon
 
   def scaleTo(maxValue: Int, value: Double): Int = {
     val result = ((maxValue + 1) * value).toInt

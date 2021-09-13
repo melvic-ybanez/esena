@@ -1,6 +1,6 @@
 package com.melvic.esena.matrix
 
-import com.melvic.esena.Math
+import com.melvic.esena.MathUtils
 import com.melvic.esena.matrix.Matrix.{Elements, MatrixImpl}
 import com.melvic.esena.tuples.Tuple
 
@@ -13,13 +13,13 @@ trait Matrix {
     * Updates the element at the specified position
     */
   def apply(row: Int, col: Int, element: Double): Matrix =
-    MatrixImpl(width, height, elements.updated(Math.indexOf(row, col, width), element))
+    MatrixImpl(width, height, elements.updated(MathUtils.indexOf(row, col, width), element))
 
   /**
     * Gets the element at the specified position
     */
   def apply(row: Int, col: Int): Double =
-    elements(Math.indexOf(row, col, width))
+    elements(MathUtils.indexOf(row, col, width))
 
   def at(row: Int, col: Int): Double = this(row, col)
 
@@ -121,7 +121,7 @@ trait Matrix {
     case MatrixImpl(w, h, elements) =>
       val elementsEqual = elements
         .zip(this.elements)
-        .forall { case (a, b) => Math.compareDoubles(a, b) }
+        .forall { case (a, b) => MathUtils.compareDoubles(a, b) }
       val sizeEqual = w == width && h == height
       elementsEqual && sizeEqual
     case _ => false

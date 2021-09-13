@@ -1,6 +1,6 @@
 package com.melvic.esena.canvas
 
-import com.melvic.esena.Math
+import com.melvic.esena.MathUtils
 import com.melvic.esena.tuples.Tuple
 
 final case class Color(red: Double, green: Double, blue: Double) extends Tuple {
@@ -22,9 +22,9 @@ final case class Color(red: Double, green: Double, blue: Double) extends Tuple {
   def *(that: Color): Color = hadamardProduct(that)
 
   def ppmString(maxValue: Int): String = {
-    val r = Math.scaleTo(maxValue, red)
-    val g = Math.scaleTo(maxValue, green)
-    val b = Math.scaleTo(maxValue, blue)
+    val r = MathUtils.scaleTo(maxValue, red)
+    val g = MathUtils.scaleTo(maxValue, green)
+    val b = MathUtils.scaleTo(maxValue, blue)
     s"$r $g $b"
   }
 }

@@ -1,4 +1,4 @@
-import com.melvic.esena.Math.roundTo5
+import com.melvic.esena.MathUtils.roundTo5
 import com.melvic.esena.matrix._
 import com.melvic.esena.tuples.{Point, Vec}
 import org.scalatest.flatspec.AnyFlatSpec

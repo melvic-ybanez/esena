@@ -1,4 +1,4 @@
-import com.melvic.esena.Math.roundTo5
+import com.melvic.esena.MathUtils.roundTo5
 import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix.Identity4x4
 import com.melvic.esena.matrix._

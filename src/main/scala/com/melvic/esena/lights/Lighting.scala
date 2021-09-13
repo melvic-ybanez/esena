@@ -47,6 +47,8 @@ trait Lighting {
   }
 
   def shadeHit(world: World, comps: Computations) =
-    world.light.fold(Color.Black)(light =>
-      lighting(comps.obj.material, light, comps.point, comps.eyeVec, comps.normalVec))
+    world.light.fold(Color.Black) { light =>
+      val inShadow = world.isShadowedAt(comps.overPoint)
+      lighting(comps.obj.material, light, comps.overPoint, comps.eyeVec, comps.normalVec, inShadow)
+    }
 }

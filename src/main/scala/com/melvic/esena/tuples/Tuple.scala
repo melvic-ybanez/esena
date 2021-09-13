@@ -3,7 +3,7 @@ package com.melvic.esena.tuples
 import com.melvic.esena
 import com.melvic.esena.canvas.Color
 import com.melvic.esena.matrix.Matrix
-import com.melvic.esena.{Math, Scalar}
+import com.melvic.esena.{MathUtils, Scalar}
 
 import scala.language.implicitConversions
 
@@ -46,10 +46,10 @@ trait Tuple {
 
   override def equals(that: Any) = that match {
     case tuple: Tuple =>
-      Math.compareDoubles(this.x, tuple.x) &&
-        esena.Math.compareDoubles(this.y, tuple.y) &&
-        esena.Math.compareDoubles(this.z, tuple.z) &&
-        esena.Math.compareDoubles(this.w, tuple.w)
+      MathUtils.compareDoubles(this.x, tuple.x) &&
+        esena.MathUtils.compareDoubles(this.y, tuple.y) &&
+        esena.MathUtils.compareDoubles(this.z, tuple.z) &&
+        esena.MathUtils.compareDoubles(this.w, tuple.w)
     case _ => false
   }
 
@@ -71,4 +71,7 @@ object Tuple {
 
   implicit def tupleToVec(tuple: Tuple): Vec =
     tuple.toVec
+
+  implicit def tupleToPoint(tuple: Tuple): Point =
+    tuple.toPoint
 }
