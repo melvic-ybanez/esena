@@ -3,7 +3,7 @@ import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersection.Intersections
 import com.melvic.esena.rays.{Intersection, Ray}
-import com.melvic.esena.tuples.{Point, Vec}
+import com.melvic.esena.tuples.Point
 
 final case class Sphere(
     transformation: Matrix = Matrix.Identity4x4,
@@ -17,12 +17,7 @@ final case class Sphere(
     * intersection. Otherwise, the ray touches the
     * sphere in either one or two places.
     */
-  override def intersect(ray: Ray): Intersections = {
-    // To maintain the sphere's center at the origin and its radius
-    // to 1, we transform the ray by the inverse of the sphere's
-    // transformation instead.
-    val transformedRay = ray.transform(transformation.inverse)
-
+  override def intersectWithTransformedRay(transformedRay: Ray): Intersections = {
     // sphere is centered at the world origin
     val sphereToRay = transformedRay.origin - Point(0, 0, 0)
 
@@ -44,14 +39,6 @@ final case class Sphere(
     */
   def transform(transformation: Matrix): Sphere =
     withTransformation(transformation = transformation * this.transformation)
-
-  def normalAt(worldPoint: Point): Vec = {
-    val objectPoint    = transformation.inverse * worldPoint
-    val objectNormal   = objectPoint - Point.Origin
-    val worldNormal    = transformation.inverse.transpose * objectNormal
-    val worldNormalVec = worldNormal.toVec // sets the w to 0
-    worldNormalVec.normalize
-  }
 
   def withMaterial(material: Material): Sphere =
     copy(material = material)

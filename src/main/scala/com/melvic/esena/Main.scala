@@ -31,8 +31,8 @@ object Main {
       .withMaterial(Material(color = Color(1, 0.8, 0.1), diffuse = 0.7, specular = 0.3))
 
     val moreSmallSpheres = (0 until 5).map { i =>
-      val scale = 1 - (i / 10.0)
-      leftSphere.transform(translation(i, 0, 0) * scaling(scale, scale, scale))
+      val componentScale = 0.5 + 0.1 * i
+      leftSphere.transform(translation(i, 0, 0) * scaling(componentScale, componentScale, componentScale))
     }
 
     // white light source, from above and to the left
