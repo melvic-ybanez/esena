@@ -11,7 +11,8 @@ trait Lighting {
       light: PointLight,
       point: Point, // point being illuminated
       eyeVec: Vec,
-      normalVec: Vec
+      normalVec: Vec,
+      inShadow: Boolean = false
   ): Color = {
     val effectiveColor = material.color * light.intensity
     val lightVec       = (light.position - point).normalize
@@ -20,7 +21,7 @@ trait Lighting {
     // cosine of the angle between the light and the normal vectors
     val lightDotNormal = lightVec.dot(normalVec)
 
-    val (diffuse, specular) = {
+    lazy val (diffuse, specular) = {
       if (lightDotNormal < 0) {
         // light is on the other side of the surface
         (Color.Black, Color.Black)
@@ -41,7 +42,8 @@ trait Lighting {
       }
     }
 
-    (ambient + diffuse + specular).toColor
+    if (inShadow) ambient.toColor
+    else (ambient + diffuse + specular).toColor
   }
 
   def shadeHit(world: World, comps: Computations) =
