@@ -1,6 +1,8 @@
 package com.melvic.esena.lights
 
 import com.melvic.esena.canvas.Color
+import com.melvic.esena.patterns
+import com.melvic.esena.patterns.Pattern.{NoPattern, StripePattern}
 import com.melvic.esena.rays.Computations
 import com.melvic.esena.scene.World
 import com.melvic.esena.tuples.{Point, Vec}
@@ -14,7 +16,12 @@ trait Lighting {
       normalVec: Vec,
       inShadow: Boolean = false
   ): Color = {
-    val effectiveColor = material.color * light.intensity
+    val color = material.pattern match {
+      case NoPattern => material.color
+      case pattern: StripePattern => patterns.stripeAt(pattern, point)
+    }
+
+    val effectiveColor = color * light.intensity
     val lightVec       = (light.position - point).normalize
     val ambient        = effectiveColor * material.ambient
 

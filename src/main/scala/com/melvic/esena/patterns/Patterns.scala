@@ -1,6 +1,7 @@
 package com.melvic.esena.patterns
 
 import com.melvic.esena.canvas.Color
+import com.melvic.esena.patterns.Pattern.StripePattern
 import com.melvic.esena.tuples.Point
 
 trait Patterns {

@@ -1,6 +1,7 @@
 import com.melvic.esena.MathUtils.roundTo
 import com.melvic.esena.canvas.Color
 import com.melvic.esena.lights.{Material, PointLight, lighting}
+import com.melvic.esena.patterns.Pattern.StripePattern
 import com.melvic.esena.tuples.{Point, Vec}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
@@ -56,5 +57,21 @@ class MaterialsSpec extends AnyFlatSpec with should.Matchers {
     val inShadow = true
     val result = lighting(mat, light, position, eyeVec, normalVec, inShadow)
     result should be (Color(0.1, 0.1, 0.1))
+  }
+
+  "Lighting with a pattern applied" should "return the color of the pattern" in {
+    val newMat = mat.copy(
+      pattern = StripePattern(Color.White, Color.Black),
+      ambient = 1,
+      diffuse = 0,
+      specular = 0
+    )
+    val eyeVec = Vec(0, 0, -1)
+    val normalVec = Vec(0, 0, -1)
+    val light = PointLight(Point(0, 0, -10), Color.White)
+    val c1 = lighting(newMat, light, Point(0.9, 0, 0), eyeVec, normalVec)
+    val c2 = lighting(newMat, light, Point(1.1, 0, 0), eyeVec, normalVec)
+    c1 should be (Color.White)
+    c2 should be (Color.Black)
   }
 }

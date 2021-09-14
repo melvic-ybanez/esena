@@ -1,5 +1,6 @@
 import com.melvic.esena.canvas.Color
-import com.melvic.esena.patterns.{StripePattern, stripeAt}
+import com.melvic.esena.patterns.Pattern.StripePattern
+import com.melvic.esena.patterns.stripeAt
 import com.melvic.esena.tuples.Point
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
