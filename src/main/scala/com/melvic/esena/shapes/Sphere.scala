@@ -5,10 +5,7 @@ import com.melvic.esena.rays.Intersection.Intersections
 import com.melvic.esena.rays.{Intersection, Ray}
 import com.melvic.esena.tuples.Point
 
-final case class Sphere(
-    transformation: Matrix = Matrix.Identity4x4,
-    material: Material = Material()
-) extends Shape {
+trait Sphere extends Shape {
 
   /**
     * The ray-sphere intersection is based on the
@@ -38,16 +35,22 @@ final case class Sphere(
     * Adds a transformation on top of the already existing one
     */
   def transform(transformation: Matrix): Sphere =
-    withTransformation(transformation = transformation * this.transformation)
+    withTransformation(transformation * this.transformation)
 
-  def withMaterial(material: Material): Sphere =
-    copy(material = material)
+  def withMaterial(newMaterial: Material): Sphere =
+    Sphere(newMaterial, transformation)
 
-  def withTransformation(transformation: Matrix): Sphere =
-    copy(transformation = transformation)
+  def withTransformation(newTransformation: Matrix): Sphere =
+    Sphere(material, newTransformation)
 }
 
-object Sphere {
-  def apply(transformation: Matrix): Sphere =
-    Sphere().withTransformation(transformation)
+object Sphere extends Sphere {
+  def apply(): Sphere = new Sphere {}
+
+  def apply(initMaterial: Material, initTransformation: Matrix): Sphere =
+    new Sphere {
+      override def material = initMaterial
+
+      override def transformation = initTransformation
+    }
 }

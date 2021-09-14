@@ -61,12 +61,12 @@ class SpheresSpec extends AnyFlatSpec with should.Matchers {
 
   "A sphere" should "be able to update transformation" in {
     val t = translation(2, 3, 4)
-    s.withTransformation(t).transformation should be (t)
+    s.transform(t).transformation should be (t)
   }
 
   "Intersecting a scaled sphere with a ray" should "work by scaling the ray inversely" in {
     val r = Ray(Point(0, 0, -5), Vec(0, 0, 1))
-    val s = Sphere(scaling(2, 2, 2))
+    val s = Sphere.transform(scaling(2, 2, 2))
     val xs = s.intersect(r)
     xs.size should be (2)
     xs(0).t should be (3)
@@ -75,7 +75,7 @@ class SpheresSpec extends AnyFlatSpec with should.Matchers {
 
   "Intersecting a translated sphere with a ray" should "work by translating the ray inversely" in {
     val r = Ray(Point(0, 0, -5), Vec(0, 0, 1))
-    val s = Sphere(translation(5, 0, 0))
+    val s = Sphere.transform(translation(5, 0, 0))
     val xs = s.intersect(r)
     xs.size should be (0)
   }
@@ -108,13 +108,13 @@ class SpheresSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "The normal of a translated sphere" should "be translated in the world space" in {
-    val s = Sphere(translation(0, 1, 0))
+    val s = Sphere.transform(translation(0, 1, 0))
     val n = s.normalAt(Point(0, 1.70711, -0.70711))
     n.map(roundTo5) should be (Vec(0, 0.70711, -0.70711))
   }
 
   "The normal on a transformed sphere" should "be transformed accordingly in the world space" in {
-    val s = Sphere(scaling(1, 0.5, 1) * rotationZ(math.Pi / 5))
+    val s = Sphere.transform(scaling(1, 0.5, 1) * rotationZ(math.Pi / 5))
     val n = s.normalAt(Point(0, math.sqrt(2) / 2, -math.sqrt(2) / 2))
     n.map(roundTo5) should be (Vec(0, 0.97014, -0.24254))
   }

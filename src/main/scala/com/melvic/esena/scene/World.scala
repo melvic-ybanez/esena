@@ -54,8 +54,8 @@ object World {
     World(
       Some(PointLight(Point(-10, 10, -10), Color.White)),
       Vector(
-        Sphere(material = Material(color = Color(0.8, 1.0, 0.6), diffuse = 0.7, specular = 0.2)),
-        Sphere(transformation = scaling(0.5, 0.5, 0.5))
+        Sphere.withMaterial(Material(color = Color(0.8, 1.0, 0.6), diffuse = 0.7, specular = 0.2)),
+        Sphere.withTransformation(scaling(0.5, 0.5, 0.5))
       )
     )
 }

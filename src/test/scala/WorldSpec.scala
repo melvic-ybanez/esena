@@ -21,14 +21,14 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
 
   "The default world" should "have the default settings for light and objects" in {
     val light = PointLight(Point(-10, 10, -10), Color.White)
-    val s1 = Sphere(
-      material = Material(
+    val s1 = Sphere.withMaterial(
+      Material(
         color = Color(0.8, 1.0, 0.6),
         diffuse = 0.7,
         specular = 0.2
       )
     )
-    val s2 = Sphere(transformation = scaling(0.5, 0.5, 0.5))
+    val s2 = Sphere.transform(scaling(0.5, 0.5, 0.5))
     world.light should be (Some(light))
     assert(world.contains(s1))
     assert(world.contains(s2))
