@@ -17,7 +17,4 @@ object Material {
   val DefaultDiffuse = 0.9
   val DefaultSpecular = 0.9
   val DefaultShininess = 200.0
-
-  def colored(color: Color): Material =
-    Material().copy(color = color)
 }

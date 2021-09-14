@@ -6,6 +6,7 @@ import com.melvic.esena.rays.{Intersection, Ray}
 import com.melvic.esena.tuples.Point
 
 trait Sphere extends Shape {
+  override type S = Sphere
 
   /**
     * The ray-sphere intersection is based on the
@@ -31,16 +32,10 @@ trait Sphere extends Shape {
       )
   }
 
-  /**
-    * Adds a transformation on top of the already existing one
-    */
-  def transform(transformation: Matrix): Sphere =
-    withTransformation(transformation * this.transformation)
-
-  def withMaterial(newMaterial: Material): Sphere =
+  override def withMaterial(newMaterial: Material): Sphere =
     Sphere(newMaterial, transformation)
 
-  def withTransformation(newTransformation: Matrix): Sphere =
+  override def withTransformation(newTransformation: Matrix): Sphere =
     Sphere(material, newTransformation)
 }
 
