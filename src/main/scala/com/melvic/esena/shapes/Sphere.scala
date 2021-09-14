@@ -15,7 +15,7 @@ trait Sphere extends Shape {
     * intersection. Otherwise, the ray touches the
     * sphere in either one or two places.
     */
-  override def intersectWithTransformedRay(transformedRay: Ray): Intersections = {
+  override def localIntersect(transformedRay: Ray): Intersections = {
     // sphere is centered at the world origin
     val sphereToRay = transformedRay.origin - Point(0, 0, 0)
 
@@ -31,6 +31,9 @@ trait Sphere extends Shape {
         Intersection((-b + math.sqrt(discriminant)) / (2 * a), this)
       )
   }
+
+  override def localNormalAt(objectPoint: Point) =
+    objectPoint - Point.Origin
 
   override def withMaterial(newMaterial: Material): Sphere =
     Sphere(newMaterial, transformation)

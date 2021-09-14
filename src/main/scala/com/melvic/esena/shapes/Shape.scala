@@ -14,15 +14,22 @@ trait Shape extends CanIntersect {
 
   def material: Material = Material()
 
-  def intersectWithTransformedRay(ray: Ray): Intersections
+  /**
+    * Intersects with a transformed ray. If the ray is not
+    * transformed yet, which usually is the case, you might
+    * need to call [[intersect]] instead.
+    */
+  def localIntersect(transformedRay: Ray): Intersections
+
+  def localNormalAt(objectPoint: Point): Vec
 
   def withMaterial(newMaterial: Material): S
 
   def withTransformation(newTransformation: Matrix): S
 
   /**
-   * Adds a transformation on top of the already existing one
-   */
+    * Adds a transformation on top of the already existing one
+    */
   def transform(transformation: Matrix): S =
     withTransformation(transformation * this.transformation)
 
@@ -30,13 +37,12 @@ trait Shape extends CanIntersect {
     // transform the ray into object space
     val transformedRay = ray.transform(transformation.inverse)
 
-    intersectWithTransformedRay(transformedRay)
+    localIntersect(transformedRay)
   }
 
   def normalAt(worldPoint: Point): Vec = {
     val objectPoint    = transformation.inverse * worldPoint
-    val objectNormal   = objectPoint - Point.Origin
-    val worldNormal    = transformation.inverse.transpose * objectNormal
+    val worldNormal    = transformation.inverse.transpose * localNormalAt(objectPoint)
     val worldNormalVec = worldNormal.toVec // sets the w to 0
     worldNormalVec.normalize
   }
