@@ -28,6 +28,6 @@ org.scala-ide.sdt.update-site/site.xml
 .DS_Store
 
 sample.ppm
-sample.png
+*.png
 
 *.sc
