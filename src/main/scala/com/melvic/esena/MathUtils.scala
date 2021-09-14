@@ -17,10 +17,11 @@ object MathUtils {
     row * width + col
 
   /**
-   * This is useful when testing with rounded values
-   */
-  def roundTo(exp: Int)(value: Double): Double = {
-    val e = math.pow(10, exp)
+    * Rounds a value based on a given number of digits.
+    * Note: This is useful when testing with rounded values
+    */
+  def roundTo(digitCount: Int)(value: Double): Double = {
+    val e = math.pow(10, digitCount)
     math.round(value * e) / e
   }
 
