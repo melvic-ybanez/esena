@@ -103,4 +103,25 @@ class PatternsSpec extends AnyFlatSpec with should.Matchers {
     pattern.at(Point(0, 0, 1)) should be (Color.Black)
     pattern.at(Point(0.708, 0, 0.708)) should be (Color.Black)
   }
+
+  "Checkers" should "repeat in x" in {
+    val pattern = CheckersPattern(Color.White, Color.Black)
+    pattern.at(Point.Origin) should be (Color.White)
+    pattern.at(Point(0.99, 0, 0)) should be (Color.White)
+    pattern.at(Point(1.01, 0, 0)) should be (Color.Black)
+  }
+
+  "Checkers" should "repeat in y" in {
+    val pattern = CheckersPattern(Color.White, Color.Black)
+    pattern.at(Point.Origin) should be (Color.White)
+    pattern.at(Point(0, 0.99, 0)) should be (Color.White)
+    pattern.at(Point(0, 1.01, 0)) should be (Color.Black)
+  }
+
+  "Checkers" should "repeat in z" in {
+    val pattern = CheckersPattern(Color.White, Color.Black)
+    pattern.at(Point.Origin) should be (Color.White)
+    pattern.at(Point(0, 0, 0.99)) should be (Color.White)
+    pattern.at(Point(0, 0, 1.01)) should be (Color.Black)
+  }
 }

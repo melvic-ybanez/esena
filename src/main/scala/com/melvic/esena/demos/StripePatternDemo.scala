@@ -8,7 +8,7 @@ import com.melvic.esena.scene.World
 import com.melvic.esena.shapes.{Plane, Sphere}
 import com.melvic.esena.tuples.Point
 
-object StripePatterns {
+object StripePatternDemo {
   def build: Canvas = {
     val floor = Plane.withMaterial(
       Material(pattern = Some(StripePattern(Color.White, Color.Black))))
