@@ -52,3 +52,9 @@ trait Shape extends CanIntersect {
     case _            => false
   }
 }
+
+object Shape {
+  trait Aux[A] extends Shape {
+    type S = A
+  }
+}

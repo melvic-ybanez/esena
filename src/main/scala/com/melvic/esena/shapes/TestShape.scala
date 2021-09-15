@@ -4,11 +4,9 @@ import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Ray
 import com.melvic.esena.tuples.{Point, Vec}
 
-trait TestShape extends Shape {
+trait TestShape extends Shape.Aux[TestShape] {
   // for testing purposes only, we are caching the transformed ray
   var transformedRay: Ray = Ray(Point.Origin, Vec.Zero)
-
-  override type S = TestShape
 
   override def localIntersect(ray: Ray) = {
     transformedRay = ray

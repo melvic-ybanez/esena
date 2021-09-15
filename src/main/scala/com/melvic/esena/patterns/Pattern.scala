@@ -22,13 +22,15 @@ trait Pattern {
 }
 
 object Pattern {
+  trait Aux[A] extends Pattern {
+    type P = A
+  }
+
   final case class StripePattern(
       first: Color,
       second: Color,
       override val transformation: Matrix = Matrix.Identity4x4
-  ) extends Pattern {
-    type P = StripePattern
-
+  ) extends Pattern.Aux[StripePattern] {
     override def applyAt(point: Point): Color =
       if (math.floor(point.x) % 2 == 0) first else second
 
