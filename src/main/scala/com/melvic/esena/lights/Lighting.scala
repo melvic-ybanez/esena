@@ -16,7 +16,7 @@ trait Lighting {
       normalVec: Vec,
       inShadow: Boolean = false,
   ): Color = {
-    val color = material.pattern.fold(material.color)(_.applyAt(obj, point))
+    val color = material.pattern.fold(material.color)(_.at(obj, point))
 
     val effectiveColor = color * light.intensity
     val lightVec       = (light.position - point).normalize
