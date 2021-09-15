@@ -74,4 +74,7 @@ object Tuple {
 
   implicit def tupleToPoint(tuple: Tuple): Point =
     tuple.toPoint
+
+  implicit def toColor(tuple: Tuple): Color =
+    tuple.toColor
 }

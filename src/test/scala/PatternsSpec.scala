@@ -1,6 +1,6 @@
 import com.melvic.esena.canvas.Color
 import com.melvic.esena.matrix.{Matrix, scaling, translation}
-import com.melvic.esena.patterns.Pattern.{StripePattern, TestPattern}
+import com.melvic.esena.patterns.Pattern.{GradientPattern, StripePattern, TestPattern}
 import com.melvic.esena.shapes.Sphere
 import com.melvic.esena.tuples.Point
 import org.scalatest.flatspec.AnyFlatSpec
@@ -86,5 +86,13 @@ class PatternsSpec extends AnyFlatSpec with should.Matchers {
     val pattern = TestPattern.translate(0.5, 1, 1.5)
     val color = pattern.at(shape, Point(2.5, 3, 3.5))
     color should be (Color(0.75, 0.5, 0.25))
+  }
+
+  "A gradient pattern" should "linearly interpolate between colors" in {
+    val pattern = GradientPattern(Color.White, Color.Black)
+    pattern.at(Point.Origin) should be (Color.White)
+    pattern.at(Point(0.25, 0, 0)) should be (Color(0.75, 0.75, 0.75))
+    pattern.at(Point(0.5, 0, 0)) should be (Color(0.5, 0.5, 0.5))
+    pattern.at(Point(0.75, 0, 0)) should be (Color(0.25, 0.25, 0.25))
   }
 }

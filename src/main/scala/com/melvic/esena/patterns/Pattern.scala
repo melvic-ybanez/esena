@@ -9,7 +9,7 @@ trait Pattern extends CanTransform {
   def at(point: Point): Color
 
   def at(obj: Shape, worldPoint: Point): Color = {
-    val objectPoint = obj.transformation.inverse * worldPoint
+    val objectPoint  = obj.transformation.inverse * worldPoint
     val patternPoint = transformation.inverse * objectPoint
     at(patternPoint)
   }
@@ -27,6 +27,26 @@ object Pattern {
   ) extends Pattern.Aux[StripePattern] {
     override def at(point: Point): Color =
       if (math.floor(point.x) % 2 == 0) first else second
+
+    override def withTransformation(transformation: Matrix) =
+      copy(transformation = transformation)
+  }
+
+  final case class GradientPattern(
+      from: Color,
+      to: Color,
+      override val transformation: Matrix = Matrix.Identity4x4
+  ) extends Pattern.Aux[GradientPattern] {
+
+    /**
+      * Interpolates the values of two colors using
+      * a basic linear interpolation formula
+      */
+    override def at(point: Point) = {
+      val distance = to - from
+      val fraction = point.x - math.floor(point.x)
+      from + distance * fraction
+    }
 
     override def withTransformation(transformation: Matrix) =
       copy(transformation = transformation)
