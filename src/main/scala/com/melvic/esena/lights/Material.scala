@@ -9,7 +9,6 @@ import com.melvic.esena.lights.Material.{
   DefaultSpecular
 }
 import com.melvic.esena.patterns.Pattern
-import com.melvic.esena.patterns.Pattern.NoPattern
 
 final case class Material(
     color: Color = DefaultColor,
@@ -17,7 +16,7 @@ final case class Material(
     diffuse: Double = DefaultDiffuse,
     specular: Double = DefaultSpecular,
     shininess: Double = DefaultShininess,
-    pattern: Pattern = NoPattern
+    pattern: Option[Pattern] = None,
 )
 
 object Material {

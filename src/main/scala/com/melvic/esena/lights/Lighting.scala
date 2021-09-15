@@ -1,25 +1,22 @@
 package com.melvic.esena.lights
 
 import com.melvic.esena.canvas.Color
-import com.melvic.esena.patterns
-import com.melvic.esena.patterns.Pattern.{NoPattern, StripePattern}
 import com.melvic.esena.rays.Computations
 import com.melvic.esena.scene.World
+import com.melvic.esena.shapes.Shape
 import com.melvic.esena.tuples.{Point, Vec}
 
 trait Lighting {
   def lighting(
       material: Material,
+      obj: Shape,
       light: PointLight,
       point: Point, // point being illuminated
       eyeVec: Vec,
       normalVec: Vec,
-      inShadow: Boolean = false
+      inShadow: Boolean = false,
   ): Color = {
-    val color = material.pattern match {
-      case NoPattern => material.color
-      case pattern: StripePattern => patterns.stripeAt(pattern, point)
-    }
+    val color = material.pattern.fold(material.color)(_.applyAt(obj, point))
 
     val effectiveColor = color * light.intensity
     val lightVec       = (light.position - point).normalize
@@ -56,6 +53,6 @@ trait Lighting {
   def shadeHit(world: World, comps: Computations) =
     world.light.fold(Color.Black) { light =>
       val inShadow = world.isShadowedAt(comps.overPoint)
-      lighting(comps.obj.material, light, comps.overPoint, comps.eyeVec, comps.normalVec, inShadow)
+      lighting(comps.obj.material, comps.obj, light, comps.overPoint, comps.eyeVec, comps.normalVec, inShadow)
     }
 }
