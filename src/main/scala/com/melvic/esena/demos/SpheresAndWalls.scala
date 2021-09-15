@@ -3,9 +3,9 @@ package com.melvic.esena.demos
 import com.melvic.esena.canvas.{Canvas, Color}
 import com.melvic.esena.lights.{Material, PointLight}
 import com.melvic.esena.matrix._
-import com.melvic.esena.scene.{Camera, World}
+import com.melvic.esena.scene.World
 import com.melvic.esena.shapes.Sphere
-import com.melvic.esena.tuples.{Point, Vec}
+import com.melvic.esena.tuples.Point
 
 object SpheresAndWalls {
   def build: Canvas = {

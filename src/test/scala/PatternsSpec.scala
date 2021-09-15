@@ -1,6 +1,6 @@
 import com.melvic.esena.canvas.Color
 import com.melvic.esena.matrix.{Matrix, scaling, translation}
-import com.melvic.esena.patterns.Pattern.{GradientPattern, StripePattern, TestPattern}
+import com.melvic.esena.patterns._
 import com.melvic.esena.shapes.Sphere
 import com.melvic.esena.tuples.Point
 import org.scalatest.flatspec.AnyFlatSpec
@@ -94,5 +94,13 @@ class PatternsSpec extends AnyFlatSpec with should.Matchers {
     pattern.at(Point(0.25, 0, 0)) should be (Color(0.75, 0.75, 0.75))
     pattern.at(Point(0.5, 0, 0)) should be (Color(0.5, 0.5, 0.5))
     pattern.at(Point(0.75, 0, 0)) should be (Color(0.25, 0.25, 0.25))
+  }
+
+  "A ring" should "extend in both x and z" in {
+    val pattern = RingPattern(Color.White, Color.Black)
+    pattern.at(Point.Origin) should be (Color.White)
+    pattern.at(Point(1, 0, 0)) should be (Color.Black)
+    pattern.at(Point(0, 0, 1)) should be (Color.Black)
+    pattern.at(Point(0.708, 0, 0.708)) should be (Color.Black)
   }
 }

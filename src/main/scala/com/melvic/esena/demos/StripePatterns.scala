@@ -3,7 +3,7 @@ package com.melvic.esena.demos
 import com.melvic.esena.canvas.{Canvas, Color}
 import com.melvic.esena.lights.{Material, PointLight}
 import com.melvic.esena.matrix.{scaling, translation}
-import com.melvic.esena.patterns.Pattern.StripePattern
+import com.melvic.esena.patterns.StripePattern
 import com.melvic.esena.scene.World
 import com.melvic.esena.shapes.{Plane, Sphere}
 import com.melvic.esena.tuples.Point

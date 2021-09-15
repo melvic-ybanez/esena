@@ -1,7 +1,7 @@
 import com.melvic.esena.MathUtils.roundTo
 import com.melvic.esena.canvas.Color
 import com.melvic.esena.lights.{Material, PointLight, lighting}
-import com.melvic.esena.patterns.Pattern.StripePattern
+import com.melvic.esena.patterns.StripePattern
 import com.melvic.esena.shapes.Sphere
 import com.melvic.esena.tuples.{Point, Vec}
 import org.scalatest.flatspec.AnyFlatSpec
