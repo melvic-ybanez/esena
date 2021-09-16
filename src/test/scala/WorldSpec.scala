@@ -1,11 +1,11 @@
-import com.melvic.esena.MathUtils.roundTo5
+import com.melvic.esena.MathUtils.{roundTo, roundTo5}
 import com.melvic.esena.canvas.Color
-import com.melvic.esena.{MathUtils, lights}
+import com.melvic.esena.{MathUtils, lights, reflections}
 import com.melvic.esena.lights.{Material, PointLight}
 import com.melvic.esena.matrix.{scaling, translation}
 import com.melvic.esena.rays.{Computations, Intersection, Ray}
 import com.melvic.esena.scene.World
-import com.melvic.esena.shapes.Sphere
+import com.melvic.esena.shapes.{Plane, Sphere}
 import com.melvic.esena.tuples.{Point, Vec}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
@@ -116,5 +116,29 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
     val comps = Computations.prepare(intersection, ray)
     val color = lights.shadeHit(world, comps)
     color should be (Color(0.1, 0.1, 0.1))
+  }
+
+  "The reflected color for a non-reflective material" should "be black" in {
+    val ray = Ray(Point.Origin, Vec(0, 0, 1))
+    val shape = world.objects(1).updateMaterial(_.copy(ambient = 1))
+    val i = Intersection(1, shape)
+    val comps = Computations.prepare(i, ray)
+    val color = reflections.reflectedColor(world, comps)
+    color should be (Color.Black)
+  }
+
+  "The reflected color for a reflective material" should "reflect a darker color" in {
+    // a plane below the spheres
+    val shape = Plane.updateMaterial(_.copy(reflective = 0.5)).translate(0, -1, 0)
+
+    val newWorld = world.addObjects(shape)
+
+    // strike the plane to reflect upwards, hitting the outermost sphere
+    val ray = Ray(Point(0, 0, -3), Vec(0, -math.sqrt(2) / 2, math.sqrt(2) / 2))
+
+    val i = Intersection(math.sqrt(2), shape)
+    val comps = Computations.prepare(i, ray)
+    val color = reflections.reflectedColor(newWorld, comps)
+    color.map(roundTo5) should be (Color(0.19033, 0.23791, 0.14275))
   }
 }

@@ -1,13 +1,14 @@
 package com.melvic.esena.shapes
 
 import com.melvic.esena.lights.Material
-import com.melvic.esena.matrix.{CanTransform, Matrix}
-import com.melvic.esena.matrix.Matrix.Identity4x4
+import com.melvic.esena.matrix.CanTransform
 import com.melvic.esena.rays.Intersection.Intersections
 import com.melvic.esena.rays.{CanIntersect, Ray}
 import com.melvic.esena.tuples.{Point, Vec}
 
 trait Shape extends CanIntersect with CanTransform {
+  type T <: Shape
+
   def material: Material = Material()
 
   /**
@@ -20,6 +21,9 @@ trait Shape extends CanIntersect with CanTransform {
   def localNormalAt(objectPoint: Point): Vec
 
   def withMaterial(newMaterial: Material): T
+
+  def updateMaterial(f: Material => Material): T =
+    withMaterial(f(material))
 
   def intersect(ray: Ray): Intersections = {
     // transform the ray into object space
@@ -42,7 +46,7 @@ trait Shape extends CanIntersect with CanTransform {
 }
 
 object Shape {
-  trait Aux[A] extends Shape {
-    type T = A
+  trait Aux[A <: Shape] extends Shape {
+    override type T = A
   }
 }

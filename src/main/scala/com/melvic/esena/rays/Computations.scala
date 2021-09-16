@@ -27,6 +27,9 @@ object Computations {
     // point of intersection to lie beneath the surface of the object.
     val overPoint = point + normalVec * MathUtils.Epsilon
 
+    def reflectVec(normal: Vec): Vec =
+      ray.direction.reflect(normal)
+
     val comps = Computations(
       t = intersection.t,
       obj = intersection.obj,
@@ -36,10 +39,11 @@ object Computations {
       inside = normalVec.dot(eyeVec) < 0,
       overPoint = overPoint,
       // reflect the ray's direction around the object's normal vector
-      reflectVec = ray.direction.reflect(normalVec)
+      reflectVec = reflectVec(normalVec)
     )
-    if (comps.inside)
-      comps.copy(normalVec = -comps.normalVec)
-    else comps
+    if (comps.inside) {
+      val negatedNormal = -comps.normalVec
+      comps.copy(normalVec = negatedNormal, reflectVec = reflectVec(negatedNormal))
+    } else comps
   }
 }
