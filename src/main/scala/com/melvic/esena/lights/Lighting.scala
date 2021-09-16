@@ -2,6 +2,7 @@ package com.melvic.esena.lights
 
 import com.melvic.esena.canvas.Color
 import com.melvic.esena.rays.Computations
+import com.melvic.esena.reflections
 import com.melvic.esena.scene.World
 import com.melvic.esena.shapes.Shape
 import com.melvic.esena.tuples.{Point, Vec}
@@ -53,6 +54,16 @@ trait Lighting {
   def shadeHit(world: World, comps: Computations) =
     world.light.fold(Color.Black) { light =>
       val inShadow = world.isShadowedAt(comps.overPoint)
-      lighting(comps.obj.material, comps.obj, light, comps.overPoint, comps.eyeVec, comps.normalVec, inShadow)
+      val surface = lighting(
+        comps.obj.material,
+        comps.obj,
+        light,
+        comps.overPoint,
+        comps.eyeVec,
+        comps.normalVec,
+        inShadow
+      )
+      val reflected = reflections.reflectedColor(world, comps)
+      surface + reflected
     }
 }
