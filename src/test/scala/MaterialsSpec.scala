@@ -75,4 +75,8 @@ class MaterialsSpec extends AnyFlatSpec with should.Matchers {
     c1 should be (Color.White)
     c2 should be (Color.Black)
   }
+
+  "Reflectivity of the default material" should "be zero" in {
+    mat.reflective should be (0.0)
+  }
 }
