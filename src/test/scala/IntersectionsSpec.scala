@@ -1,7 +1,7 @@
 import com.melvic.esena.matrix.translation
 import com.melvic.esena.MathUtils
 import com.melvic.esena.rays.{Computations, Intersection, Intersections, Ray}
-import com.melvic.esena.shapes.Sphere
+import com.melvic.esena.shapes.{Plane, Sphere}
 import com.melvic.esena.tuples.{Point, Vec}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
@@ -95,5 +95,13 @@ class IntersectionsSpec extends AnyFlatSpec with should.Matchers {
     val comps = Computations.prepare(intersection, ray)
     assert(comps.overPoint.z < -MathUtils.Epsilon / 2)
     assert(comps.point.z > comps.overPoint.z)
+  }
+
+  "Pre-computations" should "include the reflection vector of the ray" in {
+    val shape = Plane()
+    val ray = Ray(Point(0, 1, -1), Vec(0, -math.sqrt(2) / 2, math.sqrt(2) / 2))
+    val i = Intersection(math.sqrt(2), shape)
+    val comps = Computations.prepare(i, ray)
+    comps.reflectVec should be (Vec(0, math.sqrt(2) / 2, math.sqrt(2) / 2))
   }
 }

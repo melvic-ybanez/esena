@@ -12,6 +12,7 @@ final case class Computations(
     normalVec: Vec,
     inside: Boolean,
     overPoint: Point,
+    reflectVec: Vec,
 )
 
 object Computations {
@@ -33,7 +34,9 @@ object Computations {
       eyeVec = eyeVec,
       normalVec = normalVec,
       inside = normalVec.dot(eyeVec) < 0,
-      overPoint = overPoint
+      overPoint = overPoint,
+      // reflect the ray's direction around the object's normal vector
+      reflectVec = ray.direction.reflect(normalVec)
     )
     if (comps.inside)
       comps.copy(normalVec = -comps.normalVec)
