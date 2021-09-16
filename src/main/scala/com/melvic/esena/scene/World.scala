@@ -19,7 +19,7 @@ final case class World(
     copy(light = Some(light))
 
   def addObjects(obj: Shape*): World =
-    copy(objects = obj.toVector)
+    copy(objects = objects ++ obj)
 
   override def intersect(ray: Ray) = {
     val intersections = objects.foldLeft(Vector.empty[Intersection]) { (acc, obj) =>
