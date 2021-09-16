@@ -13,7 +13,7 @@ object ReflectionDemo {
     val floor = Plane.withMaterial(
       Material(
         pattern = Some(CheckersPattern(Color.White, Color(0.5, 0.5, 0.5))),
-        reflective = 0.5
+        reflective = 0.2
       )
     )
     val middleSphere = Sphere
@@ -56,10 +56,10 @@ object ReflectionDemo {
         .transform(translation(i, 0, 0) * scaling(componentScale, componentScale, componentScale))
         .withMaterial(
           Material(
-            color = Color(1, 0.8, 0.1),
+            color = Color(0.5, 0.6, 1),
             diffuse = 0.7,
             specular = 0.3,
-            pattern = Some(pattern),
+            pattern = if (i % 2 == 0) Some(pattern) else None,
             reflective = 0.5
           )
         )
