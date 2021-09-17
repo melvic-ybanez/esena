@@ -1,7 +1,7 @@
 package com.melvic.esena.scene
 
 import com.melvic.esena.canvas.Color
-import com.melvic.esena.lights
+import com.melvic.esena.{lights, reflections}
 import com.melvic.esena.lights.{Material, PointLight}
 import com.melvic.esena.matrix.scaling
 import com.melvic.esena.rays.{CanIntersect, Computations, Intersection, Ray}
@@ -28,9 +28,9 @@ final case class World(
     intersections.sortBy(_.t)
   }
 
-  def colorAt(ray: Ray): Color = {
+  def colorAt(ray: Ray, depth: Int = reflections.DefaultDepth): Color = {
     val hit = Intersection.hit(intersect(ray))
-    hit.fold(Color.Black)(h => lights.shadeHit(this, Computations.prepare(h, ray)))
+    hit.fold(Color.Black)(h => lights.shadeHit(this, Computations.prepare(h, ray), depth))
   }
 
   def isShadowedAt(point: Point): Boolean =

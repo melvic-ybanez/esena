@@ -3,7 +3,7 @@ package com.melvic.esena
 import java.nio.charset.StandardCharsets
 import java.nio.file.{Files, Paths}
 
-import com.melvic.esena.demos.{ReflectionDemo, SpheresAndPatterns}
+import com.melvic.esena.demos.ReflectionDemo
 
 object Main {
   def main(args: Array[String]): Unit = {

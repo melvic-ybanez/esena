@@ -51,7 +51,7 @@ trait Lighting {
     else (ambient + diffuse + specular).toColor
   }
 
-  def shadeHit(world: World, comps: Computations) =
+  def shadeHit(world: World, comps: Computations, depth: Int = reflections.DefaultDepth) =
     world.light.fold(Color.Black) { light =>
       val inShadow = world.isShadowedAt(comps.overPoint)
       val surface = lighting(
@@ -63,7 +63,7 @@ trait Lighting {
         comps.normalVec,
         inShadow
       )
-      val reflected = reflections.reflectedColor(world, comps)
+      val reflected = reflections.reflectedColor(world, comps, depth)
       surface + reflected
     }
 }

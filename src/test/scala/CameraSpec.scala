@@ -55,7 +55,7 @@ class CameraSpec extends AnyFlatSpec with should.Matchers {
     val up = Vec(0, 1, 0)
     val cam = Camera(11, 11, math.Pi / 2)
       .transform(view(from, to, up))
-    val image = cam.render(world)
+    val image = cam.render(world, antialias = false)
     image.pixelAt(5, 5).map(roundTo5) should be (Color(0.38066, 0.47583, 0.28550))
   }
 }

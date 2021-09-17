@@ -151,4 +151,24 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
     val color = lights.shadeHit(newWorld, comps)
     color.map(roundTo5) should be (Color(0.87676, 0.92434, 0.82917))
   }
+
+  "colorAt with mutually reflective surfaces" should "not cause infinite recursion" in {
+    val lower = Plane.updateMaterial(_.copy(reflective = 1)).translate(0, -1, 0)
+    val upper = Plane.updateMaterial(_.copy(reflective = 1)).translate(0, 1, 0)
+    val newWorld = world.withLight(PointLight(Point.Origin, Color.White)).addObjects(lower, upper)
+    val ray = Ray(Point.Origin, Vec(0, 1, 0))
+
+    // see if the program terminates
+    newWorld.colorAt(ray) should be (Color(0.1, 0.1, 0.1))
+  }
+
+  "The reflected color at the maximum recursive depth" should "return the color immediately" in {
+    val shape = Plane.updateMaterial(_.copy(reflective = 0.5)).translate(0, -1, 0)
+    val newWorld = world.addObjects(shape)
+    val ray = Ray(Point(0, 0, -3), Vec(0, -math.sqrt(2) / 2, math.sqrt(2) / 2))
+    val i = Intersection(math.sqrt(2), shape)
+    val comps = Computations.prepare(i, ray)
+    val color = reflections.reflectedColor(newWorld, comps, 0)
+    color should be (Color.Black)
+  }
 }
