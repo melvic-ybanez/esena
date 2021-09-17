@@ -66,15 +66,32 @@ final case class Camera(
   /**
     * Render an image of the given world using this camera
     */
-  def render(world: World): Canvas = {
-    val canvas = Canvas(hSize.toInt, vSize.toInt)
+  def render(world: World, antialias: Boolean = true): Canvas =
+    if (antialias) {
+      // set to higher resolution first if antialiasing is considered
+      val highRes = copy(hSize = hSize * 2, vSize = vSize * 2).render(world, antialias = false)
 
-    (0 until canvas.height).foldLeft(canvas) { (canvas, y) =>
-      (0 until canvas.width).foldLeft(canvas) { (canvas, x) =>
-        val ray   = rayForPixel(x, y)
-        val color = world.colorAt(ray)
-        canvas.writePixel(x, y, color)
+      val canvas = Canvas(hSize.toInt, vSize.toInt)
+
+      // apply down-sampling to remove jagged edges
+      (0 until canvas.height).foldLeft(canvas) { (canvas, y) =>
+        val sourceY = y * 2
+        (0 until canvas.width).foldLeft(canvas) { (canvas, x) =>
+          val sourceX = x * 2
+          val pixelAt = highRes.pixelAt _
+          val average = (pixelAt(sourceX, sourceY) + pixelAt(sourceX, sourceY + 1) +
+            pixelAt(sourceX + 1, sourceY) + pixelAt(sourceX + 1, sourceY + 1)) * 0.25
+          canvas.writePixel(x, y, average)
+        }
+      }
+    } else {
+      val canvas = Canvas(hSize.toInt, vSize.toInt)
+      (0 until canvas.height).foldLeft(canvas) { (canvas, y) =>
+        (0 until canvas.width).foldLeft(canvas) { (canvas, x) =>
+          val ray   = rayForPixel(x, y)
+          val color = world.colorAt(ray)
+          canvas.writePixel(x, y, color)
+        }
       }
     }
-  }
 }

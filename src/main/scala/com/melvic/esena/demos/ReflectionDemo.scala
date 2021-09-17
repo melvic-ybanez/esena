@@ -70,6 +70,6 @@ object ReflectionDemo {
       .withLight(PointLight(Point(-10, 10, -10), Color.White))
       .copy(objects = Vector(floor, middleSphere, leftSphere, rightSphere) ++ moreSmallSpheres)
 
-    DefaultCamera.render(world)
+    DefaultCamera.render(world, antialias = true)
   }
 }
