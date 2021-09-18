@@ -125,4 +125,14 @@ class IntersectionsSpec extends AnyFlatSpec with should.Matchers {
       comps.refractive.n2 should be (n2)
     }
   }
+
+  "The under point" should "be offset below the surface" in {
+    val ray = Ray(Point(0, 0, -5), Vec(0, 0, 1))
+    val shape = Sphere.translate(0, 0, 1)
+    val i = Intersection(5, shape)
+    val xs = Intersections(i)
+    val comps = Computations.prepare(i, ray, xs)
+    assert(comps.underPoint.z > MathUtils.Epsilon / 2)
+    assert(comps.point.z < comps.underPoint.z)
+  }
 }

@@ -16,9 +16,10 @@ final case class Computations(
     eyeVec: Vec,
     normalVec: Vec,
     inside: Boolean,
-    overPoint: Point,
+    overPoint: Point, // lifts the point above the surface
+    underPoint: Point, // lifts the point below the surface
     reflectVec: Vec,
-    refractive: RefractiveIndices
+    refractive: RefractiveIndices,
 )
 
 object Computations {
@@ -32,8 +33,13 @@ object Computations {
     // This is to prevent the acne effect.
     // It moves the point a tiny bit to the direction of the normal. We use
     // this to prevent some floating point rounding errors from making the
-    // point of intersection to lie beneath the surface of the object.
+    // point of intersection to lie beneath the surface of the object, which
+    // can make the object shadow itself.
     val overPoint = point + normalVec * MathUtils.Epsilon
+
+    // Just like over point, but it goes the opposite direction
+    // (i.e. it lifts the point below the surface rather than above it)
+    val underPoint = point - normalVec * MathUtils.Epsilon
 
     def reflectVec(normal: Vec): Vec =
       ray.direction.reflect(normal)
@@ -50,7 +56,8 @@ object Computations {
       overPoint = overPoint,
       // reflect the ray's direction around the object's normal vector
       reflectVec = reflectVec(normalVec),
-      refractive = RefractiveIndices(n1, n2)
+      refractive = RefractiveIndices(n1, n2),
+      underPoint = underPoint
     )
     if (comps.inside) {
       val negatedNormal = -comps.normalVec
