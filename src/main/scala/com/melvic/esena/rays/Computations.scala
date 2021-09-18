@@ -1,7 +1,7 @@
 package com.melvic.esena.rays
 
 import com.melvic.esena.MathUtils
-import com.melvic.esena.rays.Intersection.Intersections
+import com.melvic.esena.rays.Intersections.Intersections
 import com.melvic.esena.reflections.Refraction
 import com.melvic.esena.reflections.Refraction.RefractiveIndices
 import com.melvic.esena.shapes.Shape

@@ -1,12 +1,11 @@
 package com.melvic.esena.rays
 
+import com.melvic.esena.rays.Intersections.Intersections
 import com.melvic.esena.shapes.Shape
 
 final case class Intersection(t: Double, obj: Shape)
 
 object Intersection {
-  type Intersections = Vector[Intersection]
-
   def aggregate(intersection: Intersection*): Intersections =
     intersection.toVector
 

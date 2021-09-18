@@ -48,6 +48,10 @@ final case class World(
       val hit = Intersection.hit(intersect(pointToLightRay))
       hit.exists(_.t < distance)
     }
+
+  def refractedColor(comps: Computations, depth: Int): Color =
+    if (comps.obj.material.transparency == 0) Color.Black
+    else Color.White  // TODO: This is temporary. Implement this.
 }
 
 object World {
