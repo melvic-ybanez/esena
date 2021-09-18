@@ -29,8 +29,9 @@ final case class World(
   }
 
   def colorAt(ray: Ray, depth: Int = reflections.DefaultDepth): Color = {
-    val hit = Intersection.hit(intersect(ray))
-    hit.fold(Color.Black)(h => lights.shadeHit(this, Computations.prepare(h, ray), depth))
+    val xs  = intersect(ray)
+    val hit = Intersection.hit(xs)
+    hit.fold(Color.Black)(h => lights.shadeHit(this, Computations.prepare(h, ray, xs), depth))
   }
 
   def isShadowedAt(point: Point): Boolean =

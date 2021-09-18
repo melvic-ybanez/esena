@@ -127,4 +127,11 @@ class SpheresSpec extends AnyFlatSpec with should.Matchers {
     val newMat = Material().copy(ambient = 1)
     s.withMaterial(newMat).material should be (newMat)
   }
+
+  "A sphere with glassy material" should "have the correct transparency and refractive index" in {
+    val glass = Sphere.glass
+    glass.transformation should be (Matrix.Identity4x4)
+    glass.material.transparency should be (1.0)
+    glass.material.refractiveIndex should be (1.5)
+  }
 }

@@ -79,4 +79,9 @@ class MaterialsSpec extends AnyFlatSpec with should.Matchers {
   "Reflectivity of the default material" should "be zero" in {
     mat.reflective should be (0.0)
   }
+
+  "Transparency and refractive index for the default material" should "have the correct values" in {
+    mat.transparency should be (0.0)
+    mat.refractiveIndex should be (1.0)
+  }
 }

@@ -104,4 +104,25 @@ class IntersectionsSpec extends AnyFlatSpec with should.Matchers {
     val comps = Computations.prepare(i, ray)
     comps.reflectVec should be (Vec(0, math.sqrt(2) / 2, math.sqrt(2) / 2))
   }
+
+  "Pre-computations" should "determine n1 and n2 correctly" in {
+    val a = Sphere.glass.scale(2, 2, 2).updateMaterial(_.copy(refractiveIndex = 1.5))
+    val b = Sphere.glass.translate(0, 0, -0.25).updateMaterial(_.copy(refractiveIndex = 2.0))
+    val c = Sphere.glass.translate(0, 0, 0.25).updateMaterial(_.copy(refractiveIndex = 2.5))
+    val ray = Ray(Point(0, 0, -4), Vec(0, 0, 1))
+    val xs = Intersections(
+      Intersection(2, a),
+      Intersection(2.75, b),
+      Intersection(3.25, c),
+      Intersection(4.75, b),
+      Intersection(5.25, c),
+      Intersection(6, a)
+    )
+    val data = Vector(1.0 -> 1.5, 1.5 -> 2.0, 2.0 -> 2.5, 2.5 -> 2.5, 2.5 -> 1.5, 1.5 -> 1.0)
+    data.zipWithIndex.foreach { case ((n1, n2), i) =>
+      val comps = Computations.prepare(xs(i), ray, xs)
+      comps.refractive.exited should be (n1)
+      comps.refractive.entered should be (n2)
+    }
+  }
 }
