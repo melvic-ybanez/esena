@@ -58,19 +58,27 @@ object Computations {
     } else comps
   }
 
-  def computeRefractiveIndices(hit: Intersection, xs: Intersections): (Double, Double) = {
+  def computeRefractiveIndices(hit: Intersection, intersections: Intersections): (Double, Double) = {
     var (n1, n2) = (Refraction.index.Default, Refraction.index.Default)
+
+    // objects entered but not yet exited
     val containers: ArrayBuffer[Shape] = ArrayBuffer.empty
 
-    for (i <- xs) {
-      if (i == hit && containers.nonEmpty)
+    // Update n1 and n2 based on the current state of `containers`
+    // when hit == intersection
+    for (intersection <- intersections) {
+      // if `containers` is still not populated at this point,
+      // then there is no containing object
+      if (intersection == hit && containers.nonEmpty)
         n1 = containers.last.material.refractiveIndex
 
-      if (containers.contains(i.obj))
-        containers.remove(containers.indexOf(i.obj))
-      else containers.addOne(i.obj)
+      if (containers.contains(intersection.obj)) {
+        // the intersection must be exiting the object, we should
+        // remove it from the list
+        containers -= intersection.obj
+      } else containers.addOne(intersection.obj)
 
-      if (i == hit && containers.nonEmpty)
+      if (intersection == hit && containers.nonEmpty)
         n2 = containers.last.material.refractiveIndex
     }
 

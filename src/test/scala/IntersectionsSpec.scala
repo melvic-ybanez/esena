@@ -121,8 +121,8 @@ class IntersectionsSpec extends AnyFlatSpec with should.Matchers {
     val data = Vector(1.0 -> 1.5, 1.5 -> 2.0, 2.0 -> 2.5, 2.5 -> 2.5, 2.5 -> 1.5, 1.5 -> 1.0)
     data.zipWithIndex.foreach { case ((n1, n2), i) =>
       val comps = Computations.prepare(xs(i), ray, xs)
-      comps.refractive.exited should be (n1)
-      comps.refractive.entered should be (n2)
+      comps.refractive.n1 should be (n1)
+      comps.refractive.n2 should be (n2)
     }
   }
 }

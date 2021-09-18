@@ -1,7 +1,7 @@
 package com.melvic.esena.reflections
 
 object Refraction {
-  final case class RefractiveIndices(exited: Double, entered: Double)
+  final case class RefractiveIndices(n1: Double, n2: Double)
 
   object index {
     val Vacuum = 1.0
