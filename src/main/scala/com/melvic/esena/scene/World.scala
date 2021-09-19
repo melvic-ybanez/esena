@@ -50,8 +50,28 @@ final case class World(
     }
 
   def refractedColor(comps: Computations, depth: Int): Color =
-    if (comps.obj.material.transparency == 0 || depth == 0) Color.Black
-    else Color.White  // TODO: This is temporary. Implement this.
+    if (depth == 0 || comps.obj.material.transparency == 0 || isTotalInternalReflection(comps))
+      Color.Black
+    else Color.White // TODO: This is temporary. Implement this.
+
+  /**
+    * Given theta_t, n1, and n2, compute for theta_i and see if it's
+    * greater than 1.
+    *
+    * According to Snell's Law, sin(theta_i) / sin(theta_t) = n2 / n1.
+    * In our case, theta_i is the angle of the incoming ray and theta_t
+    * is the angle of the refracted ray.
+    */
+  private def isTotalInternalReflection(comps: Computations): Boolean = {
+    val nRatio = comps.n1 / comps.n2
+
+    val cosI = comps.eyeVec.dot(comps.normalVec)
+
+    // Pythagorean identity: sin^2 (t) + cos^2 (t) = 1
+    val sin2T = nRatio * nRatio * (1 - cosI * cosI)
+
+    sin2T > 1
+  }
 }
 
 object World {

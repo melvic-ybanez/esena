@@ -46,7 +46,7 @@ final case class Camera(
     val xOffset = (x + 0.5) * pixelSize
     val yOffset = (y + 0.5) * pixelSize
 
-    // Note: camera looks toward z (i.e. +x is to the left)
+    // Note: camera looks toward -z (i.e. +x is to the left)
     val worldX = halfWidth - xOffset
     val worldY = halfHeight - yOffset
 

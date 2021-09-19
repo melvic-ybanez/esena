@@ -1,6 +1,7 @@
 package com.melvic.esena.rays
 
 import com.melvic.esena.MathUtils
+import com.melvic.esena.rays.Computations.LiftingPoints
 import com.melvic.esena.rays.Intersections.Intersections
 import com.melvic.esena.reflections.Refraction
 import com.melvic.esena.reflections.Refraction.RefractiveIndices
@@ -16,13 +17,25 @@ final case class Computations(
     eyeVec: Vec,
     normalVec: Vec,
     inside: Boolean,
-    overPoint: Point, // lifts the point above the surface
-    underPoint: Point, // lifts the point below the surface
+    liftingPoints: LiftingPoints,
     reflectVec: Vec,
     refractive: RefractiveIndices,
-)
+) {
+  def n1 = refractive.n1
+
+  def n2 = refractive.n2
+
+  def overPoint: Point = liftingPoints.overPoint
+
+  def underPoint: Point = liftingPoints.underPoint
+}
 
 object Computations {
+  case class LiftingPoints(
+      overPoint: Point, // lifts the point above the surface
+      underPoint: Point // lifts the point below the surface
+  )
+
   def prepare(intersection: Intersection, ray: Ray, intersections: Intersections = Vector.empty): Computations = {
     val xs = if (intersections.isEmpty) Vector(intersection) else intersections
 
@@ -53,11 +66,10 @@ object Computations {
       eyeVec = eyeVec,
       normalVec = normalVec,
       inside = normalVec.dot(eyeVec) < 0,
-      overPoint = overPoint,
+      liftingPoints = LiftingPoints(overPoint, underPoint),
       // reflect the ray's direction around the object's normal vector
       reflectVec = reflectVec(normalVec),
       refractive = RefractiveIndices(n1, n2),
-      underPoint = underPoint
     )
     if (comps.inside) {
       val negatedNormal = -comps.normalVec

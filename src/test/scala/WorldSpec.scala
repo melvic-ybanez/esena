@@ -189,4 +189,16 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
     val color = world.refractedColor(comps, 0)
     color should be (Color.Black)
   }
+
+  "The refracted color under total internal reflection" should "be black" in {
+    val shape = world.objects.head.updateMaterial(_.copy(transparency = 1.0, refractiveIndex = 1.5))
+    val ray = Ray(Point(0, 0, math.sqrt(2) / 2), Vec(0, 1, 0))
+    val xs = Intersections.fromPairs(-math.sqrt(2) /  2 -> shape, math.sqrt(2) / 2 -> shape)
+
+    // check the second intersection instead of the first because
+    // we are inside the sphere
+    val comps = Computations.prepare(xs(1), ray, xs)
+    val color = world.refractedColor(comps, 5)
+    color should be (Color.Black)
+  }
 }
