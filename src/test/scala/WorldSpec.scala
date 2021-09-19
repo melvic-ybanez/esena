@@ -3,7 +3,9 @@ import com.melvic.esena.canvas.Color
 import com.melvic.esena.{MathUtils, lights, reflections}
 import com.melvic.esena.lights.{Material, PointLight}
 import com.melvic.esena.matrix.{scaling, translation}
+import com.melvic.esena.patterns.TestPattern
 import com.melvic.esena.rays.{Computations, Intersection, Intersections, Ray}
+import com.melvic.esena.reflections.Refraction.index.Glass
 import com.melvic.esena.scene.World
 import com.melvic.esena.shapes.{Plane, Sphere}
 import com.melvic.esena.tuples.{Point, Vec}
@@ -186,7 +188,7 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
     val ray = Ray(Point(0, 0, -5), Vec(0, 0, 1))
     val xs = Intersections.fromPairs(4 -> shape, 6 -> shape)
     val comps = Computations.prepare(xs.head, ray, xs)
-    val color = world.refractedColor(comps, 0)
+    val color = world.updateObject(0, shape).refractedColor(comps, 0)
     color should be (Color.Black)
   }
 
@@ -198,7 +200,17 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
     // check the second intersection instead of the first because
     // we are inside the sphere
     val comps = Computations.prepare(xs(1), ray, xs)
-    val color = world.refractedColor(comps, 5)
+    val color = world.updateObject(0, shape).refractedColor(comps, 5)
     color should be (Color.Black)
+  }
+
+  "The refracted ray" should "return the correct refracted color" in {
+    val a = world.objects(0).updateMaterial(_.copy(ambient = 1.0, pattern = Some(TestPattern())))
+    val b = world.objects(1).updateMaterial(_.copy(transparency = 1.0, refractiveIndex = 1.5))
+    val ray = Ray(Point(0, 0, 0.1), Vec(0, 1, 0))
+    val xs = Intersections.fromPairs(-0.9899 -> a, -0.4899 -> b, 0.4899 -> b, 0.9899 -> a)
+    val comps = Computations.prepare(xs(2), ray, xs)
+    val color = world.updateObject(0, a).updateObject(1, b).refractedColor(comps, 5)
+    color.map(roundTo5) should be (Color(0, 0.99889, 0.04722))
   }
 }
