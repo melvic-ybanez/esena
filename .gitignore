@@ -28,6 +28,5 @@ org.scala-ide.sdt.update-site/site.xml
 .DS_Store
 
 *.ppm
-*.png
 
 *.sc
