@@ -179,7 +179,7 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
     val ray = Ray(Point(0, 0, -5), Vec(0, 0, 1))
     val xs = Intersections.fromPairs(4 -> shape, 6 -> shape)
     val comps = Computations.prepare(xs.head, ray, xs)
-    val color = world.refractedColor(comps, 5)
+    val color = reflections.refractedColor(world, comps, 5)
     color should be (Color.Black)
   }
 
@@ -188,7 +188,7 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
     val ray = Ray(Point(0, 0, -5), Vec(0, 0, 1))
     val xs = Intersections.fromPairs(4 -> shape, 6 -> shape)
     val comps = Computations.prepare(xs.head, ray, xs)
-    val color = world.updateObject(0, shape).refractedColor(comps, 0)
+    val color = reflections.refractedColor(world.updateObject(0, shape), comps, 0)
     color should be (Color.Black)
   }
 
@@ -200,7 +200,7 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
     // check the second intersection instead of the first because
     // we are inside the sphere
     val comps = Computations.prepare(xs(1), ray, xs)
-    val color = world.updateObject(0, shape).refractedColor(comps, 5)
+    val color = reflections.refractedColor(world.updateObject(0, shape), comps, 5)
     color should be (Color.Black)
   }
 
@@ -210,7 +210,18 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
     val ray = Ray(Point(0, 0, 0.1), Vec(0, 1, 0))
     val xs = Intersections.fromPairs(-0.9899 -> a, -0.4899 -> b, 0.4899 -> b, 0.9899 -> a)
     val comps = Computations.prepare(xs(2), ray, xs)
-    val color = world.updateObject(0, a).updateObject(1, b).refractedColor(comps, 5)
+    val color = reflections.refractedColor(world.updateObject(0, a).updateObject(1, b), comps, 5)
     color.map(roundTo5) should be (Color(0, 0.99889, 0.04722))
+  }
+
+  "Shade-hit" should "support transparent material" in {
+    val floor = Plane.translate(0, -1, 0).updateMaterial(_.copy(transparency = 0.5, refractiveIndex = 1.5))
+    val ball = Sphere.updateMaterial(_.copy(color = Color(1, 0, 0), ambient = 0.5)).translate(0, -3.5, -0.5)
+    val newWorld = world.addObjects(floor, ball)
+    val ray = Ray(Point(0, 0, -3), Vec(0, -math.sqrt(2) / 2, math.sqrt(2) / 2))
+    val xs = Intersections.fromPairs(math.sqrt(2) -> floor)
+    val comps = Computations.prepare(xs(0), ray, xs)
+    val color = lights.shadeHit(newWorld, comps, 5)
+    color.map(roundTo5) should be (Color(0.93643, 0.68643, 0.68643))
   }
 }

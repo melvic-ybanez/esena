@@ -64,6 +64,7 @@ trait Lighting {
         inShadow
       )
       val reflected = reflections.reflectedColor(world, comps, depth)
-      surface + reflected
+      val refracted = reflections.refractedColor(world, comps, depth)
+      surface + reflected + refracted
     }
 }
