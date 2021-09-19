@@ -175,9 +175,18 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
   "The refracted color of an opaque surface" should "be black" in {
     val shape = world.objects.head
     val ray = Ray(Point(0, 0, -5), Vec(0, 0, 1))
-    val xs = Intersections.fromPairs(4.0 -> shape, 6.0 -> shape)
+    val xs = Intersections.fromPairs(4 -> shape, 6 -> shape)
     val comps = Computations.prepare(xs.head, ray, xs)
     val color = world.refractedColor(comps, 5)
+    color should be (Color.Black)
+  }
+
+  "The refracted color at the maximum recursive depth" should "be black" in {
+    val shape = world.objects.head.updateMaterial(_.copy(transparency = 1.0, refractiveIndex = 1.5))
+    val ray = Ray(Point(0, 0, -5), Vec(0, 0, 1))
+    val xs = Intersections.fromPairs(4 -> shape, 6 -> shape)
+    val comps = Computations.prepare(xs.head, ray, xs)
+    val color = world.refractedColor(comps, 0)
     color should be (Color.Black)
   }
 }
