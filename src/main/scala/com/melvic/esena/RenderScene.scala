@@ -1,12 +1,14 @@
-package com.melvic.esena.demos
+package com.melvic.esena
 
 import com.melvic.esena.canvas.{Canvas, Color}
-import com.melvic.esena.lights.Material
-import com.melvic.esena.matrix.{scaling, translation}
-import com.melvic.esena.patterns.{CheckersPattern, GradientPattern}
-import com.melvic.esena.shapes.{Plane, Sphere}
+import com.melvic.esena.lights.{Material, PointLight}
+import com.melvic.esena.matrix.{scaling, translation, view}
+import com.melvic.esena.patterns.{CheckersPattern, GradientPattern, RingPattern}
+import com.melvic.esena.scene.{Camera, World}
+import com.melvic.esena.shapes.{Plane, Shape, Sphere}
+import com.melvic.esena.tuples.{Point, Vec}
 
-object ReflectionDemo {
+object RenderScene {
   def build: Canvas = {
     val floor = Plane.withMaterial(
       Material(
@@ -21,7 +23,10 @@ object ReflectionDemo {
           color = Color(0.1, 1, 0.5),
           diffuse = 0.7,
           specular = 0.3,
-          pattern = Some(MainSpherePattern),
+          pattern = Some(
+            CheckersPattern(Color(21.0 / 255, 184.0 / 255, 0), Color(0.1, 1, 0.5))
+              .scale(0.25, 0.25, 0.25)
+              .rotateY(-math.Pi / 4)),
           reflective = 0.5
         )
       )
@@ -31,7 +36,10 @@ object ReflectionDemo {
         Material(
           diffuse = 0.7,
           specular = 0.3,
-          pattern = Some(LeftSpherePattern),
+          pattern = Some(
+            RingPattern(Color(1, 0.8, 0.1), Color.White)
+              .scale(0.33, 0.33, 0.33)
+              .rotateX(-math.Pi / 4)),
           reflective = 0.5
         )
       )
@@ -57,6 +65,18 @@ object ReflectionDemo {
         )
     }
 
-    defaultCanvas(Vector(floor, middleSphere, leftSphere, rightSphere) ++ moreSmallSpheres)
+    canvas(Vector(floor, middleSphere, leftSphere, rightSphere) ++ moreSmallSpheres)
+  }
+
+  def canvas(objects: Vector[Shape]) = {
+    // white light source, from above and to the left
+    val world = World.default
+      .withLight(PointLight(Point(-10, 10, -10), Color.White))
+      .copy(objects = objects)
+
+    val camera = Camera(1000, 600, math.Pi / 3)
+      .transform(view(Point(0, 1.5, -5), Point(0, 1, 0), Vec(0, 1, 0)))
+
+    camera.render(world)
   }
 }
