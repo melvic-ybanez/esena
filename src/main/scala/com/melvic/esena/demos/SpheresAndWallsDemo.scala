@@ -1,11 +1,9 @@
 package com.melvic.esena.demos
 
 import com.melvic.esena.canvas.{Canvas, Color}
-import com.melvic.esena.lights.{Material, PointLight}
+import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix._
-import com.melvic.esena.scene.World
 import com.melvic.esena.shapes.Sphere
-import com.melvic.esena.tuples.Point
 
 object SpheresAndWallsDemo {
   def build: Canvas = {
@@ -30,10 +28,6 @@ object SpheresAndWallsDemo {
       leftSphere.transform(translation(i, 0, 0) * scaling(componentScale, componentScale, componentScale))
     }
 
-    // white light source, from above and to the left
-    val world = World.default.withLight(PointLight(Point(-10, 10, -10), Color.White))
-      .copy(objects = Vector(floor, leftWall, rightWall, middleSphere, leftSphere) ++ moreSmallSpheres)
-
-    DefaultCamera.render(world)
+    defaultCanvas(Vector(floor, leftWall, rightWall, middleSphere, leftSphere) ++ moreSmallSpheres)
   }
 }

@@ -1,12 +1,10 @@
 package com.melvic.esena.demos
 
 import com.melvic.esena.canvas.{Canvas, Color}
-import com.melvic.esena.lights.{Material, PointLight}
+import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.{scaling, translation}
-import com.melvic.esena.patterns.{CheckersPattern, GradientPattern, RingPattern}
-import com.melvic.esena.scene.World
+import com.melvic.esena.patterns.{CheckersPattern, GradientPattern}
 import com.melvic.esena.shapes.{Plane, Sphere}
-import com.melvic.esena.tuples.Point
 
 object ReflectionDemo {
   def build: Canvas = {
@@ -23,10 +21,7 @@ object ReflectionDemo {
           color = Color(0.1, 1, 0.5),
           diffuse = 0.7,
           specular = 0.3,
-          pattern = Some(
-            CheckersPattern(Color(21.0 / 255, 184.0 / 255, 0), Color(0.1, 1, 0.5))
-              .scale(0.25, 0.25, 0.25)
-              .rotateY(-math.Pi / 4)),
+          pattern = Some(MainSpherePattern),
           reflective = 0.5
         )
       )
@@ -36,10 +31,7 @@ object ReflectionDemo {
         Material(
           diffuse = 0.7,
           specular = 0.3,
-          pattern = Some(
-            RingPattern(Color(1, 0.8, 0.1), Color.White)
-              .scale(0.33, 0.33, 0.33)
-              .rotateX(-math.Pi / 4)),
+          pattern = Some(LeftSpherePattern),
           reflective = 0.5
         )
       )
@@ -65,11 +57,6 @@ object ReflectionDemo {
         )
     }
 
-    // white light source, from above and to the left
-    val world = World.default
-      .withLight(PointLight(Point(-10, 10, -10), Color.White))
-      .copy(objects = Vector(floor, middleSphere, leftSphere, rightSphere) ++ moreSmallSpheres)
-
-    DefaultCamera.render(world, antialias = true)
+    defaultCanvas(Vector(floor, middleSphere, leftSphere, rightSphere) ++ moreSmallSpheres)
   }
 }

@@ -1,12 +1,10 @@
 package com.melvic.esena.demos
 
 import com.melvic.esena.canvas.{Canvas, Color}
-import com.melvic.esena.lights.{Material, PointLight}
+import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.{scaling, translation}
 import com.melvic.esena.patterns.{CheckersPattern, GradientPattern, RingPattern}
-import com.melvic.esena.scene.World
 import com.melvic.esena.shapes.{Plane, Sphere}
-import com.melvic.esena.tuples.Point
 
 object SpheresAndPatterns {
   def build: Canvas = {
@@ -18,10 +16,7 @@ object SpheresAndPatterns {
           color = Color(0.1, 1, 0.5),
           diffuse = 0.7,
           specular = 0.3,
-          pattern = Some(
-            CheckersPattern(Color(21.0 / 255, 184.0 / 255, 0), Color(0.1, 1, 0.5))
-              .scale(0.25, 0.25, 0.25)
-              .rotateY(-math.Pi / 4))
+          pattern = Some(MainSpherePattern)
         )
       )
     val leftSphere = Sphere
@@ -30,10 +25,7 @@ object SpheresAndPatterns {
         Material(
           diffuse = 0.7,
           specular = 0.3,
-          pattern = Some(
-            RingPattern(Color(1, 0.8, 0.1), Color.White)
-              .scale(0.33, 0.33, 0.33)
-              .rotateX(-math.Pi / 4))
+          pattern = Some(LeftSpherePattern)
         )
       )
     val rightSphere = Sphere
@@ -42,17 +34,12 @@ object SpheresAndPatterns {
 
     val moreSmallSpheres = (0 until 5).map { i =>
       val componentScale = 0.5 + 0.1 * i
-      val pattern = GradientPattern(Color(1, 0.8, 0.1), Color(220.0 / 255, 20.0 / 255, 60.0 / 255))
+      val pattern        = GradientPattern(Color(1, 0.8, 0.1), Color(220.0 / 255, 20.0 / 255, 60.0 / 255))
       leftSphere
         .transform(translation(i, 0, 0) * scaling(componentScale, componentScale, componentScale))
         .withMaterial(Material(color = Color(1, 0.8, 0.1), diffuse = 0.7, specular = 0.3, pattern = Some(pattern)))
     }
 
-    // white light source, from above and to the left
-    val world = World.default
-      .withLight(PointLight(Point(-10, 10, -10), Color.White))
-      .copy(objects = Vector(floor, middleSphere, leftSphere, rightSphere) ++ moreSmallSpheres)
-
-    DefaultCamera.render(world)
+    defaultCanvas(Vector(floor, middleSphere, leftSphere, rightSphere) ++ moreSmallSpheres)
   }
 }
