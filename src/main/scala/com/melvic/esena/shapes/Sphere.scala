@@ -51,6 +51,6 @@ object Sphere extends Sphere {
       override def transformation = initTransformation
     }
 
-  def glass: Sphere =
+  val Glass: Sphere =
     Sphere.updateMaterial(_.copy(transparency = 1.0, refractiveIndex = 1.5))
 }

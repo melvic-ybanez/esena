@@ -106,9 +106,9 @@ class IntersectionsSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "Pre-computations" should "determine n1 and n2 correctly" in {
-    val a = Sphere.glass.scale(2, 2, 2).updateMaterial(_.copy(refractiveIndex = 1.5))
-    val b = Sphere.glass.translate(0, 0, -0.25).updateMaterial(_.copy(refractiveIndex = 2.0))
-    val c = Sphere.glass.translate(0, 0, 0.25).updateMaterial(_.copy(refractiveIndex = 2.5))
+    val a = Sphere.Glass.scale(2, 2, 2).updateMaterial(_.copy(refractiveIndex = 1.5))
+    val b = Sphere.Glass.translate(0, 0, -0.25).updateMaterial(_.copy(refractiveIndex = 2.0))
+    val c = Sphere.Glass.translate(0, 0, 0.25).updateMaterial(_.copy(refractiveIndex = 2.5))
     val ray = Ray(Point(0, 0, -4), Vec(0, 0, 1))
     val xs = Intersections(
       Intersection(2, a),
@@ -134,5 +134,14 @@ class IntersectionsSpec extends AnyFlatSpec with should.Matchers {
     val comps = Computations.prepare(i, ray, xs)
     assert(comps.underPoint.z > MathUtils.Epsilon / 2)
     assert(comps.point.z < comps.underPoint.z)
+  }
+
+  "The schlick approximation under total internal reflection" should "be 1" in {
+    val shape = Sphere.Glass
+    val ray = Ray(Point(0, 0, math.sqrt(2) / 2), Vec(0, 1, 0))
+    val xs = Intersections(-math.sqrt(2) / 2 -> shape, math.sqrt(2) / 2 -> shape)
+    val comps = Computations.prepare(xs(1), ray, xs)
+    val reflectance = Intersections.schlick(comps)
+    reflectance should be (1.0)
   }
 }
