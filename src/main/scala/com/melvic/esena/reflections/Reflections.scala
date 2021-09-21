@@ -5,7 +5,7 @@ import com.melvic.esena.rays.{Computations, Ray}
 import com.melvic.esena.scene.World
 
 trait Reflections {
-  val DefaultDepth = 4
+  val DefaultDepth = 5
 
   def reflectedColor(world: World, comps: Computations, depth: Int = DefaultDepth): Color =
     if (depth == 0 || comps.obj.material.reflective == 0) Color.Black

@@ -224,4 +224,19 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
     val color = lights.shadeHit(newWorld, comps, 5)
     color.map(roundTo5) should be (Color(0.93643, 0.68643, 0.68643))
   }
+
+  "Shade-hit with a reflective, transparent material" should "include reflected and refracted colors" in {
+    val ray = Ray(Point(0, 0, -3), Vec(0, -math.sqrt(2) / 2, math.sqrt(2) / 2))
+    val floor = Plane
+      .translate(0, -1, 0)
+      .withMaterial(Material(reflective = 0.5, transparency = 0.5, refractiveIndex = 1.5))
+    val ball = Sphere
+      .withMaterial(Material(color = Color(1, 0, 0), ambient = 0.5))
+      .translate(0, -3.5, -0.5)
+    val newWorld = world.addObjects(floor, ball)
+    val xs = Intersections(math.sqrt(2) -> floor)
+    val comps = Computations.prepare(xs(0), ray, xs)
+    val color = lights.shadeHit(newWorld, comps, 5)
+    color.map(roundTo5) should be (Color(0.93392, 0.69643, 0.69243))
+  }
 }

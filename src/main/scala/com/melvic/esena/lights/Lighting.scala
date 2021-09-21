@@ -1,7 +1,7 @@
 package com.melvic.esena.lights
 
 import com.melvic.esena.canvas.Color
-import com.melvic.esena.rays.Computations
+import com.melvic.esena.rays.{Computations, Intersections}
 import com.melvic.esena.reflections
 import com.melvic.esena.scene.World
 import com.melvic.esena.shapes.Shape
@@ -65,6 +65,11 @@ trait Lighting {
       )
       val reflected = reflections.reflectedColor(world, comps, depth)
       val refracted = reflections.refractedColor(world, comps, depth)
-      surface + reflected + refracted
+
+      val material = comps.obj.material
+      if (material.isReflective && material.isTransparent) {
+        val reflectance = Intersections.schlick(comps)
+        surface + reflected * reflectance + refracted * (1 - reflectance)
+      } else surface + reflected + refracted
     }
 }

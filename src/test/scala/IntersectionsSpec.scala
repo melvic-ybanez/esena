@@ -1,5 +1,6 @@
 import com.melvic.esena.matrix.translation
 import com.melvic.esena.MathUtils
+import com.melvic.esena.MathUtils.{roundTo, roundTo5}
 import com.melvic.esena.rays.{Computations, Intersection, Intersections, Ray}
 import com.melvic.esena.shapes.{Plane, Sphere}
 import com.melvic.esena.tuples.{Point, Vec}
@@ -136,12 +137,30 @@ class IntersectionsSpec extends AnyFlatSpec with should.Matchers {
     assert(comps.point.z < comps.underPoint.z)
   }
 
-  "The schlick approximation under total internal reflection" should "be 1" in {
+  "The Schlick approximation under total internal reflection" should "be 1" in {
     val shape = Sphere.Glass
     val ray = Ray(Point(0, 0, math.sqrt(2) / 2), Vec(0, 1, 0))
     val xs = Intersections(-math.sqrt(2) / 2 -> shape, math.sqrt(2) / 2 -> shape)
     val comps = Computations.prepare(xs(1), ray, xs)
     val reflectance = Intersections.schlick(comps)
     reflectance should be (1.0)
+  }
+
+  "The Schlick approximation with a perpendicular viewing angle" should "be small" in {
+    val shape = Sphere.Glass
+    val ray = Ray(Point.Origin, Vec(0, 1, 0))
+    val xs = Intersections(-1.0 -> shape, 1.0 -> shape)
+    val comps = Computations.prepare(xs(1), ray, xs)
+    val reflectance = Intersections.schlick(comps)
+    roundTo(2)(reflectance) should be (0.04)
+  }
+
+  "The Schlick approximation with small angle and n2 > n1" should "be significant" in {
+    val shape = Sphere.Glass
+    val ray = Ray(Point(0, 0.99, -2), Vec(0, 0, 1))
+    val xs = Intersections(1.8589 -> shape)
+    val comps = Computations.prepare(xs.head, ray, xs)
+    val reflectance = Intersections.schlick(comps)
+    roundTo5(reflectance) should be (0.48873)
   }
 }

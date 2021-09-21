@@ -14,4 +14,8 @@ final case class Material(
     reflective: Double = 0.0,
     transparency: Double = 0.0, // opaque by default
     refractiveIndex: Double = Refraction.index.Default
-)
+) {
+  def isReflective: Boolean = reflective > 0
+
+  def isTransparent: Boolean = transparency > 0
+}

@@ -19,11 +19,19 @@ object Intersections {
 
   def schlick(comps: Computations): Double = {
     val cos = comps.eyeVec.dot(comps.normalVec)
-    lazy val sin2T = {
-      val n = comps.n1 / comps.n2
-      n * n * (1.0 - cos * cos)
+
+    def reflectance(cos: Double) = {
+      val r = math.pow((comps.n1 - comps.n2) / (comps.n1 + comps.n2), 2)
+      r + (1 - r) * math.pow(1 - cos, 5)
     }
 
-    if (comps.n1 > comps.n2 && sin2T > 1.0) 1.0 else 0.0
+    // total internal reflection only happens if n1 > n2
+    if (comps.n1 > comps.n2) {
+      val n = comps.n1 / comps.n2
+      val sin2T = n * n * (1.0 - cos * cos)
+
+      if (sin2T > 1.0) 1.0
+      else reflectance(math.sqrt(1.0 - sin2T))
+    } else reflectance(cos)
   }
 }
