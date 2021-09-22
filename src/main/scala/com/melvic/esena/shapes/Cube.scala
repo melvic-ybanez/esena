@@ -23,7 +23,8 @@ trait Cube extends Shape.Aux[Cube] {
     // smallest maximum value
     val tMax = math.min(xtMax, math.min(ytMax, ztMax))
 
-    Intersections(tMin -> this, tMax -> this)
+    if (tMin > tMax) Vector.empty   // no intersections
+    else Intersections(tMin -> this, tMax -> this)
   }
 
   private def checkAxis(origin: Double, direction: Double): (Double, Double) = {

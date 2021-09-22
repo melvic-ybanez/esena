@@ -19,12 +19,29 @@ class CubesSpec extends AnyFlatSpec with should.Matchers {
     )
 
     val cube = Cube()
-    data.foreach { data =>
-      val ray = Ray(data.origin, data.direction)
+    data.foreach { datum =>
+      val ray = Ray(datum.origin, datum.direction)
       val xs = cube.localIntersect(ray)
       xs.size should be (2)
-      xs(0).t should be (data.t1)
-      xs(1).t should be (data.t2)
+      xs(0).t should be (datum.t1)
+      xs(1).t should be (datum.t2)
+    }
+  }
+
+  "A ray missing a cube" should "not have any intersections" in {
+    val cube = Cube()
+    val data = Vector(
+      (Point(-2, 0, 0), Vec(0.2673, 0.5345, 0.8018)),
+      (Point(0, -2, 0), Vec(0.8018, 0.2673, 0.5345)),
+      (Point(0, 0, -2), Vec(0.5345, 0.8018, 0.2673)),
+      (Point(2, 0, 2), Vec(0, 0, -1)),
+      (Point(0, 2, 2), Vec(0, -1, 0)),
+      (Point(2, 2, 0), Vec(-1, 0, 0))
+    )
+    data.foreach { case (origin, direction) =>
+      val ray = Ray(origin, direction)
+      val xs = cube.localIntersect(ray)
+      xs.size should be (0)
     }
   }
 }
