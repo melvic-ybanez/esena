@@ -53,7 +53,7 @@ trait Lighting {
 
   def shadeHit(world: World, comps: Computations, depth: Int = reflections.DefaultDepth) =
     world.light.fold(Color.Black) { light =>
-      val inShadow = world.isShadowedAt(comps.overPoint)
+      val shadowed = world.isShadowedAt(comps.overPoint)
       val surface = lighting(
         comps.obj.material,
         comps.obj,
@@ -61,7 +61,7 @@ trait Lighting {
         comps.overPoint,
         comps.eyeVec,
         comps.normalVec,
-        inShadow
+        shadowed
       )
       val reflected = reflections.reflectedColor(world, comps, depth)
       val refracted = reflections.refractedColor(world, comps, depth)
