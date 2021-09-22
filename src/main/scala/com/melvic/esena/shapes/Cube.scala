@@ -4,7 +4,7 @@ import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersections.Intersections
 import com.melvic.esena.rays.{Intersections, Ray}
-import com.melvic.esena.tuples.Point
+import com.melvic.esena.tuples.{Point, Vec}
 
 trait Cube extends Shape.Aux[Cube] {
 
@@ -19,11 +19,11 @@ trait Cube extends Shape.Aux[Cube] {
     val (ztMin, ztMax) = checkAxis(ray.origin.z, ray.direction.z)
 
     // largest minimum value
-    val tMin = math.max(xtMin, math.max(ytMin, ztMin))
+    val tMin = MathUtils.max(xtMin, ytMin, ztMin)
     // smallest maximum value
-    val tMax = math.min(xtMax, math.min(ytMax, ztMax))
+    val tMax = MathUtils.min(xtMax, ytMax, ztMax)
 
-    if (tMin > tMax) Vector.empty   // no intersections
+    if (tMin > tMax) Vector.empty // no intersections
     else Intersections(tMin -> this, tMax -> this)
   }
 
@@ -38,7 +38,16 @@ trait Cube extends Shape.Aux[Cube] {
     if (tMin > tMax) (tMax, tMin) else (tMin, tMax)
   }
 
-  override def localNormalAt(objectPoint: Point) = ???
+  override def localNormalAt(objectPoint: Point): Vec = {
+    val absX = math.abs(objectPoint.x)
+    val absY = math.abs(objectPoint.y)
+    val maxC = MathUtils.max(absX, absY, math.abs(objectPoint.z))
+
+    // check where to point the largest absolute value
+    if (maxC == absX) Vec(objectPoint.x, 0, 0)
+    else if (maxC == absY) Vec(0, objectPoint.y, 0)
+    else Vec(0, 0, objectPoint.z)
+  }
 
   override def withMaterial(newMaterial: Material) =
     Cube(newMaterial, transformation)

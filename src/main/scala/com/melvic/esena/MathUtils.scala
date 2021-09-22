@@ -26,4 +26,15 @@ object MathUtils {
   }
 
   def roundTo5: Double => Double = roundTo(5)
+
+  def max(x: Double, xs: Double*): Double =
+    compare(x, xs: _*)(math.max)
+
+  def min(x: Double, xs: Double*): Double =
+    compare(x, xs: _*)(math.min)
+
+  private def compare(x: Double, xs: Double*)(f: (Double, Double) => Double): Double =
+    xs.foldLeft(x) { (result, x) =>
+      f(result, x)
+    }
 }

@@ -5,6 +5,8 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
 class CubesSpec extends AnyFlatSpec with should.Matchers {
+  val cube = Cube()
+
   "A ray intersecting a cube" should "work correctly with any of the six directions" in {
     case class Data(label: String, origin: Point, direction: Vec, t1: Double, t2: Double)
 
@@ -18,7 +20,6 @@ class CubesSpec extends AnyFlatSpec with should.Matchers {
       Data("inside", Point(0, 0.5, 0), Vec(0, 0, 1), -1, 1)
     )
 
-    val cube = Cube()
     data.foreach { datum =>
       val ray = Ray(datum.origin, datum.direction)
       val xs = cube.localIntersect(ray)
@@ -29,7 +30,6 @@ class CubesSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "A ray missing a cube" should "not have any intersections" in {
-    val cube = Cube()
     val data = Vector(
       (Point(-2, 0, 0), Vec(0.2673, 0.5345, 0.8018)),
       (Point(0, -2, 0), Vec(0.8018, 0.2673, 0.5345)),
@@ -42,6 +42,22 @@ class CubesSpec extends AnyFlatSpec with should.Matchers {
       val ray = Ray(origin, direction)
       val xs = cube.localIntersect(ray)
       xs.size should be (0)
+    }
+  }
+
+  "The normal of a cube" should "work with all six faces" in {
+    val data = Vector(
+      (Point(1, 0.5, -0.8), Vec(1, 0, 0)),
+      (Point(-1, -0.2, 0.9), Vec(-1, 0, 0)),
+      (Point(-0.4, 1, -0.1), Vec(0, 1, 0)),
+      (Point(0.3, -1, -0.7), Vec(0, -1, 0)),
+      (Point(-0.6, 0.3, 1), Vec(0, 0, 1)),
+      (Point(0.4, 0.4, -1), Vec(0, 0, -1)),
+      (Point(1, 1, 1), Vec(1, 0, 0)),
+      (Point(-1, -1, -1), Vec(-1, 0, 0))
+    )
+    data.foreach { case (point, normal) =>
+      cube.localNormalAt(point) should be (normal)
     }
   }
 }
