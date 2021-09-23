@@ -2,10 +2,10 @@ package com.melvic.esena
 
 import com.melvic.esena.canvas.{Canvas, Color}
 import com.melvic.esena.lights.{Material, PointLight}
-import com.melvic.esena.matrix.{rotationY, scaling, translation, view}
+import com.melvic.esena.matrix.{scaling, translation, view}
 import com.melvic.esena.patterns.{CheckersPattern, GradientPattern, RingPattern}
 import com.melvic.esena.scene.{Camera, World}
-import com.melvic.esena.shapes.{Cube, Cylinder, Plane, Shape, Sphere}
+import com.melvic.esena.shapes._
 import com.melvic.esena.tuples.{Point, Vec}
 
 object RenderScene {
@@ -83,7 +83,35 @@ object RenderScene {
         )
     }
 
-    canvas(Vector(floor, middleSphere, leftSphere, rightCube, rightSphere) ++ moreSmallSpheres)
+    canvas(Vector(floor, middleSphere, leftSphere, rightCube, rightSphere) ++ moreSmallSpheres ++ cylinders)
+  }
+
+  def cylinders = {
+    val colors = Vector(
+      (40, 103, 160),
+      (72, 120, 170),
+      (99, 141, 187),
+      (121, 158, 196),
+      (157, 179, 208)
+    )
+    val init = Vector(Cylinder(min = -0.1, max = 0.1)
+      .updateMaterial(_.copy(color = Color(7.0 / 255, 87.0 / 255, 152.0 / 255)))
+      .scale(0.8, 1, 0.8)
+      .translate(2, 0.1, 0.5))
+    (0 until 5).foldLeft(init) { (acc, i) =>
+      val last = acc.last
+      val scaleFactor = {
+        val scaleFactor = 0.8 - ((i + 1) * 0.2)
+        if (scaleFactor >= 0.2) scaleFactor
+        else 0.8 / math.pow(2, i)
+      }
+      val (r, g, b) = colors(i)
+      val newCyl = Cylinder(min = last.min - 0.1, max = last.max + 0.1)
+        .updateMaterial(_.copy(color = Color(r / 255.0, g / 255.0, b / 255.0)))
+        .scale(scaleFactor, 1, scaleFactor)
+        .translate(2.1, last.max + 0.1, 0.6)
+      acc :+ newCyl
+    }
   }
 
   def canvas(objects: Vector[Shape]) = {
@@ -95,6 +123,6 @@ object RenderScene {
     val camera = Camera(1000, 600, math.Pi / 3)
       .transform(view(Point(0, 1.5, -5), Point(0, 1, 0), Vec(0, 1, 0)))
 
-    camera.render(world, antialias = false)
+    camera.render(world)
   }
 }
