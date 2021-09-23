@@ -2,10 +2,10 @@ package com.melvic.esena
 
 import com.melvic.esena.canvas.{Canvas, Color}
 import com.melvic.esena.lights.{Material, PointLight}
-import com.melvic.esena.matrix.{scaling, translation, view}
+import com.melvic.esena.matrix.{rotationY, scaling, translation, view}
 import com.melvic.esena.patterns.{CheckersPattern, GradientPattern, RingPattern}
 import com.melvic.esena.scene.{Camera, World}
-import com.melvic.esena.shapes.{Plane, Shape, Sphere}
+import com.melvic.esena.shapes.{Cube, Plane, Shape, Sphere}
 import com.melvic.esena.tuples.{Point, Vec}
 
 object RenderScene {
@@ -30,6 +30,7 @@ object RenderScene {
           reflective = 0.5
         )
       )
+
     val leftSphere = Sphere
       .withTransformation(translation(-1.5, 0.33, -0.75) * scaling(0.33, 0.33, 0.33))
       .withMaterial(
@@ -43,8 +44,25 @@ object RenderScene {
           reflective = 0.5
         )
       )
+
+    val rightCube = Cube
+      .scale(0.7, 0.7, 0.7)
+      .rotateY(math.Pi / 4)
+      .translate(1.1, 0.7, 3)
+      .withMaterial(
+        Material(
+          diffuse = 0.7,
+          specular = 0.3,
+          pattern = Some(
+            CheckersPattern(Color(1, 0.8, 0.1), Color.White)
+              .scale(0.33, 0.33, 0.33)
+              .rotateX(-math.Pi / 4)
+          )
+        )
+      )
+
     val rightSphere = Sphere
-      .withTransformation(translation(1.1, 1, 0.7) * scaling(0.5, 0.5, 0.5))
+      .withTransformation(translation(1.1, 2.1, 3) * scaling(0.7, 0.7, 0.7))
       .withMaterial(
         Material(color = Color(1, 0.5, 0.5), diffuse = 0.7, specular = 0.3, reflective = 0.5)
       )
@@ -65,13 +83,13 @@ object RenderScene {
         )
     }
 
-    canvas(Vector(floor, middleSphere, leftSphere, rightSphere) ++ moreSmallSpheres)
+    canvas(Vector(floor, middleSphere, leftSphere, rightCube, rightSphere) ++ moreSmallSpheres)
   }
 
   def canvas(objects: Vector[Shape]) = {
     // white light source, from above and to the left
     val world = World.default
-      .withLight(PointLight(Point(-10, 10, -10), Color.White))
+      .withLight(PointLight(Point(-10, 12, -10), Color.White))
       .copy(objects = objects)
 
     val camera = Camera(1000, 600, math.Pi / 3)
