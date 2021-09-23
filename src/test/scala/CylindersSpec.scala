@@ -6,8 +6,9 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
 class CylindersSpec extends AnyFlatSpec with should.Matchers {
+  val cyl = Cylinder()
+
   "A ray missing a cylinder" should "not produce any intersections" in {
-    val cyl = Cylinder()
     val data = Vector(
       Point(1, 0, 0) -> Vec(0, 1, 0),
       Point.Origin -> Vec(0, 1, 0),
@@ -30,13 +31,24 @@ class CylindersSpec extends AnyFlatSpec with should.Matchers {
     )
 
     data.foreach { case Row(origin, direction, t0, t1) =>
-      val cyl = Cylinder()
       val nDirection = direction.normalize
       val ray = Ray(origin, nDirection)
       val xs = cyl.localIntersect(ray)
       xs.size should be (2)
       roundTo5(xs(0).t) should be (t0)
       roundTo5(xs(1).t) should be (t1)
+    }
+  }
+
+  "The normal of a cylinder" should "work on different points on the surface" in {
+    val data = Vector(
+      Point(1, 0, 0) -> Vec(1, 0, 0),
+      Point(0, 5, -1) -> Vec(0, 0, -1),
+      Point(0, -2, 1) -> Vec(0, 0, 1),
+      Point(-1, 1, 0) -> Vec(-1, 0, 0)
+    )
+    data.foreach { case (point, normal) =>
+      cyl.localNormalAt(point) should be (normal)
     }
   }
 }

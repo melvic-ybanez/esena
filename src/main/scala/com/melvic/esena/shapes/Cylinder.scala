@@ -4,7 +4,7 @@ import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersections.Intersections
 import com.melvic.esena.rays.{Intersection, Intersections, Ray}
-import com.melvic.esena.tuples.Point
+import com.melvic.esena.tuples.{Point, Vec}
 
 trait Cylinder extends Shape.Aux[Cylinder] {
   /**
@@ -31,7 +31,10 @@ trait Cylinder extends Shape.Aux[Cylinder] {
     }
   }
 
-  override def localNormalAt(objectPoint: Point) = ???
+  override def localNormalAt(objectPoint: Point): Vec = {
+    // simply removes the y-component
+    Vec(objectPoint.x, 0, objectPoint.z)
+  }
 
   override def withMaterial(newMaterial: Material) =
     Cylinder(newMaterial, transformation)
