@@ -51,4 +51,9 @@ class CylindersSpec extends AnyFlatSpec with should.Matchers {
       cyl.localNormalAt(point) should be (normal)
     }
   }
+
+  "The default minimum and maximum of a cylinder" should "be -infinity and +infinity" in {
+    cyl.min should be (Double.NegativeInfinity)
+    cyl.max should be (Double.PositiveInfinity)
+  }
 }

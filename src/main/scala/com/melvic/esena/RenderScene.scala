@@ -5,7 +5,7 @@ import com.melvic.esena.lights.{Material, PointLight}
 import com.melvic.esena.matrix.{rotationY, scaling, translation, view}
 import com.melvic.esena.patterns.{CheckersPattern, GradientPattern, RingPattern}
 import com.melvic.esena.scene.{Camera, World}
-import com.melvic.esena.shapes.{Cube, Plane, Shape, Sphere}
+import com.melvic.esena.shapes.{Cube, Cylinder, Plane, Shape, Sphere}
 import com.melvic.esena.tuples.{Point, Vec}
 
 object RenderScene {
@@ -95,6 +95,6 @@ object RenderScene {
     val camera = Camera(1000, 600, math.Pi / 3)
       .transform(view(Point(0, 1.5, -5), Point(0, 1, 0), Vec(0, 1, 0)))
 
-    camera.render(world)
+    camera.render(world, antialias = false)
   }
 }
