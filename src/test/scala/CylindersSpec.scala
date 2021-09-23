@@ -22,15 +22,13 @@ class CylindersSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "A ray striking a cylinder" should "work on different cases" in {
-    final case class Row(origin: Point, direction: Vec, t0: Double, t1: Double)
-
     val data = Vector(
-      Row(Point(1, 0, -5), Vec(0, 0, 1), 5, 5),
-      Row(Point(0, 0, -5), Vec(0, 0, 1), 4, 6),
-      Row(Point(0.5, 0, -5), Vec(0.1, 1, 1), 6.80798, 7.08872)
+      (Point(1, 0, -5), Vec(0, 0, 1), 5, 5),
+      (Point(0, 0, -5), Vec(0, 0, 1), 4, 6),
+      (Point(0.5, 0, -5), Vec(0.1, 1, 1), 6.80798, 7.08872)
     )
 
-    data.foreach { case Row(origin, direction, t0, t1) =>
+    data.foreach { case (origin, direction, t0, t1) =>
       val nDirection = direction.normalize
       val ray = Ray(origin, nDirection)
       val xs = cyl.localIntersect(ray)
@@ -55,5 +53,31 @@ class CylindersSpec extends AnyFlatSpec with should.Matchers {
   "The default minimum and maximum of a cylinder" should "be -infinity and +infinity" in {
     cyl.min should be (Double.NegativeInfinity)
     cyl.max should be (Double.PositiveInfinity)
+  }
+
+  "A cylinder" should "support truncation at either end" in {
+    val cyl = Cylinder(min = 1, max = 2)
+
+    val data = Vector(
+      // a diagonal ray from the inside
+      (Point(0, 1.5, 0), Vec(0.1, 1, 0), 0),
+      // perpendicular to the y-axis, from above
+      (Point(0, 3, -5), Vec(0, 0, 1), 0),
+      // perpendicular to the y-axis, from below
+      (Point(0, 0, -5), Vec(0, 0, 1), 0),
+      // maximum, should be out of bounds
+      (Point(0, 2, -5), Vec(0, 0, 1), 0),
+      // minimum, should be out of bounds
+      (Point(0, 1, -5), Vec(0, 0, 1), 0),
+      // perpendicular through the middle,
+      // should produce 2 intersections
+      (Point(0, 1.5, -2), Vec(0, 0, 1), 2)
+    )
+
+    data.foreach { case (point, direction, count) =>
+      val nDirection = direction.normalize
+      val ray = Ray(point, nDirection)
+      cyl.localIntersect(ray).size should be (count)
+    }
   }
 }

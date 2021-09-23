@@ -3,7 +3,7 @@ import com.melvic.esena.MathUtils.{compareDoubles, squared}
 import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersections.Intersections
-import com.melvic.esena.rays.{Intersections, Ray}
+import com.melvic.esena.rays.{Intersection, Intersections, Ray}
 import com.melvic.esena.tuples.{Point, Vec}
 
 case class Cylinder(min: Double = Double.NegativeInfinity, max: Double = Double.PositiveInfinity)
@@ -26,9 +26,18 @@ case class Cylinder(min: Double = Double.NegativeInfinity, max: Double = Double.
 
       if (discriminant < 0) Vector.empty // ray does not intersect this cylinder
       else {
-        val t0 = (-b - math.sqrt(discriminant)) / (2 * a)
-        val t1 = (-b + math.sqrt(discriminant)) / (2 * a)
-        Intersections(t0 -> this, t1 -> this)
+        val t0Temp = (-b - math.sqrt(discriminant)) / (2 * a)
+        val t1Temp = (-b + math.sqrt(discriminant)) / (2 * a)
+
+        val (t0, t1) = if (t0Temp > t1Temp) (t1Temp, t0Temp) else (t0Temp, t1Temp)
+
+        val y0 = ray.origin.y + t0 * ray.direction.y
+        val y0Between = if (min < y0 && y0 < max) Vector(Intersection(t0, this)) else Vector()
+
+        val y1 = ray.origin.y + t1 * ray.direction.y
+        val y1Between = if (min < y1 && y1 < max) Vector(Intersection(t1, this)) else Vector()
+
+        y0Between ++ y1Between
       }
     }
   }

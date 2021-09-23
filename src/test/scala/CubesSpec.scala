@@ -11,21 +11,21 @@ class CubesSpec extends AnyFlatSpec with should.Matchers {
     case class Data(label: String, origin: Point, direction: Vec, t1: Double, t2: Double)
 
     val data = Vector(
-      Data("+x", Point(5, 0.5, 0), Vec(-1, 0, 0), 4, 6),
-      Data("-x", Point(-5, 0.5, 0), Vec(1, 0, 0), 4, 6),
-      Data("+y", Point(0.5, 5, 0), Vec(0, -1, 0), 4, 6),
-      Data("-y", Point(0.5, -5, 0), Vec(0, 1, 0), 4, 6),
-      Data("+z", Point(0.5, 0, 5), Vec(0, 0, -1), 4, 6),
-      Data("-z", Point(0.5, 0, -5), Vec(0, 0, 1), 4, 6),
-      Data("inside", Point(0, 0.5, 0), Vec(0, 0, 1), -1, 1)
+      (Point(5, 0.5, 0), Vec(-1, 0, 0), 4, 6),  // +x
+      (Point(-5, 0.5, 0), Vec(1, 0, 0), 4, 6),  // -x
+      (Point(0.5, 5, 0), Vec(0, -1, 0), 4, 6),  // +y
+      (Point(0.5, -5, 0), Vec(0, 1, 0), 4, 6),  // -y
+      (Point(0.5, 0, 5), Vec(0, 0, -1), 4, 6),  // +z
+      (Point(0.5, 0, -5), Vec(0, 0, 1), 4, 6),  // -z
+      (Point(0, 0.5, 0), Vec(0, 0, 1), -1, 1) // inside
     )
 
-    data.foreach { datum =>
-      val ray = Ray(datum.origin, datum.direction)
+    data.foreach { case (origin, direction, t1, t2) =>
+      val ray = Ray(origin, direction)
       val xs = cube.localIntersect(ray)
       xs.size should be (2)
-      xs(0).t should be (datum.t1)
-      xs(1).t should be (datum.t2)
+      xs(0).t should be (t1)
+      xs(1).t should be (t2)
     }
   }
 
