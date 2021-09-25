@@ -8,8 +8,8 @@ trait CanTransform {
   def withTransformation(transformation: Matrix): T
 
   /**
-   * Adds a transformation on top of the already existing one
-   */
+    * Adds a transformation on top of the already existing one
+    */
   def transform(transformation: Matrix): T =
     withTransformation(transformation * this.transformation)
 

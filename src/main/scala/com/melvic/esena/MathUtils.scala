@@ -33,7 +33,7 @@ object MathUtils {
   def min(x: Double, xs: Double*): Double =
     compare(x, xs: _*)(math.min)
 
-  def squared(xs: Double): Double = math.pow(xs, 2)
+  def pow2(xs: Double): Double = math.pow(xs, 2)
 
   private def compare(x: Double, xs: Double*)(f: (Double, Double) => Double): Double =
     xs.foldLeft(x) { (result, x) =>

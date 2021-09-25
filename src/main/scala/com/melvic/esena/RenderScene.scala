@@ -94,22 +94,23 @@ object RenderScene {
       (121, 158, 196),
       (157, 179, 208)
     )
+    val offsetScale = 0.8
     val init = Vector(Cylinder(min = -0.1, max = 0.1)
       .updateMaterial(_.copy(color = Color(7.0 / 255, 87.0 / 255, 152.0 / 255)))
-      .scale(0.8, 1, 0.8)
+      .scale(offsetScale, 1, offsetScale)
       .translate(2, 0.1, 0.5))
     (0 until 5).foldLeft(init) { (acc, i) =>
       val last = acc.last
       val scaleFactor = {
-        val scaleFactor = 0.8 - ((i + 1) * 0.2)
+        val scaleFactor = offsetScale - ((i + 1) * 0.2)
         if (scaleFactor >= 0.2) scaleFactor
-        else 0.8 / math.pow(2, i)
+        else offsetScale / math.pow(2, i)
       }
       val (r, g, b) = colors(i)
       val newCyl = Cylinder(min = last.min - 0.1, max = last.max + 0.1)
         .updateMaterial(_.copy(color = Color(r / 255.0, g / 255.0, b / 255.0)))
         .scale(scaleFactor, 1, scaleFactor)
-        .translate(2.1, last.max + 0.1, 0.6)
+        .translate(2, last.max + 0.1, 0.5)
       acc :+ newCyl
     }
   }

@@ -80,4 +80,39 @@ class CylindersSpec extends AnyFlatSpec with should.Matchers {
       cyl.localIntersect(ray).size should be (count)
     }
   }
+
+  "A cylinder" should "not be closed by default" in {
+    cyl.closed should be (false)
+  }
+
+  "A closed cylinder" should "cause intersection at the end caps" in {
+    val cyl = Cylinder(min = 1, max = 2, closed = true)
+    val data = Vector(
+      (Point(0, 3, 0), Vec(0, -1, 0), 2),
+      (Point(0, 3, -2), Vec(0, -1, 2), 2),
+      (Point(0, 4, -2), Vec(0, -1, 1), 2),
+      (Point(0, 0, -2), Vec(0, 1, 2), 2),
+      (Point(0, -1, -2), Vec(0, 1, 1), 2)
+    )
+    data.foreach { case (point, direction, count) =>
+      val ray = Ray(point, direction.normalize)
+      val xs = cyl.localIntersect(ray)
+      xs.size should be (count)
+    }
+  }
+
+  "The normal vector" should "account for closed cylinders" in {
+    val cyl = Cylinder(min = 1, max = 2, closed = true)
+    val data = Vector(
+      Point(0, 1, 0) -> Vec(0, -1, 0),
+      Point(0.5, 1, 0) -> Vec(0, -1, 0),
+      Point(0, 1, 0.5) -> Vec(0, -1, 0),
+      Point(0, 2, 0) -> Vec(0, 1, 0),
+      Point(0.5, 2, 0) -> Vec(0, 1, 0),
+      Point(0, 2, 0.5) -> Vec(0, 1, 0)
+    )
+    data.foreach { case (point, normal) =>
+      cyl.localNormalAt(point) should be (normal)
+    }
+  }
 }

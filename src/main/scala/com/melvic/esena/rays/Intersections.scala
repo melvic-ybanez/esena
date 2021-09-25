@@ -5,6 +5,8 @@ import com.melvic.esena.shapes.Shape
 object Intersections {
   type Intersections = Vector[Intersection]
 
+  val None = Vector.empty[Intersection]
+
   def apply(intersection: Intersection*): Intersections =
     Intersection.aggregate(intersection: _*)
 
@@ -34,4 +36,8 @@ object Intersections {
       else reflectance(math.sqrt(1.0 - sin2T))
     } else reflectance(cos)
   }
+
+  def maybeOne(cond: Boolean, pair: (Double, Shape)): Intersections =
+    if (cond) Intersections(pair)
+    else Intersections.None
 }
