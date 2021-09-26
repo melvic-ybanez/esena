@@ -1,9 +1,10 @@
 package com.melvic.esena.shapes
 
 import com.melvic.esena.lights.Material
-import com.melvic.esena.matrix.CanTransform
+import com.melvic.esena.matrix.{CanTransform, Matrix}
 import com.melvic.esena.rays.Intersections.Intersections
 import com.melvic.esena.rays.{CanIntersect, Ray}
+import com.melvic.esena.shapes.Shape.Data
 import com.melvic.esena.tuples.{Point, Vec}
 
 trait Shape extends CanIntersect with CanTransform {
@@ -19,8 +20,6 @@ trait Shape extends CanIntersect with CanTransform {
   def localIntersect(transformedRay: Ray): Intersections
 
   def localNormalAt(objectPoint: Point): Vec
-
-  def withMaterial(newMaterial: Material): T
 
   def updateMaterial(f: Material => Material): T =
     withMaterial(f(material))
@@ -39,6 +38,19 @@ trait Shape extends CanIntersect with CanTransform {
     worldNormalVec.normalize
   }
 
+  val data: Data = Data(material = material, transformation = transformation)
+
+  def fromData(data: Data): T
+
+  def update(f: Data => Data): T =
+    fromData(f(data))
+
+  def withMaterial(material: Material): T =
+    fromData(data.copy(material = material))
+
+  def withTransformation(transformation: Matrix): T =
+    fromData(data.copy(transformation = transformation))
+
   override def equals(o: Any) = o match {
     case shape: Shape => shape.transformation == transformation && shape.material == material
     case _            => false
@@ -49,4 +61,6 @@ object Shape {
   trait Aux[A <: Shape] extends Shape {
     override type T = A
   }
+
+  case class Data(material: Material, transformation: Matrix)
 }

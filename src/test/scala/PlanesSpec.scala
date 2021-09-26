@@ -5,7 +5,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
 class PlanesSpec extends AnyFlatSpec with should.Matchers {
-  val plane = Plane()
+  val plane = Plane
 
   "The normal of a plane" should "be constant everywhere" in {
     val n1 = plane.localNormalAt(Point.Origin)

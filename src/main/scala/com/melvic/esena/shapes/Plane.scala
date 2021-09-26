@@ -4,6 +4,7 @@ import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersections.Intersections
 import com.melvic.esena.rays.{Intersection, Ray}
+import com.melvic.esena.shapes.Plane.PlaneImpl
 import com.melvic.esena.tuples.{Point, Vec}
 
 /**
@@ -29,20 +30,10 @@ trait Plane extends Shape.Aux[Plane] {
   override def localNormalAt(objectPoint: Point) =
     Vec(0, 1, 0)
 
-  override def withMaterial(newMaterial: Material) =
-    Plane(newMaterial, transformation)
-
-  override def withTransformation(newTransformation: Matrix) =
-    Plane(material, newTransformation)
+  override def fromData(data: Shape.Data) =
+    PlaneImpl(data.material, data.transformation)
 }
 
 object Plane extends Plane {
-  def apply(): Plane = new Plane {}
-
-  def apply(initMaterial: Material, initTransformation: Matrix): Plane =
-    new Plane {
-      override def material = initMaterial
-
-      override def transformation = initTransformation
-    }
+  case class PlaneImpl(override val material: Material, override val transformation: Matrix) extends Plane
 }

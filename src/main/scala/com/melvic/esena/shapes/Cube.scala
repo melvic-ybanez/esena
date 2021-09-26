@@ -4,6 +4,7 @@ import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersections.Intersections
 import com.melvic.esena.rays.{Intersections, Ray}
+import com.melvic.esena.shapes.Cube.CubeImpl
 import com.melvic.esena.tuples.{Point, Vec}
 
 trait Cube extends Shape.Aux[Cube] {
@@ -49,20 +50,11 @@ trait Cube extends Shape.Aux[Cube] {
     else Vec(0, 0, objectPoint.z)
   }
 
-  override def withMaterial(newMaterial: Material) =
-    Cube(newMaterial, transformation)
+  override def fromData(data: Shape.Data) =
+    CubeImpl(data.material, data.transformation)
 
-  override def withTransformation(transformation: Matrix) =
-    Cube(material, transformation)
 }
 
 object Cube extends Cube {
-  def apply(): Cube = new Cube {}
-
-  def apply(initMaterial: Material, initTransformation: Matrix): Cube =
-    new Cube {
-      override def transformation = initTransformation
-
-      override def material = initMaterial
-    }
+  case class CubeImpl(override val material: Material, override val transformation: Matrix) extends Cube
 }

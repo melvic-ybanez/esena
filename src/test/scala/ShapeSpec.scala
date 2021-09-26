@@ -9,7 +9,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
 class ShapeSpec extends AnyFlatSpec with should.Matchers {
-  val shape = TestShape()
+  val shape = TestShape
 
   "The default transformation" should "be the identity matrix" in {
     shape.transformation should be (Identity4x4)

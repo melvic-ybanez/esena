@@ -44,7 +44,7 @@ class PatternsSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "Stripes with a pattern transformation" should "transform the pattern" in {
-    val shape = Sphere()
+    val shape = Sphere
     val newPattern = stripePattern.transform(scaling(2, 2, 2))
     val color = newPattern.at(shape, Point(1.5, 0, 0))
     color should be (Color.White)
@@ -75,7 +75,7 @@ class PatternsSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "A pattern with a pattern transformation" should "transform the pattern" in {
-    val shape = Sphere()
+    val shape = Sphere
     val pattern = TestPattern.transform(scaling(2, 2, 2))
     val color = pattern.at(shape, Point(2, 3, 4))
     color should be (Color(1, 1.5, 2))

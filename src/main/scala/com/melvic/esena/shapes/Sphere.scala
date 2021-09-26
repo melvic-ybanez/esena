@@ -3,6 +3,7 @@ import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersections.Intersections
 import com.melvic.esena.rays.{Intersection, Ray}
+import com.melvic.esena.shapes.Sphere.SphereImpl
 import com.melvic.esena.tuples.Point
 
 trait Sphere extends Shape.Aux[Sphere] {
@@ -34,22 +35,12 @@ trait Sphere extends Shape.Aux[Sphere] {
   override def localNormalAt(objectPoint: Point) =
     objectPoint - Point.Origin
 
-  override def withMaterial(newMaterial: Material): Sphere =
-    Sphere(newMaterial, transformation)
-
-  override def withTransformation(newTransformation: Matrix): Sphere =
-    Sphere(material, newTransformation)
+  override def fromData(data: Shape.Data) =
+    SphereImpl(data.material, data.transformation)
 }
 
 object Sphere extends Sphere {
-  def apply(): Sphere = new Sphere {}
-
-  def apply(initMaterial: Material, initTransformation: Matrix): Sphere =
-    new Sphere {
-      override def material = initMaterial
-
-      override def transformation = initTransformation
-    }
+  case class SphereImpl(override val material: Material, override val transformation: Matrix) extends Sphere
 
   val Glass: Sphere =
     Sphere.updateMaterial(_.copy(transparency = 1.0, refractiveIndex = 1.5))

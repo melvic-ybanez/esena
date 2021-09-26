@@ -107,8 +107,8 @@ class WorldSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "If an intersection is in shadow, the object" should "only have ambient color" in {
-    val s1 = Sphere()
-    val s2 = Sphere().transform(translation(0, 0, 10))
+    val s1 = Sphere
+    val s2 = Sphere.transform(translation(0, 0, 10))
     val world = World
       .default
       .withLight(PointLight(Point(0, 0, -10), Color.White))

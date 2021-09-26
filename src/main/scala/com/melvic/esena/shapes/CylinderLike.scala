@@ -63,14 +63,11 @@ trait CylinderLike extends { self: Shape =>
 
   def fromData(data: Data): T
 
-  def update(f: Data => Data): T =
+  override def fromData(data: Shape.Data): T =
+    fromData(Data(material = data.material, transformation = data.transformation))
+
+  def update(f: Data => Data)(implicit dummyImplicit: DummyImplicit): T =
     fromData(f(Data()))
-
-  override def withMaterial(material: Material) =
-    fromData(Data(material = material))
-
-  override def withTransformation(transformation: Matrix) =
-    fromData(Data(transformation = transformation))
 
   def withMin(min: Double): T =
     fromData(Data(min = min))

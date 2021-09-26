@@ -5,8 +5,6 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
 class CubesSpec extends AnyFlatSpec with should.Matchers {
-  val cube = Cube()
-
   "A ray intersecting a cube" should "work correctly with any of the six directions" in {
     case class Data(label: String, origin: Point, direction: Vec, t1: Double, t2: Double)
 
@@ -22,7 +20,7 @@ class CubesSpec extends AnyFlatSpec with should.Matchers {
 
     data.foreach { case (origin, direction, t1, t2) =>
       val ray = Ray(origin, direction)
-      val xs = cube.localIntersect(ray)
+      val xs = Cube.localIntersect(ray)
       xs.size should be (2)
       xs(0).t should be (t1)
       xs(1).t should be (t2)
@@ -40,7 +38,7 @@ class CubesSpec extends AnyFlatSpec with should.Matchers {
     )
     data.foreach { case (origin, direction) =>
       val ray = Ray(origin, direction)
-      val xs = cube.localIntersect(ray)
+      val xs = Cube.localIntersect(ray)
       xs.size should be (0)
     }
   }
@@ -57,7 +55,7 @@ class CubesSpec extends AnyFlatSpec with should.Matchers {
       (Point(-1, -1, -1), Vec(-1, 0, 0))
     )
     data.foreach { case (point, normal) =>
-      cube.localNormalAt(point) should be (normal)
+      Cube.localNormalAt(point) should be (normal)
     }
   }
 }

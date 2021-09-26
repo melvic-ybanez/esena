@@ -2,6 +2,7 @@ package com.melvic.esena.shapes
 import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Ray
+import com.melvic.esena.shapes.TestShape.TestShapeImpl
 import com.melvic.esena.tuples.{Point, Vec}
 
 trait TestShape extends Shape.Aux[TestShape] {
@@ -13,23 +14,13 @@ trait TestShape extends Shape.Aux[TestShape] {
     Vector()
   }
 
-  override def withMaterial(newMaterial: Material) =
-    TestShape(newMaterial, transformation)
-
-  override def withTransformation(newTransformation: Matrix) =
-    TestShape(material, newTransformation)
-
   override def localNormalAt(objectPoint: Point) =
     objectPoint.toVec
+
+  override def fromData(data: Shape.Data) =
+    TestShapeImpl(data.material, data.transformation)
 }
 
-object TestShape {
-  def apply() = new TestShape {}
-
-  def apply(initMaterial: Material, initTransformation: Matrix): TestShape =
-    new TestShape {
-      override def material = initMaterial
-
-      override def transformation = initTransformation
-    }
+object TestShape extends TestShape {
+  case class TestShapeImpl(override val material: Material, override val transformation: Matrix) extends TestShape
 }
