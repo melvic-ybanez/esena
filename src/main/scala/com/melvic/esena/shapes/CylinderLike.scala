@@ -14,14 +14,10 @@ trait CylinderLike extends { self: Shape =>
 
   def closed: Boolean = false
 
-  def localIntersect(ray: Ray): Intersections = {
-    val a = computeA(ray)
-
+  def localIntersectWith(ray: Ray, a: Double, b: Double, c: Double): Intersections =
     if (compareDoubles(a, 0)) // ray is parallel to the y-axis
       intersectCaps(ray, Intersections.None)
     else {
-      val b            = computeB(ray)
-      val c            = computeC(ray)
       val discriminant = pow2(b) - 4 * a * c
 
       if (discriminant < 0) Intersections.None // ray does not intersect this cylinder
@@ -39,22 +35,6 @@ trait CylinderLike extends { self: Shape =>
         intersectCaps(ray, yBetweenAtT(t0) ++ yBetweenAtT(t1))
       }
     }
-  }
-
-  /**
-    * Computes the value of a needed for the discriminant
-    */
-  def computeA(ray: Ray): Double
-
-  /**
-    * Computes the value of b needed for the discriminant
-    */
-  def computeB(ray: Ray): Double
-
-  /**
-    * Computes the value of c needed for the discriminant
-    */
-  def computeC(ray: Ray): Double
 
   /**
     * Checks if the intersection is within the radius. If it is, include the

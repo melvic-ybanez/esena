@@ -3,29 +3,18 @@ import com.melvic.esena.MathUtils
 import com.melvic.esena.MathUtils.pow2
 import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
+import com.melvic.esena.rays.Intersections.Intersections
 import com.melvic.esena.rays.Ray
 import com.melvic.esena.shapes.Cylinder.CylinderImpl
 import com.melvic.esena.tuples.{Point, Vec}
 
 trait Cylinder extends Shape.Aux[Cylinder] with CylinderLike {
-
-  /**
-    * Computes the value of a needed for the discriminant
-    */
-  override def computeA(ray: Ray): Double =
-    pow2(ray.direction.x) + pow2(ray.direction.z)
-
-  /**
-    * Computes the value of b needed for the discriminant
-    */
-  override def computeB(ray: Ray): Double =
-    2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z
-
-  /**
-    * Computes the value of c needed for the discriminant
-    */
-  override def computeC(ray: Ray): Double =
-    pow2(ray.origin.x) + pow2(ray.origin.z) - 1
+  def localIntersect(ray: Ray): Intersections = {
+    val a = pow2(ray.direction.x) + pow2(ray.direction.z)
+    val b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z
+    val c = pow2(ray.origin.x) + pow2(ray.origin.z) - 1
+    localIntersectWith(ray, a, b, c)
+  }
 
   override def localNormalAt(point: Point): Vec = {
     val Point(x, y, z) = point
