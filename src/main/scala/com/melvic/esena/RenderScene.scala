@@ -4,6 +4,7 @@ import com.melvic.esena.canvas.{Canvas, Color}
 import com.melvic.esena.lights.{Material, PointLight}
 import com.melvic.esena.matrix.{scaling, translation, view}
 import com.melvic.esena.patterns.{CheckersPattern, GradientPattern, RingPattern}
+import com.melvic.esena.reflections.Refraction
 import com.melvic.esena.scene.{Camera, World}
 import com.melvic.esena.shapes._
 import com.melvic.esena.tuples.{Point, Vec}
@@ -95,7 +96,7 @@ object RenderScene {
       (157, 179, 208)
     )
     val offsetScale = 0.8
-    val init = Vector(Cylinder(min = -0.1, max = 0.1)
+    val init = Vector(Cylinder.withMin(-0.1).withMax(0.1)
       .updateMaterial(_.copy(color = Color(7.0 / 255, 87.0 / 255, 152.0 / 255)))
       .scale(offsetScale, 1, offsetScale)
       .translate(2, 0.1, 0.5))
@@ -107,7 +108,7 @@ object RenderScene {
         else offsetScale / math.pow(2, i)
       }
       val (r, g, b) = colors(i)
-      val newCyl = Cylinder(min = last.min - 0.1, max = last.max + 0.1)
+      val newCyl = Cylinder.withMin(last.min - 0.1).withMax(last.max + 0.1)
         .updateMaterial(_.copy(color = Color(r / 255.0, g / 255.0, b / 255.0)))
         .scale(scaleFactor, 1, scaleFactor)
         .translate(2, last.max + 0.1, 0.5)
@@ -124,6 +125,6 @@ object RenderScene {
     val camera = Camera(1000, 600, math.Pi / 3)
       .transform(view(Point(0, 1.5, -5), Point(0, 1, 0), Vec(0, 1, 0)))
 
-    camera.render(world)
+    camera.render(world, antialias = false)
   }
 }

@@ -6,7 +6,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should
 
 class CylindersSpec extends AnyFlatSpec with should.Matchers {
-  val cyl = Cylinder()
+  val cyl = Cylinder
 
   "A ray missing a cylinder" should "not produce any intersections" in {
     val data = Vector(
@@ -56,7 +56,7 @@ class CylindersSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "A cylinder" should "support truncation at either end" in {
-    val cyl = Cylinder(min = 1, max = 2)
+    val cyl = Cylinder.withMin(1).withMax(2)
 
     val data = Vector(
       // a diagonal ray from the inside
@@ -86,7 +86,7 @@ class CylindersSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "A closed cylinder" should "cause intersection at the end caps" in {
-    val cyl = Cylinder(min = 1, max = 2, closed = true)
+    val cyl = Cylinder.withMin(1).withMax(2).withClosed(true)
     val data = Vector(
       (Point(0, 3, 0), Vec(0, -1, 0), 2),
       (Point(0, 3, -2), Vec(0, -1, 2), 2),
@@ -102,7 +102,7 @@ class CylindersSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "The normal vector" should "account for closed cylinders" in {
-    val cyl = Cylinder(min = 1, max = 2, closed = true)
+    val cyl = Cylinder.withMin(1).withMax(2).withClosed(true)
     val data = Vector(
       Point(0, 1, 0) -> Vec(0, -1, 0),
       Point(0.5, 1, 0) -> Vec(0, -1, 0),
