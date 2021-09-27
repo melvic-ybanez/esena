@@ -149,7 +149,7 @@ object MainScene {
       .withLight(PointLight(Point(-10, 12, -10), Color.White))
       .copy(objects = objects)
 
-    val camera = Camera(500, 300, math.Pi / 3)
+    val camera = Camera(1000, 600, math.Pi / 3)
       .transform(view(Point(0, 1.5, -5), Point(0, 1, 0), Vec(0, 1, 0)))
 
     camera.render(world)
