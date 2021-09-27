@@ -5,7 +5,7 @@ import com.melvic.esena.rays.Ray
 import com.melvic.esena.shapes.TestShape.TestShapeImpl
 import com.melvic.esena.tuples.{Point, Vec}
 
-trait TestShape extends Shape.Aux[TestShape] {
+trait TestShape extends LeafShape[TestShape] {
   // for testing purposes only, we are caching the transformed ray
   var transformedRay: Ray = Ray(Point.Origin, Vec.Zero)
 

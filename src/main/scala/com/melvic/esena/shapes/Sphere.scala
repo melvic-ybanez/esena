@@ -6,7 +6,7 @@ import com.melvic.esena.rays.{Intersection, Ray}
 import com.melvic.esena.shapes.Sphere.SphereImpl
 import com.melvic.esena.tuples.Point
 
-trait Sphere extends Shape.Aux[Sphere] {
+trait Sphere extends LeafShape[Sphere] {
 
   /**
     * The ray-sphere intersection is based on the

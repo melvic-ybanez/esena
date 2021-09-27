@@ -7,7 +7,7 @@ import com.melvic.esena.rays.{Intersections, Ray}
 import com.melvic.esena.shapes.Cone.ConeImpl
 import com.melvic.esena.tuples.Point
 
-trait Cone extends Shape.Aux[Cone] with CylinderLike {
+trait Cone extends LeafShape[Cone] with CylinderLike {
   override def localIntersect(transformedRay: Ray) = {
     val Ray(o, d) = transformedRay
     val a = pow2(d.x) - pow2(d.y) + pow2(d.z)

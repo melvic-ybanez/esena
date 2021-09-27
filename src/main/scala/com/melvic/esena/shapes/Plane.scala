@@ -10,7 +10,7 @@ import com.melvic.esena.tuples.{Point, Vec}
 /**
   * A plane in xz, extending infinitely to both x and z directions.
   */
-trait Plane extends Shape.Aux[Plane] {
+trait Plane extends LeafShape[Plane] {
 
   /**
     * Intersects with a transformed ray. If the ray is not

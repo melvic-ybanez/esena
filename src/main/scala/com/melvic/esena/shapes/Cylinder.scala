@@ -1,14 +1,13 @@
 package com.melvic.esena.shapes
-import com.melvic.esena.MathUtils
 import com.melvic.esena.MathUtils.pow2
 import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersections.Intersections
 import com.melvic.esena.rays.Ray
 import com.melvic.esena.shapes.Cylinder.CylinderImpl
-import com.melvic.esena.tuples.{Point, Vec}
+import com.melvic.esena.tuples.Point
 
-trait Cylinder extends Shape.Aux[Cylinder] with CylinderLike {
+trait Cylinder extends LeafShape[Cylinder] with CylinderLike {
   def localIntersect(ray: Ray): Intersections = {
     val a = pow2(ray.direction.x) + pow2(ray.direction.z)
     val b = 2 * ray.origin.x * ray.direction.x + 2 * ray.origin.z * ray.direction.z
