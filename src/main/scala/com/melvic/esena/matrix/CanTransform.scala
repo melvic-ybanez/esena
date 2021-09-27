@@ -19,6 +19,8 @@ trait CanTransform {
   def scale(x: Double, y: Double, z: Double): T =
     transform(scaling(x, y, z))
 
+  def scale(xyz: Double): T = scale(xyz, xyz, xyz)
+
   def rotateX(radian: Double): T =
     transform(rotationX(radian))
 

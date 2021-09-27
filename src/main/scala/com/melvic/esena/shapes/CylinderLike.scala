@@ -6,6 +6,7 @@ import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersections.Intersections
 import com.melvic.esena.rays.{Intersection, Intersections, Ray}
+import com.melvic.esena.tuples.{Point, Vec}
 
 trait CylinderLike extends { self: Shape =>
   def min: Double = Double.NegativeInfinity
@@ -13,6 +14,8 @@ trait CylinderLike extends { self: Shape =>
   def max: Double = Double.PositiveInfinity
 
   def closed: Boolean = false
+
+  def radius(y: Double): Double
 
   def localIntersectWith(ray: Ray, a: Double, b: Double, c: Double): Intersections =
     if (compareDoubles(a, 0)) // ray is parallel to the y-axis
@@ -45,13 +48,29 @@ trait CylinderLike extends { self: Shape =>
     val x = ray.origin.x + t * ray.direction.x
     val z = ray.origin.z + t * ray.direction.z
 
-    if ((pow2(x) + pow2(z)) <= Radius) Intersection(t, this) +: xs
+    if ((pow2(x) + pow2(z)) <= radius(limit)) Intersection(t, this) +: xs
     else xs
   }
 
   private def intersectCaps(ray: Ray, xs: Intersections): Intersections =
     if (!closed || MathUtils.compareDoubles(ray.direction.y, 0)) xs
     else checkCap(ray, max, checkCap(ray, min, xs))
+
+  def localNormalAt(point: Point): Vec = {
+    val Point(x, y, z) = point
+
+    // square of the distance from the y-axis
+    val dist = pow2(x) + pow2(z)
+
+    if (dist < 1 && y >= max - MathUtils.Epsilon)
+      Vec(0, 1, 0)
+    else if (dist < 1 && y <= min + MathUtils.Epsilon)
+      Vec(0, -1, 0)
+    // simply removes the y-component
+    else Vec(point.x, computeNormalY(point), point.z)
+  }
+
+  def computeNormalY(point: Point): Double
 
   case class Data(
       min: Double = self.min,

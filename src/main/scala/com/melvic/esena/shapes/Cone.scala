@@ -15,17 +15,22 @@ trait Cone extends Shape.Aux[Cone] with CylinderLike {
     val c = pow2(o.x) - pow2(o.y) + pow2(o.z)
 
     val aIs0 = math.abs(a) < MathUtils.Epsilon
-    if (aIs0 && math.abs(b) > MathUtils.Epsilon) {
+    if (aIs0 && (math.abs(b) > MathUtils.Epsilon)) {
       val t = -c / (2 * b)
       Intersections(t -> this)
     } else if (!aIs0) localIntersectWith(transformedRay, a, b, c)
     else Intersections.None
   }
 
+  override def radius(y: Double) = math.abs(y)
+
   override def fromData(data: Data) =
     ConeImpl(data.min, data.max, data.closed, data.material, data.transformation)
 
-  override def localNormalAt(objectPoint: Point) = ???
+  override def computeNormalY(point: Point) = {
+    val y = math.sqrt(pow2(point.x) + pow2(point.z))
+    if (point.y > 0) -y else y
+  }
 }
 
 object Cone extends Cone {

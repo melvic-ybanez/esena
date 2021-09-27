@@ -16,22 +16,12 @@ trait Cylinder extends Shape.Aux[Cylinder] with CylinderLike {
     localIntersectWith(ray, a, b, c)
   }
 
-  override def localNormalAt(point: Point): Vec = {
-    val Point(x, y, z) = point
-
-    // square of the distance from the y-axis
-    val dist = pow2(x) + pow2(z)
-
-    if (dist < 1 && y >= max - MathUtils.Epsilon)
-      Vec(0, 1, 0)
-    else if (dist < 1 && y <= min + MathUtils.Epsilon)
-      Vec(0, -1, 0)
-    // simply removes the y-component
-    else Vec(point.x, 0, point.z)
-  }
-
   override def fromData(data: Data) =
     CylinderImpl(data.min, data.max, data.closed, data.material, data.transformation)
+
+  override def radius(y: Double) = 1
+
+  override def computeNormalY(point: Point) = 0
 }
 
 object Cylinder extends Cylinder {
