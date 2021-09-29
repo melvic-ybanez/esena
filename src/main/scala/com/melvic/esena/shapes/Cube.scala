@@ -7,7 +7,7 @@ import com.melvic.esena.rays.{Intersections, Ray}
 import com.melvic.esena.shapes.Cube.CubeImpl
 import com.melvic.esena.tuples.{Point, Vec}
 
-trait Cube extends LeafShape[Cube] {
+trait Cube extends Shape.Aux[Cube] {
 
   /**
     * Intersects with a transformed ray. If the ray is not

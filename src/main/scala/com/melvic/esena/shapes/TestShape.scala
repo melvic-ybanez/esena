@@ -5,7 +5,7 @@ import com.melvic.esena.rays.Ray
 import com.melvic.esena.shapes.TestShape.TestShapeImpl
 import com.melvic.esena.tuples.{Point, Vec}
 
-trait TestShape extends LeafShape[TestShape] {
+trait TestShape extends Shape.Aux[TestShape] {
   // for testing purposes only, we are caching the transformed ray
   var transformedRay: Ray = Ray(Point.Origin, Vec.Zero)
 
@@ -18,9 +18,13 @@ trait TestShape extends LeafShape[TestShape] {
     objectPoint.toVec
 
   override def fromData(data: Shape.Data) =
-    TestShapeImpl(data.material, data.transformation)
+    TestShapeImpl(data.material, data.transformation, data.parent)
 }
 
 object TestShape extends TestShape {
-  case class TestShapeImpl(override val material: Material, override val transformation: Matrix) extends TestShape
+  case class TestShapeImpl(
+      override val material: Material,
+      override val transformation: Matrix,
+      override val parent: Option[Group]
+  ) extends TestShape
 }

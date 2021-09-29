@@ -12,6 +12,8 @@ trait Shape extends CanIntersect with CanTransform {
 
   def material: Material = Material()
 
+  def parent: Option[Group] = None
+
   /**
     * Intersects with a transformed ray. If the ray is not
     * transformed yet, which usually is the case, you might
@@ -38,7 +40,11 @@ trait Shape extends CanIntersect with CanTransform {
     worldNormalVec.normalize
   }
 
-  val data: Data = Data(material = material, transformation = transformation)
+  val data: Data = Data(
+    material = material,
+    transformation = transformation,
+    parent = parent
+  )
 
   def fromData(data: Data): T
 
@@ -51,10 +57,17 @@ trait Shape extends CanIntersect with CanTransform {
   def withTransformation(transformation: Matrix): T =
     fromData(data.copy(transformation = transformation))
 
+  def withParent(parent: Group): T =
+    fromData(data.copy(parent = Some(parent)))
+
   override def equals(o: Any) = o match {
-    case shape: Shape => shape.transformation == transformation && shape.material == material
+    case shape: Shape =>
+      shape.transformation == transformation && shape.material == material
     case _            => false
   }
+
+  override def toString =
+    s"[material = $material, transformation = $transformation, parent = $parent]"
 }
 
 object Shape {
@@ -62,5 +75,5 @@ object Shape {
     override type T = A
   }
 
-  case class Data(material: Material, transformation: Matrix)
+  case class Data(material: Material, transformation: Matrix, parent: Option[Group])
 }

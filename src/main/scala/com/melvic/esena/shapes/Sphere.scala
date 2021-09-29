@@ -2,11 +2,11 @@ package com.melvic.esena.shapes
 import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersections.Intersections
-import com.melvic.esena.rays.{Intersection, Ray}
+import com.melvic.esena.rays.{Intersection, Intersections, Ray}
 import com.melvic.esena.shapes.Sphere.SphereImpl
 import com.melvic.esena.tuples.Point
 
-trait Sphere extends LeafShape[Sphere] {
+trait Sphere extends Shape.Aux[Sphere] {
 
   /**
     * The ray-sphere intersection is based on the
@@ -24,7 +24,7 @@ trait Sphere extends LeafShape[Sphere] {
     val c = sphereToRay.dot(sphereToRay) - 1
 
     val discriminant = math.pow(b, 2) - 4 * a * c
-    if (discriminant < 0) Vector()
+    if (discriminant < 0) Intersections.None
     else
       Intersection.aggregate(
         Intersection((-b - math.sqrt(discriminant)) / (2 * a), this),
