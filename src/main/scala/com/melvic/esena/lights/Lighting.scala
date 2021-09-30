@@ -2,7 +2,7 @@ package com.melvic.esena.lights
 
 import com.melvic.esena.canvas.Color
 import com.melvic.esena.rays.{Computations, Intersections}
-import com.melvic.esena.reflections
+import com.melvic.esena.dielectrics
 import com.melvic.esena.scene.World
 import com.melvic.esena.shapes.Shape
 import com.melvic.esena.tuples.{Point, Vec}
@@ -51,7 +51,7 @@ trait Lighting {
     else (ambient + diffuse + specular).toColor
   }
 
-  def shadeHit(world: World, comps: Computations, depth: Int = reflections.DefaultDepth) =
+  def shadeHit(world: World, comps: Computations, depth: Int = dielectrics.DefaultDepth) =
     world.light.fold(Color.Black) { light =>
       val shadowed = world.isShadowedAt(comps.overPoint)
       val surface = lighting(
@@ -63,8 +63,8 @@ trait Lighting {
         comps.normalVec,
         shadowed
       )
-      val reflected = reflections.reflectedColor(world, comps, depth)
-      val refracted = reflections.refractedColor(world, comps, depth)
+      val reflected = dielectrics.reflectedColor(world, comps, depth)
+      val refracted = dielectrics.refractedColor(world, comps, depth)
 
       val material = comps.obj.material
       if (material.isReflective && material.isTransparent) {

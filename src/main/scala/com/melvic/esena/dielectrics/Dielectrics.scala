@@ -1,10 +1,10 @@
-package com.melvic.esena.reflections
+package com.melvic.esena.dielectrics
 
 import com.melvic.esena.canvas.Color
 import com.melvic.esena.rays.{Computations, Ray}
 import com.melvic.esena.scene.World
 
-trait Reflections {
+trait Dielectrics {
   val DefaultDepth = 5
 
   def reflectedColor(world: World, comps: Computations, depth: Int = DefaultDepth): Color =

@@ -17,7 +17,7 @@ class Group(val children: Vector[Shape]) extends Shape.Aux[Group] {
     child.foldLeft(this)((g, c) => g + c)
 
   override def intersect(ray: Ray) =
-    localIntersect(ray)
+    localIntersect(ray)   // do not transform the ray beforehand
 
   /**
     * Intersects with a transformed ray. If the ray is not

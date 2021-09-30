@@ -3,8 +3,8 @@ package com.melvic.esena.rays
 import com.melvic.esena.MathUtils
 import com.melvic.esena.rays.Computations.LiftingPoints
 import com.melvic.esena.rays.Intersections.Intersections
-import com.melvic.esena.reflections.Refraction
-import com.melvic.esena.reflections.Refraction.RefractiveIndices
+import com.melvic.esena.dielectrics.Refraction
+import com.melvic.esena.dielectrics.Refraction.RefractiveIndices
 import com.melvic.esena.shapes.Shape
 import com.melvic.esena.tuples.{Point, Vec}
 

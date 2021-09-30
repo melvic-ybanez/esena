@@ -2,7 +2,7 @@ package com.melvic.esena.lights
 
 import com.melvic.esena.canvas.Color
 import com.melvic.esena.patterns.Pattern
-import com.melvic.esena.reflections.Refraction
+import com.melvic.esena.dielectrics.Refraction
 
 final case class Material(
     color: Color = Color.White,

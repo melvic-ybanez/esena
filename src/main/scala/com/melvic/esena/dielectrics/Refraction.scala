@@ -1,4 +1,4 @@
-package com.melvic.esena.reflections
+package com.melvic.esena.dielectrics
 
 object Refraction {
   final case class RefractiveIndices(n1: Double, n2: Double)
