@@ -6,9 +6,9 @@ import com.melvic.esena.rays.{Intersections, Ray}
 import com.melvic.esena.shapes.Group.GroupImpl
 import com.melvic.esena.tuples.{Point, Vec}
 
-class Group(children: Vector[Shape]) extends Shape.Aux[Group] {
+class Group(val children: Vector[Shape]) extends Shape.Aux[Group] {
   def +(child: Shape): Group =
-    new Group(child.withParent(this) +: children)
+    fromData(data).copy(children = child.withParent(this) +: children)
 
   def addOne(child: Shape): Group =
     this + child
@@ -16,16 +16,19 @@ class Group(children: Vector[Shape]) extends Shape.Aux[Group] {
   def addMany(child: Shape*): Group =
     child.foldLeft(this)((g, c) => g + c)
 
+  override def intersect(ray: Ray) =
+    localIntersect(ray)
+
   /**
     * Intersects with a transformed ray. If the ray is not
     * transformed yet, which usually is the case, you might
     * need to call [[intersect]] instead.
     */
-  override def localIntersect(transformedRay: Ray) =
+  override def localIntersect(ray: Ray) =
     children
       .foldLeft(Intersections.None) {
         case (xs, child) =>
-          val intersections = child.intersect(transformedRay)
+          val intersections = child.transform(transformation).intersect(ray)
           intersections ++ xs
       }
       .sortBy(_.t)
@@ -33,7 +36,12 @@ class Group(children: Vector[Shape]) extends Shape.Aux[Group] {
   override def localNormalAt(objectPoint: Point) = Vec.Zero
 
   override def fromData(data: Shape.Data) =
-    GroupImpl(children, data.material, data.transformation, data.parent)
+    GroupImpl(
+      children = children,
+      material = data.material,
+      transformation = data.transformation,
+      parent = data.parent
+    )
 
   def isEmpty: Boolean = children.isEmpty
 
@@ -41,13 +49,13 @@ class Group(children: Vector[Shape]) extends Shape.Aux[Group] {
     children.contains(shape)
 }
 
-object Group {
+object Group extends Group(Vector.empty) {
   case class GroupImpl(
-      children: Vector[Shape],
+      override val children: Vector[Shape],
       override val material: Material,
       override val transformation: Matrix,
       override val parent: Option[Group]
   ) extends Group(children)
 
-  def default: Group = new Group(Vector.empty)
+  def default: Group = Group
 }

@@ -1,4 +1,5 @@
 import com.melvic.esena.matrix.Matrix.Identity4x4
+import com.melvic.esena.matrix.scaling
 import com.melvic.esena.rays.{Intersections, Ray}
 import com.melvic.esena.shapes.{Group, Sphere, TestShape}
 import com.melvic.esena.tuples.{Point, Vec}
@@ -39,5 +40,13 @@ class GroupsSpec extends AnyFlatSpec with should.Matchers {
     xs(1).obj should be (s2)
     xs(2).obj should be (s1)
     xs(3).obj should be (s1)
+  }
+
+  "Group and child transformations" should "both apply" in {
+    val shape = Sphere.translate(5, 0, 0)
+    val group = Group.scale(2, 2, 2) + shape
+    val ray = Ray(Point(10, 0, -10), Vec(0, 0, 1))
+    val xs = group.intersect(ray)
+    xs.size should be (2)
   }
 }
