@@ -5,35 +5,39 @@ import com.melvic.esena.tuples.{Point, Vec}
 trait Transformations4D {
 
   /**
-    * Increases each of the elements of a point by multiplying
-    * it with the following matrix:
-    * [ 1 0 0 x ]
-    * [ 0 1 0 y ]
-    * [ 0 0 1 z ]
-    * [ 0 0 0 1 ]
-    * Note: Applying this to a vector shouldn't alter the vector
-    * because the vector's fourth component is 0 (it cancels the fourth
-    * column)
-    */
+   * The translation matrix:
+   * [ 1 0 0 x ]
+   * [ 0 1 0 y ]
+   * [ 0 0 1 z ]
+   * [ 0 0 0 1 ]
+   * For any point P, the translation matrix T will increase the components
+   * of P by multiplying P with T, effectively changing P's location.
+   *
+   * Note: Applying this to a vector shouldn't alter the vector
+   * because the vector's fourth component is 0 (it cancels the fourth
+   * column)
+   */
   def translation(x: Double, y: Double, z: Double): Matrix =
     Matrix.Identity4x4(0, 3, x)(1, 3, y)(2, 3, z)
 
   /**
-    * Multiplies each component of a tuple by its corresponding scalar.
-    * Scaling matrix:
-    * [ x, 0, 0, 0 ]
-    * [ 0, y, 0, 0 ]
-    * [ 0, 0, z, 0 ]
-    * [ 0, 0, 0, 1 ]
-    * This works for both point and vector.
-    */
+   * The scaling matrix:
+   * [ x, 0, 0, 0 ]
+   * [ 0, y, 0, 0 ]
+   * [ 0, 0, z, 0 ]
+   * [ 0, 0, 0, 1 ]
+   * For any point or vector P, multiply the scaling matrix S with P to scale P.
+   * The operation will multiply each component of P by S[i, i], where i is the index
+   * of P's component, effectively changing the "size" of P.
+   * This works for both point and vector.
+   */
   def scaling(x: Double, y: Double, z: Double): Matrix =
     Matrix.Identity4x4(0, 0, x)(1, 1, y)(2, 2, z)
 
   /**
-    * Clockwise rotations along the x-axis.
-    * Note: This rotation is based on the left-hand rule.
-    */
+   * Clockwise rotations along the x-axis.
+   * Note: This rotation is based on the left-hand rule.
+   */
   def rotationX(radian: Double): Matrix = {
     val cos = math.cos(radian)
     val sin = math.sin(radian)
@@ -47,9 +51,9 @@ trait Transformations4D {
   }
 
   /**
-    * Clockwise rotations along the y-axis.
-    * Note: This rotation is based on the left-hand rule.
-    */
+   * Clockwise rotations along the y-axis.
+   * Note: This rotation is based on the left-hand rule.
+   */
   def rotationY(radian: Double): Matrix = {
     val cos = math.cos(radian)
     val sin = math.sin(radian)
@@ -63,9 +67,9 @@ trait Transformations4D {
   }
 
   /**
-    * Clockwise rotations along the z-axis.
-    * Note: This rotation is based on the left-hand rule.
-    */
+   * Clockwise rotations along the z-axis.
+   * Note: This rotation is based on the left-hand rule.
+   */
   def rotationZ(radian: Double): Matrix = {
     val cos = math.cos(radian)
     val sin = math.sin(radian)
@@ -87,11 +91,12 @@ trait Transformations4D {
     )
 
   /**
-    * Orients the world relative to the eye
-    * @param from point of the eye in the scene
-    * @param to point you want to look at
-    * @param up indicates which direction is up
-    */
+   * Orients the world relative to the eye
+   *
+   * @param from point of the eye in the scene
+   * @param to   point you want to look at
+   * @param up   indicates which direction is up
+   */
   def view(from: Point, to: Point, up: Vec): Matrix = {
     val forward = (to - from).normalize
     val left = forward.cross(up.normalize)
