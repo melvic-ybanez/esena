@@ -10,10 +10,10 @@ class Group(val children: Vector[Shape]) extends Shape.Aux[Group] {
   def +(child: Shape): Group =
     fromData(data).copy(children = child.withParent(this) +: children)
 
-  def addOne(child: Shape): Group =
+  def addChild(child: Shape): Group =
     this + child
 
-  def addMany(child: Shape*): Group =
+  def addChildren(child: Shape*): Group =
     child.foldLeft(this)((g, c) => g + c)
 
   override def intersect(ray: Ray) =

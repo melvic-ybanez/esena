@@ -1,13 +1,14 @@
 package com.melvic.esena.rays
 
 import com.melvic.esena.MathUtils
-import com.melvic.esena.rays.Computations.LiftingPoints
-import com.melvic.esena.rays.Intersections.Intersections
 import com.melvic.esena.dielectrics.Refraction
 import com.melvic.esena.dielectrics.Refraction.RefractiveIndices
+import com.melvic.esena.rays.Computations.LiftingPoints
+import com.melvic.esena.rays.Intersections.Intersections
 import com.melvic.esena.shapes.Shape
 import com.melvic.esena.tuples.{Point, Vec}
 
+import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
 
 final case class Computations(
@@ -19,7 +20,7 @@ final case class Computations(
     inside: Boolean,
     liftingPoints: LiftingPoints,
     reflectVec: Vec,
-    refractive: RefractiveIndices,
+    refractive: RefractiveIndices
 ) {
   def n1 = refractive.n1
 
@@ -69,7 +70,7 @@ object Computations {
       liftingPoints = LiftingPoints(overPoint, underPoint),
       // reflect the ray's direction around the object's normal vector
       reflectVec = reflectVec(normalVec),
-      refractive = RefractiveIndices(n1, n2),
+      refractive = RefractiveIndices(n1, n2)
     )
     if (comps.inside) {
       val negatedNormal = -comps.normalVec
@@ -78,29 +79,37 @@ object Computations {
   }
 
   def computeRefractiveIndices(hit: Intersection, intersections: Intersections): (Double, Double) = {
-    var (n1, n2) = (Refraction.index.Default, Refraction.index.Default)
-
     // objects entered but not yet exited
     val containers: ArrayBuffer[Shape] = ArrayBuffer.empty
 
     // Update n1 and n2 based on the current state of `containers`
     // when hit == intersection
-    for (intersection <- intersections) {
-      // if `containers` is still not populated at this point,
-      // then there is no containing object
-      if (intersection == hit && containers.nonEmpty)
-        n1 = containers.last.material.refractiveIndex
+    @tailrec
+    def recurse(intersections: Intersections): (Double, Double) = intersections match {
+      case IndexedSeq()         => (Refraction.index.Default, Refraction.index.Default)
+      case intersection +: rest =>
+        // if `containers` is still not populated at this point,
+        // then there is no containing object
+        val n1 =
+          if (intersection == hit && containers.nonEmpty)
+            containers.last.material.refractiveIndex
+          else Refraction.index.Default
 
-      if (containers.contains(intersection.obj)) {
-        // the intersection must be exiting the object, we should
-        // remove it from the list
-        containers -= intersection.obj
-      } else containers.addOne(intersection.obj)
+        if (containers.contains(intersection.obj)) {
+          // the intersection must be exiting the object, we should
+          // remove it from the list
+          containers -= intersection.obj
+        } else containers.addOne(intersection.obj)
 
-      if (intersection == hit && containers.nonEmpty)
-        n2 = containers.last.material.refractiveIndex
+        if (intersection == hit) {
+          val n2 =
+            if (containers.nonEmpty)
+              containers.last.material.refractiveIndex
+            else Refraction.index.Default
+          (n1, n2)
+        } else recurse(rest)
     }
 
-    (n1, n2)
+    recurse(intersections)
   }
 }

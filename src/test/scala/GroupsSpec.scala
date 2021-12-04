@@ -32,7 +32,7 @@ class GroupsSpec extends AnyFlatSpec with should.Matchers {
     val s1 = Sphere
     val s2 = Sphere.translate(0, 0, -3)
     val s3 = Sphere.translate(5, 0, 0)
-    val group = Group.default.addMany(s1, s2, s3)
+    val group = Group.default.addChildren(s1, s2, s3)
     val ray = Ray(Point(0, 0, -5), Vec(0, 0, 1))
     val xs = group.localIntersect(ray)
     xs.size should be (4)
