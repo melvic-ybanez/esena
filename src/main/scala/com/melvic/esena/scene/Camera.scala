@@ -1,5 +1,6 @@
 package com.melvic.esena.scene
 
+import com.melvic.esena.Real
 import com.melvic.esena.canvas.Canvas
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.matrix.Matrix.Identity4x4
@@ -7,9 +8,9 @@ import com.melvic.esena.rays.Ray
 import com.melvic.esena.tuples.Point
 
 final case class Camera(
-    hSize: Double,
-    vSize: Double,
-    fieldOfView: Double,
+    hSize: Real,
+    vSize: Real,
+    fieldOfView: Real,
     transformation: Matrix = Identity4x4
 ) {
 
@@ -18,21 +19,21 @@ final case class Camera(
     * so half-view = tan(field-of-view / 2) / distance-from-the-eye,
     * and the canvas is only 1 unit away from the eye
     */
-  def halfView: Double = math.tan(fieldOfView / 2)
+  def halfView: Real = math.tan(fieldOfView / 2)
 
-  val aspectRatio: Double = hSize / vSize
+  val aspectRatio: Real = hSize / vSize
 
-  def halfWidth: Double =
+  def halfWidth: Real =
     if (aspectRatio >= 1) halfView else halfView * aspectRatio
 
-  def halfHeight: Double =
+  def halfHeight: Real =
     if (aspectRatio >= 1) halfView / aspectRatio else halfView
 
   /**
     * Note: A pixel is a square so the vertical size and horizontal size
     * are the same. The formula could also be `halfHeight * 2 / vSize`
     */
-  def pixelSize: Double =
+  def pixelSize: Real =
     halfWidth * 2 / hSize
 
   /**
@@ -41,7 +42,7 @@ final case class Camera(
     * @param x the x coordinate of the pixel
     * @param y the y coordinate of the pixel
     */
-  def rayForPixel(x: Double, y: Double): Ray = {
+  def rayForPixel(x: Real, y: Real): Ray = {
     // offset from the edge of the canvas to the pixel's center
     val xOffset = (x + 0.5) * pixelSize
     val yOffset = (y + 0.5) * pixelSize

@@ -1,5 +1,6 @@
 package com.melvic.esena.shapes
 import com.melvic.esena.MathUtils.pow2
+import com.melvic.esena.Real
 import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersections.Intersections
@@ -18,15 +19,15 @@ trait Cylinder extends Shape.Aux[Cylinder] with CylinderLike {
   override def fromData(data: Data) =
     CylinderImpl(data.min, data.max, data.closed, data.material, data.transformation)
 
-  override def radius(y: Double) = 1
+  override def radius(y: Real) = 1
 
   override def computeNormalY(point: Point) = 0
 }
 
 object Cylinder extends Cylinder {
   case class CylinderImpl(
-      override val min: Double,
-      override val max: Double,
+      override val min: Real,
+      override val max: Real,
       override val closed: Boolean,
       override val material: Material,
       override val transformation: Matrix,

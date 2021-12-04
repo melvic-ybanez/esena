@@ -1,5 +1,5 @@
 package com.melvic.esena.shapes
-import com.melvic.esena.MathUtils
+import com.melvic.esena.{MathUtils, Real}
 import com.melvic.esena.MathUtils.pow2
 import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
@@ -22,7 +22,7 @@ trait Cone extends Shape.Aux[Cone] with CylinderLike {
     else Intersections.None
   }
 
-  override def radius(y: Double) = math.abs(y)
+  override def radius(y: Real) = math.abs(y)
 
   override def fromData(data: Data) =
     ConeImpl(data.min, data.max, data.closed, data.material, data.transformation)
@@ -35,8 +35,8 @@ trait Cone extends Shape.Aux[Cone] with CylinderLike {
 
 object Cone extends Cone {
   case class ConeImpl(
-      override val min: Double,
-      override val max: Double,
+      override val min: Real,
+      override val max: Real,
       override val closed: Boolean,
       override val material: Material,
       override val transformation: Matrix,

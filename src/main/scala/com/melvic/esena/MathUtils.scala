@@ -1,12 +1,17 @@
 package com.melvic.esena
 
 object MathUtils {
+  type Real = Double
+  val Real = Double
+
   val Epsilon = 0.000001
 
-  def compareDoubles(a: Double, b: Double): Boolean =
-    math.abs(a - b) < Epsilon
+  def compareReals(a: Real, b: Real): Boolean = {
+    val diff = math.abs(a - b)
+    diff.isNaN || diff < Epsilon
+  }
 
-  def scaleTo(maxValue: Int, value: Double): Int = {
+  def scaleTo(maxValue: Int, value: Real): Int = {
     val result = ((maxValue + 1) * value).toInt
     if (result > maxValue) maxValue
     else if (result < 0) 0
@@ -20,22 +25,22 @@ object MathUtils {
     * Rounds a value based on a given number of digits.
     * Note: This is useful when testing with rounded values
     */
-  def roundTo(digitCount: Int)(value: Double): Double = {
+  def roundTo(digitCount: Int)(value: Real): Real = {
     val e = math.pow(10, digitCount)
     math.round(value * e) / e
   }
 
-  def roundTo5: Double => Double = roundTo(5)
+  def roundTo5: Real => Real = roundTo(5)
 
-  def max(x: Double, xs: Double*): Double =
+  def max(x: Real, xs: Real*): Real =
     compare(x, xs: _*)(math.max)
 
-  def min(x: Double, xs: Double*): Double =
+  def min(x: Real, xs: Real*): Real =
     compare(x, xs: _*)(math.min)
 
-  def pow2(xs: Double): Double = math.pow(xs, 2)
+  def pow2(xs: Real): Real = math.pow(xs, 2)
 
-  private def compare(x: Double, xs: Double*)(f: (Double, Double) => Double): Double =
+  private def compare(x: Real, xs: Real*)(f: (Real, Real) => Real): Real =
     xs.foldLeft(x) { (result, x) =>
       f(result, x)
     }

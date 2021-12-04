@@ -1,4 +1,5 @@
 import com.melvic.esena.MathUtils.roundTo5
+import com.melvic.esena.Real
 import com.melvic.esena.rays.Ray
 import com.melvic.esena.shapes.Cylinder
 import com.melvic.esena.tuples.{Point, Vec}
@@ -51,8 +52,8 @@ class CylindersSpec extends AnyFlatSpec with should.Matchers {
   }
 
   "The default minimum and maximum of a cylinder" should "be -infinity and +infinity" in {
-    cyl.min should be (Double.NegativeInfinity)
-    cyl.max should be (Double.PositiveInfinity)
+    cyl.min should be (Real.NegativeInfinity)
+    cyl.max should be (Real.PositiveInfinity)
   }
 
   "A cylinder" should "support truncation at either end" in {

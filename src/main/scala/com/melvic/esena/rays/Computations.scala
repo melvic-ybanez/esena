@@ -1,18 +1,18 @@
 package com.melvic.esena.rays
 
-import com.melvic.esena.MathUtils
+import com.melvic.esena.{MathUtils, Real}
 import com.melvic.esena.dielectrics.Refraction
 import com.melvic.esena.dielectrics.Refraction.RefractiveIndices
 import com.melvic.esena.rays.Computations.LiftingPoints
 import com.melvic.esena.rays.Intersections.Intersections
-import com.melvic.esena.shapes.Shape
+import com.melvic.esena.shapes.{Shape, TestShape}
 import com.melvic.esena.tuples.{Point, Vec}
 
 import scala.annotation.tailrec
 import scala.collection.mutable.ArrayBuffer
 
 final case class Computations(
-    t: Double,
+    t: Real,
     obj: Shape,
     point: Point,
     eyeVec: Vec,
@@ -78,22 +78,22 @@ object Computations {
     } else comps
   }
 
-  def computeRefractiveIndices(hit: Intersection, intersections: Intersections): (Double, Double) = {
+  def computeRefractiveIndices(hit: Intersection, intersections: Intersections): (Real, Real) = {
     // objects entered but not yet exited
     val containers: ArrayBuffer[Shape] = ArrayBuffer.empty
 
     // Update n1 and n2 based on the current state of `containers`
     // when hit == intersection
     @tailrec
-    def recurse(intersections: Intersections): (Double, Double) = intersections match {
-      case IndexedSeq()         => (Refraction.index.Default, Refraction.index.Default)
+    def recurse(intersections: Intersections): (Real, Real) = intersections match {
+      case IndexedSeq()         => (0.0, 0.0)
       case intersection +: rest =>
         // if `containers` is still not populated at this point,
         // then there is no containing object
         val n1 =
-          if (intersection == hit && containers.nonEmpty)
-            containers.last.material.refractiveIndex
-          else Refraction.index.Default
+          if (intersection == hit) {
+            containers.lastOption.map(_.material.refractiveIndex).getOrElse(Refraction.index.Default)
+          } else 0.0
 
         if (containers.contains(intersection.obj)) {
           // the intersection must be exiting the object, we should
@@ -102,10 +102,7 @@ object Computations {
         } else containers.addOne(intersection.obj)
 
         if (intersection == hit) {
-          val n2 =
-            if (containers.nonEmpty)
-              containers.last.material.refractiveIndex
-            else Refraction.index.Default
+          val n2 = containers.lastOption.map(_.material.refractiveIndex).getOrElse(Refraction.index.Default)
           (n1, n2)
         } else recurse(rest)
     }

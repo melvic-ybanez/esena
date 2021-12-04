@@ -1,7 +1,9 @@
 package com.melvic.esena.tuples
 
-final case class Vec(x: Double, y: Double, z: Double) extends Tuple {
-  val w: Double = 0
+import com.melvic.esena.Real
+
+final case class Vec(x: Real, y: Real, z: Real) extends Tuple {
+  val w: Real = 0
 
   val isUnit: Boolean =
     magnitude == 1

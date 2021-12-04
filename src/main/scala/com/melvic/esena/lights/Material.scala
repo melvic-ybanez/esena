@@ -1,19 +1,20 @@
 package com.melvic.esena.lights
 
+import com.melvic.esena.Real
 import com.melvic.esena.canvas.Color
 import com.melvic.esena.patterns.Pattern
 import com.melvic.esena.dielectrics.Refraction
 
 final case class Material(
     color: Color = Color.White,
-    ambient: Double = 0.1,
-    diffuse: Double = 0.9,
-    specular: Double = 0.9,
-    shininess: Double = 200.0,
+    ambient: Real = 0.1,
+    diffuse: Real = 0.9,
+    specular: Real = 0.9,
+    shininess: Real = 200.0,
     pattern: Option[Pattern] = None,
-    reflective: Double = 0.0,
-    transparency: Double = 0.0, // opaque by default
-    refractiveIndex: Double = Refraction.index.Default
+    reflective: Real = 0.0,
+    transparency: Real = 0.0, // opaque by default
+    refractiveIndex: Real = Refraction.index.Default
 ) {
   def isReflective: Boolean = reflective > 0
 

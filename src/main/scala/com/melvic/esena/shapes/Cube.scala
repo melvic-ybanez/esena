@@ -1,5 +1,5 @@
 package com.melvic.esena.shapes
-import com.melvic.esena.MathUtils
+import com.melvic.esena.{MathUtils, Real}
 import com.melvic.esena.lights.Material
 import com.melvic.esena.matrix.Matrix
 import com.melvic.esena.rays.Intersections.Intersections
@@ -28,14 +28,14 @@ trait Cube extends Shape.Aux[Cube] {
     else Intersections(tMin -> this, tMax -> this)
   }
 
-  private def checkAxis(origin: Double, direction: Double): (Double, Double) = {
+  private def checkAxis(origin: Real, direction: Real): (Real, Real) = {
     val tMinNumerator = -1 - origin
     val tMaxNumerator = 1 - origin
 
     val (tMin, tMax) =
       if (math.abs(direction) >= MathUtils.Epsilon)
         (tMinNumerator / direction, tMaxNumerator / direction)
-      else (tMinNumerator * Double.PositiveInfinity, tMaxNumerator * Double.PositiveInfinity)
+      else (tMinNumerator * Real.PositiveInfinity, tMaxNumerator * Real.PositiveInfinity)
     if (tMin > tMax) (tMax, tMin) else (tMin, tMax)
   }
 

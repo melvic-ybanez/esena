@@ -1,6 +1,6 @@
 package com.melvic.esena.matrix
 
-import com.melvic.esena.MathUtils
+import com.melvic.esena.{MathUtils, Real}
 import com.melvic.esena.matrix.Matrix.{Elements, MatrixImpl}
 import com.melvic.esena.tuples.Tuple
 
@@ -12,16 +12,16 @@ trait Matrix {
   /**
     * Updates the element at the specified position
     */
-  def apply(row: Int, col: Int, element: Double): Matrix =
+  def apply(row: Int, col: Int, element: Real): Matrix =
     MatrixImpl(width, height, elements.updated(MathUtils.indexOf(row, col, width), element))
 
   /**
     * Gets the element at the specified position
     */
-  def apply(row: Int, col: Int): Double =
+  def apply(row: Int, col: Int): Real =
     elements(MathUtils.indexOf(row, col, width))
 
-  def at(row: Int, col: Int): Double = this(row, col)
+  def at(row: Int, col: Int): Real = this(row, col)
 
   /**
     * Matrix multiplication
@@ -56,7 +56,7 @@ trait Matrix {
     * formula A(0, 1) * cofactor(0, 1) + ... A(0, n -1) * cofactor(0, n - 1), for
     * any matrix A of width n. See [[cofactor]].
     */
-  lazy val determinant: Double =
+  lazy val determinant: Real =
     if (width == 2 && height == 2) at(0, 0) * at(1, 1) - at(0, 1) * at(1, 0)
     else
       (0 until width).foldLeft(0.0) { (det, col) =>
@@ -67,7 +67,7 @@ trait Matrix {
     * Removes the specified row and column of the matrix
     */
   def subMatrix(row: Int, col: Int): Matrix = {
-    val data = (0 until height).foldLeft(Vector.empty[Double]) { (es, i) =>
+    val data = (0 until height).foldLeft(Vector.empty[Real]) { (es, i) =>
       if (i >= row && i < row + 1) es
       else
         (0 until width).foldLeft(es) { (es, j) =>
@@ -82,14 +82,14 @@ trait Matrix {
   /**
     * Computes the determinant of the sub-matrix
     */
-  def minor(row: Int, col: Int): Double =
+  def minor(row: Int, col: Int): Real =
     subMatrix(row, col).determinant
 
   /**
     * Computes the determinant of the sub-matrix,
     * where every element might have its sign reversed.
     */
-  def cofactor(row: Int, col: Int): Double =
+  def cofactor(row: Int, col: Int): Real =
     math.pow(-1, row + col) * subMatrix(row, col).determinant
 
   lazy val isInvertible: Boolean =
@@ -121,13 +121,13 @@ trait Matrix {
     case MatrixImpl(w, h, elements) =>
       val elementsEqual = elements
         .zip(this.elements)
-        .forall { case (a, b) => MathUtils.compareDoubles(a, b) }
+        .forall { case (a, b) => MathUtils.compareReals(a, b) }
       val sizeEqual = w == width && h == height
       elementsEqual && sizeEqual
     case _ => false
   }
 
-  def map(f: Double => Double): Matrix =
+  def map(f: Real => Real): Matrix =
     MatrixImpl(width, height, elements.map(f))
 
   override def toString: String = {
@@ -138,9 +138,9 @@ trait Matrix {
 }
 
 object Matrix {
-  type Elements = Vector[Double]
-  type Vec4     = (Double, Double, Double, Double)
-  type Vec3     = (Double, Double, Double)
+  type Elements = Vector[Real]
+  type Vec4     = (Real, Real, Real, Real)
+  type Vec3     = (Real, Real, Real)
 
   private case class MatrixImpl(width: Int, height: Int, elements: Elements) extends Matrix
 

@@ -1,7 +1,9 @@
 package com.melvic.esena.tuples
 
-final case class Point(x: Double, y: Double, z: Double) extends Tuple {
-  val w: Double = 1
+import com.melvic.esena.Real
+
+final case class Point(x: Real, y: Real, z: Real) extends Tuple {
+  val w: Real = 1
 }
 
 object Point {

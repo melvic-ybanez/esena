@@ -1,7 +1,9 @@
 package com.melvic.esena.dielectrics
 
+import com.melvic.esena.Real
+
 object Refraction {
-  final case class RefractiveIndices(n1: Double, n2: Double)
+  final case class RefractiveIndices(n1: Real, n2: Real)
 
   object index {
     val Vacuum = 1.0

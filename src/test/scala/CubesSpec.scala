@@ -1,3 +1,4 @@
+import com.melvic.esena.Real
 import com.melvic.esena.rays.Ray
 import com.melvic.esena.shapes.Cube
 import com.melvic.esena.tuples.{Point, Vec}
@@ -6,7 +7,7 @@ import org.scalatest.matchers.should
 
 class CubesSpec extends AnyFlatSpec with should.Matchers {
   "A ray intersecting a cube" should "work correctly with any of the six directions" in {
-    case class Data(label: String, origin: Point, direction: Vec, t1: Double, t2: Double)
+    case class Data(label: String, origin: Point, direction: Vec, t1: Real, t2: Real)
 
     val data = Vector(
       (Point(5, 0.5, 0), Vec(-1, 0, 0), 4, 6),  // +x

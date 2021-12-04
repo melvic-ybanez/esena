@@ -1,9 +1,9 @@
 package com.melvic.esena.canvas
 
-import com.melvic.esena.MathUtils
+import com.melvic.esena.{MathUtils, Real}
 import com.melvic.esena.tuples.Tuple
 
-final case class Color(red: Double, green: Double, blue: Double) extends Tuple {
+final case class Color(red: Real, green: Real, blue: Real) extends Tuple {
   override val x = red
   override val y = green
   override val z = blue

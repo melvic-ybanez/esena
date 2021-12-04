@@ -1,5 +1,6 @@
 package com.melvic.esena.rays
 
+import com.melvic.esena.Real
 import com.melvic.esena.shapes.Shape
 
 object Intersections {
@@ -10,19 +11,19 @@ object Intersections {
   def apply(intersection: Intersection*): Intersections =
     Intersection.aggregate(intersection: _*)
 
-  def apply(data: (Double, Shape)*)(implicit dummy: DummyImplicit): Intersections =
+  def apply(data: (Real, Shape)*)(implicit dummy: DummyImplicit): Intersections =
     Intersections.fromPairs(data: _*)
 
-  def fromPairs(data: (Double, Shape)*): Intersections =
+  def fromPairs(data: (Real, Shape)*): Intersections =
     Intersections(data.map { case (n, s) => Intersection(n, s) }: _*)
 
   def fromPairs(data: (Int, Shape)*)(implicit dummy: DummyImplicit): Intersections =
     Intersections(data.map { case (n, s) => Intersection(n.toDouble, s) }: _*)
 
-  def schlick(comps: Computations): Double = {
+  def schlick(comps: Computations): Real = {
     val cos = comps.eyeVec.dot(comps.normalVec)
 
-    def reflectance(cos: Double) = {
+    def reflectance(cos: Real) = {
       val r = math.pow((comps.n1 - comps.n2) / (comps.n1 + comps.n2), 2)
       r + (1 - r) * math.pow(1 - cos, 5)
     }
@@ -37,7 +38,7 @@ object Intersections {
     } else reflectance(cos)
   }
 
-  def maybeOne(cond: Boolean, pair: (Double, Shape)): Intersections =
+  def maybeOne(cond: Boolean, pair: (Real, Shape)): Intersections =
     if (cond) Intersections(pair)
     else Intersections.None
 }

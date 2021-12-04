@@ -1,5 +1,6 @@
 package com.melvic.esena.matrix
 
+import com.melvic.esena.Real
 import com.melvic.esena.tuples.{Point, Vec}
 
 trait Transformations4D {
@@ -17,7 +18,7 @@ trait Transformations4D {
    * because the vector's fourth component is 0 (it cancels the fourth
    * column)
    */
-  def translation(x: Double, y: Double, z: Double): Matrix =
+  def translation(x: Real, y: Real, z: Real): Matrix =
     Matrix.Identity4x4(0, 3, x)(1, 3, y)(2, 3, z)
 
   /**
@@ -31,14 +32,14 @@ trait Transformations4D {
    * of P's component, effectively changing the "size" of P.
    * This works for both point and vector.
    */
-  def scaling(x: Double, y: Double, z: Double): Matrix =
+  def scaling(x: Real, y: Real, z: Real): Matrix =
     Matrix.Identity4x4(0, 0, x)(1, 1, y)(2, 2, z)
 
   /**
    * Clockwise rotations along the x-axis.
    * Note: This rotation is based on the left-hand rule.
    */
-  def rotationX(radian: Double): Matrix = {
+  def rotationX(radian: Real): Matrix = {
     val cos = math.cos(radian)
     val sin = math.sin(radian)
 
@@ -54,7 +55,7 @@ trait Transformations4D {
    * Clockwise rotations along the y-axis.
    * Note: This rotation is based on the left-hand rule.
    */
-  def rotationY(radian: Double): Matrix = {
+  def rotationY(radian: Real): Matrix = {
     val cos = math.cos(radian)
     val sin = math.sin(radian)
 
@@ -70,7 +71,7 @@ trait Transformations4D {
    * Clockwise rotations along the z-axis.
    * Note: This rotation is based on the left-hand rule.
    */
-  def rotationZ(radian: Double): Matrix = {
+  def rotationZ(radian: Real): Matrix = {
     val cos = math.cos(radian)
     val sin = math.sin(radian)
 
@@ -82,7 +83,7 @@ trait Transformations4D {
     )
   }
 
-  def shearing(xy: Double, xz: Double, yx: Double, yz: Double, zx: Double, zy: Double): Matrix =
+  def shearing(xy: Real, xz: Real, yx: Real, yz: Real, zx: Real, zy: Real): Matrix =
     Matrix.of4x4(
       (1, xy, xz, 0),
       (yx, 1, yz, 0),

@@ -37,6 +37,8 @@ trait Sphere extends Shape.Aux[Sphere] {
 
   override def fromData(data: Shape.Data) =
     SphereImpl(data.material, data.transformation)
+
+  override def shapeName = "Sphere"
 }
 
 object Sphere extends Sphere {

@@ -1,5 +1,7 @@
 package com.melvic.esena.matrix
 
+import com.melvic.esena.Real
+
 trait CanTransform {
   type T
 
@@ -13,20 +15,20 @@ trait CanTransform {
   def transform(transformation: Matrix): T =
     withTransformation(transformation * this.transformation)
 
-  def translate(x: Double, y: Double, z: Double): T =
+  def translate(x: Real, y: Real, z: Real): T =
     transform(translation(x, y, z))
 
-  def scale(x: Double, y: Double, z: Double): T =
+  def scale(x: Real, y: Real, z: Real): T =
     transform(scaling(x, y, z))
 
-  def scale(xyz: Double): T = scale(xyz, xyz, xyz)
+  def scale(xyz: Real): T = scale(xyz, xyz, xyz)
 
-  def rotateX(radian: Double): T =
+  def rotateX(radian: Real): T =
     transform(rotationX(radian))
 
-  def rotateY(radian: Double): T =
+  def rotateY(radian: Real): T =
     transform(rotationY(radian))
 
-  def rotateZ(radian: Double): T =
+  def rotateZ(radian: Real): T =
     transform(rotationZ(radian))
 }

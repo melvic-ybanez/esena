@@ -66,8 +66,10 @@ trait Shape extends CanIntersect with CanTransform {
     case _            => false
   }
 
+  def shapeName: String = "Shape"
+
   override def toString =
-    s"[material = $material, transformation = $transformation, parent = $parent]"
+    s"$shapeName [material = $material, transformation = $transformation, parent = $parent]"
 }
 
 object Shape {
